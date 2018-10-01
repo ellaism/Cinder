@@ -1,6 +1,6 @@
 # EllaX
 
-[![Build Status](https://travis-ci.org/mayzellproject/ellax.svg?branch=develop)](https://travis-ci.org/mayzellproject/ellax)
+[![Build Status](https://travis-ci.org/MayzellProject/EllaX.svg?branch=develop)](https://travis-ci.org/MayzellProject/EllaX)
 
 https://mayzell.org
 
