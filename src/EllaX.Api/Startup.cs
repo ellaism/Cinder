@@ -1,15 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Autofac;
+using AutoMapper;
+using EllaX.Logic;
+using EllaX.Logic.Clients;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Polly;
 
 namespace EllaX.Api
 {
@@ -25,7 +25,16 @@ namespace EllaX.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient<IBlockchainClient, BlockchainClient>().AddTransientHttpErrorPolicy(p =>
+                p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(600)));
+            services.AddMediatR(typeof(Service).Assembly);
+            services.AddAutoMapper(cfg => cfg.AddProfiles(typeof(Service).Assembly));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+        }
+
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterType<BlockchainService>().As<IBlockchainService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
