@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using EllaX.Logic;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -11,6 +10,8 @@ namespace EllaX.Api.Infrastructure.Hosting
 {
     public class NetworkHealthHostedService : IHostedService
     {
+        private readonly IBlockchainService _blockchainService;
+
         private readonly List<string> _hosts = new List<string>
         {
             "http://104.248.178.221:8545",
@@ -22,11 +23,10 @@ namespace EllaX.Api.Infrastructure.Hosting
 
         private readonly ILogger<NetworkHealthHostedService> _logger;
 
-        private readonly IServiceProvider _services;
-
-        public NetworkHealthHostedService(IServiceProvider services, ILogger<NetworkHealthHostedService> logger)
+        public NetworkHealthHostedService(IBlockchainService blockchainService,
+            ILogger<NetworkHealthHostedService> logger)
         {
-            _services = services;
+            _blockchainService = blockchainService;
             _logger = logger;
         }
 
@@ -52,12 +52,7 @@ namespace EllaX.Api.Infrastructure.Hosting
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            using (IServiceScope scope = _services.CreateScope())
-            {
-                IBlockchainService blockchainService = scope.ServiceProvider.GetRequiredService<IBlockchainService>();
-                await blockchainService.GetHealthAsync(_hosts, cancellationToken);
-            }
-
+            await _blockchainService.GetHealthAsync(_hosts, cancellationToken);
             await Task.Delay(TimeSpan.FromSeconds(15), cancellationToken);
         }
     }
