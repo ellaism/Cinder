@@ -1,6 +1,8 @@
 ﻿using System;
 using Autofac;
 using AutoMapper;
+using EllaX.Api.Infrastructure;
+using EllaX.Api.Infrastructure.Hosting;
 using EllaX.Logic;
 using EllaX.Logic.Clients;
 using MediatR;
@@ -25,16 +27,21 @@ namespace EllaX.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddHttpClient<IBlockchainClient, BlockchainClient>().AddTransientHttpErrorPolicy(p =>
-                p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(600)));
-            services.AddMediatR(typeof(Service).Assembly);
+            services.AddHttpClient<IBlockchainClient, BlockchainClient>()
+                .AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(600)));
+            services.AddMediatR();
             services.AddAutoMapper(cfg => cfg.AddProfiles(typeof(Service).Assembly));
+
+            // hosted services
+            services.AddHostedService<NetworkHealthHostedService>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterType<BlockchainService>().As<IBlockchainService>();
+            builder.RegisterType<InMemoryStatistics>().SingleInstance();
+            builder.RegisterType<BlockchainService>().As<IBlockchainService>().InstancePerLifetimeScope();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
