@@ -18,8 +18,7 @@ namespace EllaX.Api
 
         public static int Main(string[] args)
         {
-            Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(Configuration).Enrich.FromLogContext().WriteTo
-                .Console().CreateLogger();
+            Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(Configuration).CreateLogger();
 
             try
             {
