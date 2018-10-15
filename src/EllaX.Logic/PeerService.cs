@@ -21,16 +21,16 @@ namespace EllaX.Logic
             _repository = repository;
         }
 
-        public Task ProcessPeerAsync(Peer peer)
+        public async Task ProcessPeerAsync(Peer peer)
         {
             if (peer.RemoteAddress.Contains("Handshake", StringComparison.InvariantCulture))
             {
-                return Task.CompletedTask;
+                return;
             }
 
             Uri uri = new Uri("http://" + peer.RemoteAddress);
             string peerId = peer.Id;
-            City city = _locationService.GetCityByIp(uri.Host);
+            City city = await _locationService.GetCityByIpAsync(uri.Host);
             Peer updated = _mapper.Map(city, peer);
 
             Peer original = _repository.FirstOrDefault<Peer>(x => x.Id == peerId);
@@ -40,8 +40,6 @@ namespace EllaX.Logic
             }
 
             _repository.Upsert(updated);
-
-            return Task.CompletedTask;
         }
     }
 }

@@ -1,9 +1,10 @@
-﻿using EllaX.Core.Models;
+﻿using System.Threading.Tasks;
+using EllaX.Core.Models;
 
 namespace EllaX.Logic
 {
     public interface ILocationService
     {
-        City GetCityByIp(string ip);
+        Task<City> GetCityByIpAsync(string ip);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using EllaX.Core.Models;
 using EllaX.Logic.Options;
@@ -27,11 +28,11 @@ namespace EllaX.Logic
             GC.SuppressFinalize(this);
         }
 
-        public City GetCityByIp(string ip)
+        public Task<City> GetCityByIpAsync(string ip)
         {
             CityResponse response = _reader.City(ip);
 
-            return _mapper.Map<City>(response);
+            return Task.FromResult(_mapper.Map<City>(response));
         }
 
         protected virtual void Dispose(bool disposing)
