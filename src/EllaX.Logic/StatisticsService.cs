@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using EllaX.Core.Models;
@@ -20,7 +21,8 @@ namespace EllaX.Logic
 
         public Task<IReadOnlyList<Health>> GetHealthAsync()
         {
-            IReadOnlyList<Health> health = _mapper.Map<IReadOnlyList<Health>>(_peers.Values.ToImmutableList());
+            IReadOnlyList<Health> health = _mapper.Map<IReadOnlyList<Health>>(_peers.Values
+                .Where(peer => peer.Latitude.HasValue && peer.Longitude.HasValue).ToImmutableList());
 
             return Task.FromResult(health);
         }
