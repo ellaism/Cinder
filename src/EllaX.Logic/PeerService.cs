@@ -2,40 +2,44 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using EllaX.Core.Models;
+using EllaX.Data;
 using MediatR;
-using Microsoft.Extensions.Logging;
 
 namespace EllaX.Logic
 {
     public class PeerService : Service, IPeerService
     {
         private readonly ILocationService _locationService;
-        private readonly ILogger<BlockchainService> _logger;
         private readonly IMapper _mapper;
-        private readonly IStatisticsService _statisticsService;
+        private readonly Repository _repository;
 
-        public PeerService(IMediator eventBus, ILogger<BlockchainService> logger, IMapper mapper,
-            IStatisticsService statisticsService, ILocationService locationService) : base(eventBus)
+        public PeerService(IMediator eventBus, IMapper mapper, ILocationService locationService,
+            Repository repository) : base(eventBus)
         {
-            _logger = logger;
             _mapper = mapper;
-            _statisticsService = statisticsService;
             _locationService = locationService;
+            _repository = repository;
         }
 
         public Task ProcessPeerAsync(Peer peer)
         {
-            if (string.IsNullOrEmpty(peer.Id))
+            if (peer.RemoteAddress.Contains("Handshake", StringComparison.InvariantCulture))
             {
                 return Task.CompletedTask;
             }
 
             Uri uri = new Uri("http://" + peer.RemoteAddress);
+            string peerId = peer.Id;
             City city = _locationService.GetCityByIp(uri.Host);
-            peer = _mapper.Map(city, peer);
+            Peer updated = _mapper.Map(city, peer);
 
-            _logger.LogDebug("{@Peer}", peer);
-            _statisticsService.AddPeer(peer);
+            Peer original = _repository.FirstOrDefault<Peer>(x => x.Id == peerId);
+            if (original != null)
+            {
+                updated = _mapper.Map(updated, original);
+            }
+
+            _repository.Upsert(updated);
 
             return Task.CompletedTask;
         }
