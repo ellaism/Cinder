@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
-using EllaX.Api.Infrastructure;
+using System.Threading.Tasks;
 using EllaX.Core.Models;
+using EllaX.Logic;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EllaX.Api.Controllers
@@ -9,17 +10,17 @@ namespace EllaX.Api.Controllers
     [ApiController]
     public class NetworkController : ControllerBase
     {
-        private readonly InMemoryStatistics _statistics;
+        private readonly IStatisticsService _statisticsService;
 
-        public NetworkController(InMemoryStatistics statistics)
+        public NetworkController(IStatisticsService statisticsService)
         {
-            _statistics = statistics;
+            _statisticsService = statisticsService;
         }
 
         [HttpGet("health")]
-        public IEnumerable<Peer> GetHealthAsync()
+        public async Task<IEnumerable<Health>> GetHealthAsync()
         {
-            return _statistics.GetPeers();
+            return await _statisticsService.GetHealthAsync();
         }
     }
 }

@@ -1,10 +1,10 @@
 ﻿using System;
 using Autofac;
 using AutoMapper;
-using EllaX.Api.Infrastructure;
 using EllaX.Api.Infrastructure.Hosting;
 using EllaX.Logic;
 using EllaX.Logic.Clients;
+using EllaX.Logic.Options;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,6 +27,10 @@ namespace EllaX.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // location database
+            services.Configure<LocationOptions>(options =>
+                options.ConnectionString = Configuration.GetConnectionString("GeoIpDatabase"));
+
             services.AddHttpClient<IBlockchainClient, BlockchainClient>()
                 .AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(600)));
             services.AddMediatR();
@@ -40,7 +44,9 @@ namespace EllaX.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterType<InMemoryStatistics>().SingleInstance();
+            builder.RegisterType<StatisticsService>().As<IStatisticsService>().SingleInstance();
+            builder.RegisterType<LocationService>().As<ILocationService>().SingleInstance();
+            builder.RegisterType<PeerService>().As<IPeerService>().InstancePerLifetimeScope();
             builder.RegisterType<BlockchainService>().As<IBlockchainService>().InstancePerLifetimeScope();
         }
 
