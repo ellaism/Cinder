@@ -1,17 +1,11 @@
-﻿using System.IO;
+﻿using EllaX.Logic.Options;
 using LiteDB;
+using Microsoft.Extensions.Options;
 
 namespace EllaX.Data
 {
     public class Repository : LiteRepository
     {
-        public Repository(LiteDatabase database, bool disposeDatabase = false) : base(database, disposeDatabase) { }
-        public Repository(string connectionString, BsonMapper mapper = null) : base(connectionString, mapper) { }
-
-        public Repository(ConnectionString connectionString, BsonMapper mapper = null) :
-            base(connectionString, mapper) { }
-
-        public Repository(Stream stream, BsonMapper mapper = null, string password = null) : base(stream, mapper,
-            password) { }
+        public Repository(IOptions<RepositoryOptions> options) : base(options.Value.ConnectionString, null) { }
     }
 }

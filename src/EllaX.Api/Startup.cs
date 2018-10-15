@@ -2,6 +2,7 @@
 using Autofac;
 using AutoMapper;
 using EllaX.Api.Infrastructure.Hosting;
+using EllaX.Data;
 using EllaX.Logic;
 using EllaX.Logic.Clients;
 using EllaX.Logic.Options;
@@ -28,8 +29,10 @@ namespace EllaX.Api
         public void ConfigureServices(IServiceCollection services)
         {
             // location database
+            services.Configure<RepositoryOptions>(options =>
+                options.ConnectionString = Configuration.GetConnectionString("RepositoryConnection"));
             services.Configure<LocationOptions>(options =>
-                options.ConnectionString = Configuration.GetConnectionString("GeoIpDatabase"));
+                options.ConnectionString = Configuration.GetConnectionString("GeoIpConnection"));
 
             services.AddHttpClient<IBlockchainClient, BlockchainClient>()
                 .AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(600)));
@@ -44,10 +47,12 @@ namespace EllaX.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterType<StatisticsService>().As<IStatisticsService>().SingleInstance();
+            builder.RegisterType<Repository>().SingleInstance();
             builder.RegisterType<LocationService>().As<ILocationService>().SingleInstance();
-            builder.RegisterType<PeerService>().As<IPeerService>().InstancePerLifetimeScope();
+
             builder.RegisterType<BlockchainService>().As<IBlockchainService>().InstancePerLifetimeScope();
+            builder.RegisterType<PeerService>().As<IPeerService>().InstancePerLifetimeScope();
+            builder.RegisterType<StatisticsService>().As<IStatisticsService>().InstancePerLifetimeScope();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
