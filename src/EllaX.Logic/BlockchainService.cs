@@ -39,8 +39,6 @@ namespace EllaX.Logic
         private async Task ProcessNetPeerResult(Response<NetPeerResult> response,
             CancellationToken ctx = default(CancellationToken))
         {
-            //_logger.LogDebug("{@response}", response);
-
             if (!response.Result.Peers.Any())
             {
                 return;
