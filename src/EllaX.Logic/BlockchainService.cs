@@ -32,23 +32,24 @@ namespace EllaX.Logic
             List<Task<Response<NetPeerResult>>> tasks =
                 hosts.Select(host => _blockchainClient.GetNetPeersAsync(host, ctx)).ToList();
 
-            await Task.WhenAll(tasks.Select(async task => await ProcessNetPeerResult(task.Result, ctx)));
+            await Task.WhenAll(tasks.Select(async task => await ProcessNetPeerResult(task.Result, ctx)))
+                .ConfigureAwait(false);
         }
 
         private async Task ProcessNetPeerResult(Response<NetPeerResult> response,
             CancellationToken ctx = default(CancellationToken))
         {
-            _logger.LogDebug("{@response}", response);
+            //_logger.LogDebug("{@response}", response);
 
             if (!response.Result.Peers.Any())
             {
                 return;
             }
 
-            foreach (PeerItem peer in response.Result.Peers)
-            {
-                await EventBus.Publish(new PeerNotification {Peer = _mapper.Map<Peer>(peer)}, ctx);
-            }
+            IEnumerable<Task> events = response.Result.Peers.Select(peer =>
+                EventBus.Publish(new PeerNotification {Peer = _mapper.Map<Peer>(peer)}, ctx));
+
+            await Task.WhenAll(events).ConfigureAwait(false);
         }
     }
 }
