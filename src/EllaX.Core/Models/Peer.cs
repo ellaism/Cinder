@@ -12,6 +12,7 @@ namespace EllaX.Core.Models
         public decimal? Longitude { get; set; }
         public string City { get; set; }
         public string Country { get; set; }
-        public DateTimeOffset LastSeenDate { get; } = DateTimeOffset.UtcNow;
+        public DateTimeOffset FirstSeenDate { get; set; } = DateTimeOffset.UtcNow;
+        public DateTimeOffset LastSeenDate { get; set; } = DateTimeOffset.UtcNow;
     }
 }
