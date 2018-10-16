@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -16,14 +17,16 @@ namespace EllaX.Api
                 $"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json",
                 true).AddEnvironmentVariables().Build();
 
-        public static int Main(string[] args)
+        public static async Task<int> Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(Configuration).CreateLogger();
 
             try
             {
                 Log.Information("Starting web host");
-                BuildWebHost(args).Run();
+                IWebHost host = BuildWebHost(args);
+                host.Start();
+                await host.WaitForShutdownAsync();
 
                 return 0;
             }
