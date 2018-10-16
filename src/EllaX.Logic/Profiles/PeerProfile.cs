@@ -10,7 +10,8 @@ namespace EllaX.Logic.Profiles
         {
             CreateMap<Peer, Peer>().ForMember(dest => dest.FirstSeenDate, opt => opt.Ignore());
             CreateMap<Peer, Health>().ForMember(dest => dest.Location,
-                opt => opt.MapFrom(src => $"{src.City} {src.Country}".Trim()));
+                opt => opt.MapFrom(src =>
+                    $"{(!string.IsNullOrEmpty(src.City) ? src.City + "," : "")} {src.Country}".Trim()));
             CreateMap<City, Peer>().ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country))
                 .ForMember(dest => dest.Latitude,
