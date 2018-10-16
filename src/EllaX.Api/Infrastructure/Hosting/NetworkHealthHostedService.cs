@@ -20,7 +20,7 @@ namespace EllaX.Api.Infrastructure.Hosting
         {
             _blockchainService = blockchainService;
             _logger = logger;
-            _hosts = configuration.GetSection("Network").GetValue<IList<string>>("Hosts");
+            _hosts = configuration.GetSection("Network:HealthNodes").Get<IList<string>>();
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
