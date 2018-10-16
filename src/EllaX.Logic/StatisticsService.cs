@@ -1,3 +1,4 @@
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -6,6 +7,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EllaX.Core.Models;
 using EllaX.Data;
+using EllaX.Logic.Extensions;
+using LiteDB;
 
 namespace EllaX.Logic
 {
@@ -23,9 +26,9 @@ namespace EllaX.Logic
         public Task<IReadOnlyList<Health>> GetHealthAsync(int ageMinutes = -720,
             CancellationToken cancellationToken = default)
         {
-            IReadOnlyList<Peer> peers = _repository.Fetch<Peer>().ToImmutableList();
-            IReadOnlyList<Health> health = _mapper.Map<IReadOnlyList<Health>>(peers)
-                .OrderByDescending(x => x.LastSeenDate).ToImmutableList();
+            IReadOnlyList<Health> health = _repository
+                .Fetch<Peer>(Query.GTE("LastSeenDate", DateTime.UtcNow.AddMinutes(ageMinutes)))
+                .OrderByDescending(x => x.LastSeenDate).MapTo<Health>(_mapper).ToImmutableList();
 
             return Task.FromResult(health);
         }
