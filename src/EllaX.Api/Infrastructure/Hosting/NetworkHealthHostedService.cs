@@ -25,8 +25,8 @@ namespace EllaX.Api.Infrastructure.Hosting
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            await Task.Delay(TimeSpan.FromSeconds(5), cancellationToken);
             _logger.LogInformation("Network health hosted service is starting");
+            await Task.Delay(TimeSpan.FromSeconds(10), cancellationToken);
 
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -44,9 +44,10 @@ namespace EllaX.Api.Infrastructure.Hosting
         private async Task CheckNetworkHealthAsync(CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
+            _logger.LogInformation("Retrieving latest network health snapshot");
 
             await _blockchainService.GetHealthAsync(_hosts, cancellationToken);
-            await Task.Delay(TimeSpan.FromSeconds(15), cancellationToken);
+            await Task.Delay(TimeSpan.FromSeconds(120), cancellationToken);
         }
     }
 }
