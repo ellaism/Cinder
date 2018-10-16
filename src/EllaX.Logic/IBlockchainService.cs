@@ -6,6 +6,6 @@ namespace EllaX.Logic
 {
     public interface IBlockchainService
     {
-        Task GetHealthAsync(IList<string> hosts, CancellationToken ctx = default(CancellationToken));
+        Task GetHealthAsync(IList<string> hosts, CancellationToken cancellationToken = default);
     }
 }

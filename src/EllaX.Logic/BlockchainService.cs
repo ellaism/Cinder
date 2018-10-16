@@ -27,17 +27,17 @@ namespace EllaX.Logic
             _blockchainClient = blockchainClient;
         }
 
-        public async Task GetHealthAsync(IList<string> hosts, CancellationToken ctx = default(CancellationToken))
+        public async Task GetHealthAsync(IList<string> hosts, CancellationToken cancellationToken = default)
         {
             List<Task<Response<NetPeerResult>>> tasks =
-                hosts.Select(host => _blockchainClient.GetNetPeersAsync(host, ctx)).ToList();
+                hosts.Select(host => _blockchainClient.GetNetPeersAsync(host, cancellationToken)).ToList();
 
-            await Task.WhenAll(tasks.Select(async task => await ProcessNetPeerResult(task.Result, ctx)))
+            await Task.WhenAll(tasks.Select(async task => await ProcessNetPeerResult(task.Result, cancellationToken)))
                 .ConfigureAwait(false);
         }
 
         private async Task ProcessNetPeerResult(Response<NetPeerResult> response,
-            CancellationToken ctx = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             if (!response.Result.Peers.Any())
             {
@@ -45,7 +45,7 @@ namespace EllaX.Logic
             }
 
             IEnumerable<Task> events = response.Result.Peers.Select(peer =>
-                EventBus.Publish(new PeerNotification {Peer = _mapper.Map<Peer>(peer)}, ctx));
+                EventBus.Publish(new PeerNotification {Peer = _mapper.Map<Peer>(peer)}, cancellationToken));
 
             await Task.WhenAll(events).ConfigureAwait(false);
         }

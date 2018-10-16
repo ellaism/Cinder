@@ -12,11 +12,11 @@ namespace EllaX.Logic.Clients
         public BlockchainClient(HttpClient client) : base(client) { }
 
         public async Task<Response<NetPeerResult>> GetNetPeersAsync(string host,
-            CancellationToken ctx = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             using (HttpRequestMessage request = CreateRequest(Message.CreateMessage("parity_netPeers"), host))
             {
-                return await SendAsync<NetPeerResult>(request, ctx).ConfigureAwait(false);
+                return await SendAsync<NetPeerResult>(request, cancellationToken).ConfigureAwait(false);
             }
         }
     }

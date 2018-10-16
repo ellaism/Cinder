@@ -7,6 +7,7 @@ namespace EllaX.Logic
 {
     public interface IStatisticsService
     {
-        Task<IReadOnlyList<Health>> GetHealthAsync(CancellationToken cancellationToken = default(CancellationToken));
+        Task<IReadOnlyList<Health>>
+            GetHealthAsync(int ageMinutes = -720, CancellationToken cancellationToken = default);
     }
 }

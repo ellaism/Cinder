@@ -7,6 +7,6 @@ namespace EllaX.Logic.Clients
 {
     public interface IBlockchainClient
     {
-        Task<Response<NetPeerResult>> GetNetPeersAsync(string host, CancellationToken ctx = default(CancellationToken));
+        Task<Response<NetPeerResult>> GetNetPeersAsync(string host, CancellationToken cancellationToken = default);
     }
 }

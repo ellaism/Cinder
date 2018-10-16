@@ -28,9 +28,9 @@ namespace EllaX.Logic.Clients
         }
 
         protected virtual async Task<Response<TResult>> SendAsync<TResult>(HttpRequestMessage request,
-            CancellationToken ctx = default(CancellationToken)) where TResult : IResult
+            CancellationToken cancellationToken = default) where TResult : IResult
         {
-            using (HttpResponseMessage response = await _client.SendAsync(request, ctx))
+            using (HttpResponseMessage response = await _client.SendAsync(request, cancellationToken))
             {
                 response.EnsureSuccessStatusCode();
 

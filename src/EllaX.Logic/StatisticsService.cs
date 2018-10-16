@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
@@ -20,8 +20,8 @@ namespace EllaX.Logic
             _repository = repository;
         }
 
-        public Task<IReadOnlyList<Health>> GetHealthAsync(
-            CancellationToken cancellationToken = default(CancellationToken))
+        public Task<IReadOnlyList<Health>> GetHealthAsync(int ageMinutes = -720,
+            CancellationToken cancellationToken = default)
         {
             IReadOnlyList<Peer> peers = _repository.Fetch<Peer>().ToImmutableList();
             IReadOnlyList<Health> health = _mapper.Map<IReadOnlyList<Health>>(peers)
