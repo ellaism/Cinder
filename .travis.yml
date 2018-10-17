@@ -1,27 +1,19 @@
 --- 
-matrix: 
-  include: 
-    - 
-      before_install: 
-        - "cd src/EllaX.UI.Web/ClientApp"
-      cache: 
-        directories: 
-          - node_modules
-      install: 
-        - "npm install"
-      language: node_js
-      node_js: 
-        - "iojs"
-        - "8"
-    - 
-      before_script: 
-        - "npm install -g @vue/cli"
-      dotnet: 
-        - "2.1.403"
-      install: 
-        - "dotnet restore"
-      language: csharp
-      mono: none
-      script: 
-        - "dotnet build"
-      solution: EllaX.sln
+before_script: 
+  - "npm install -g @vue/cli"
+cache: 
+  directories: 
+    - node_modules
+dist: trusty
+dotnet: "2.1.403"
+install: 
+  - "dotnet restore"
+  - "npm install --prefix ./src/EllaX.UI.Web/ClientApp"
+language: csharp
+mono: none
+node_js: 
+  - iojs
+  - "8"
+script: 
+  - "dotnet build"
+solution: EllaX.sln
