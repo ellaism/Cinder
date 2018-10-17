@@ -1,8 +1,8 @@
 # EllaX
 
-[![Build Status](https://travis-ci.org/MayzellProject/EllaX.svg?branch=develop)](https://travis-ci.org/MayzellProject/EllaX)
+[![Build Status](https://travis-ci.org/Nodestry/EllaX.svg?branch=develop)](https://travis-ci.org/Nodestry/EllaX)
 
-https://mayzell.org
+https://nodestry.com
 
 ## What is EllaX?
 
