@@ -1,19 +1,18 @@
---- 
-before_script: 
-  - "npm install -g @vue/cli"
-cache: 
-  directories: 
-    - node_modules
+language: csharp
+mono: none
 dist: trusty
 dotnet: "2.1.403"
+solution: EllaX.sln
+
+before_script: 
+  - "nvm install 8"
+  - "nvm use 8"
+  - "npm install"
+cache: 
+  directories: 
+    - ./src/EllaX.UI.Web/ClientApp/node_modules
 install: 
   - "dotnet restore"
   - "npm install --prefix ./src/EllaX.UI.Web/ClientApp"
-language: csharp
-mono: none
-node_js: 
-  - iojs
-  - "8"
 script: 
   - "dotnet build"
-solution: EllaX.sln
