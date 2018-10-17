@@ -13,7 +13,7 @@ cache:
 
 install:
   - dotnet restore
-  - npm install
+  - npm install --prefix ./src/EllaX.UI.Web/ClientApp
 
 script:
   - dotnet build
