@@ -4,8 +4,16 @@ dist: trusty
 mono: none
 dotnet: 2.1.403
 
+before_script:
+  - npm install -g @vue/cli
+
+cache:
+  directories:
+    - node_modules
+
 install:
- - dotnet restore
+  - dotnet restore
+  - npm install
 
 script:
- - dotnet build
+  - dotnet build
