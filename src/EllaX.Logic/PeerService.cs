@@ -15,8 +15,8 @@ namespace EllaX.Logic
         private readonly IMapper _mapper;
         private readonly Repository _repository;
 
-        public PeerService(IMediator eventBus, ILogger<PeerService> logger, IMapper mapper, ILocationService locationService,
-            Repository repository) : base(eventBus)
+        public PeerService(IMediator eventBus, ILogger<PeerService> logger, IMapper mapper,
+            ILocationService locationService, Repository repository) : base(eventBus)
         {
             _logger = logger;
             _mapper = mapper;
@@ -26,7 +26,7 @@ namespace EllaX.Logic
 
         public async Task ProcessPeerAsync(Peer peer)
         {
-            if (peer.RemoteAddress.Contains("Handshake", StringComparison.InvariantCulture))
+            if (peer.RemoteAddress.Contains("Handshake"))
             {
                 return;
             }

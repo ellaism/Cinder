@@ -6,9 +6,9 @@ namespace EllaX.Logic.Extensions
 {
     public static class ListExtensions
     {
-        public static IEnumerable<TDestination> MapTo<TDestination>(this IEnumerable sourceList, IMapper mapper)
+        public static IEnumerable<TDto> MapTo<TDto>(this IEnumerable sourceList, IMapper mapper)
         {
-            return mapper.Map<IEnumerable<TDestination>>(sourceList);
+            return mapper.Map<IEnumerable<TDto>>(sourceList);
         }
     }
 }
