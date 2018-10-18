@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using EllaX.Core.Models;
+using EllaX.Core.Dtos;
 using EllaX.Logic;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,9 +18,9 @@ namespace EllaX.Api.Controllers
         }
 
         [HttpGet("health")]
-        public async Task<IEnumerable<Health>> GetHealthAsync()
+        public async Task<IEnumerable<HealthDto>> GetHealthAsync()
         {
-            return await _statisticsService.GetHealthAsync();
+            return await _statisticsService.GetHealthAsync<HealthDto>();
         }
     }
 }

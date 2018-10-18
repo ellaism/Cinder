@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Autofac;
 using AutoMapper;
 using EllaX.Api.Infrastructure.Hosting;
