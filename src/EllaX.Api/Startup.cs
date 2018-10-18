@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Autofac;
 using AutoMapper;
 using EllaX.Api.Infrastructure.Hosting;
@@ -28,7 +28,7 @@ namespace EllaX.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // location database
+            // database
             services.Configure<RepositoryOptions>(options =>
                 options.ConnectionString = Configuration.GetConnectionString("RepositoryConnection"));
             services.Configure<LocationOptions>(options =>
@@ -42,6 +42,8 @@ namespace EllaX.Api
             // hosted services
             services.AddHostedService<NetworkHealthHostedService>();
 
+            // mvc
+            services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -67,7 +69,8 @@ namespace EllaX.Api
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            app.UseCors(options => options.AllowAnyOrigin());
+            //app.UseHttpsRedirection();
             app.UseMvc();
         }
     }
