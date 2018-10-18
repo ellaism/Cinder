@@ -1,6 +1,8 @@
 ﻿using System;
 using AutoMapper;
+using EllaX.Core.Dtos;
 using EllaX.Core.Models;
+using EllaX.Logic.Resolvers;
 
 namespace EllaX.Logic.Profiles
 {
@@ -9,9 +11,8 @@ namespace EllaX.Logic.Profiles
         public PeerProfile()
         {
             CreateMap<Peer, Peer>().ForMember(dest => dest.FirstSeenDate, opt => opt.Ignore());
-            CreateMap<Peer, Health>().ForMember(dest => dest.Location,
-                opt => opt.MapFrom(src =>
-                    $"{(!string.IsNullOrEmpty(src.City) ? src.City + "," : "")} {src.Country}".Trim()));
+            CreateMap<Peer, HealthDto>().ForMember(dest => dest.Age,
+                opt => opt.ResolveUsing<DateTimeOffsetToAgeResolver, DateTimeOffset>(src => src.LastSeenDate));
             CreateMap<City, Peer>().ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country))
                 .ForMember(dest => dest.Latitude,
