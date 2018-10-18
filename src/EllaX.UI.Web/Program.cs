@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Blazor.Hosting;
 
 namespace EllaX.UI.Web
 {
@@ -7,12 +6,11 @@ namespace EllaX.UI.Web
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            CreateHostBuilder(args).Build().Run();
         }
 
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
-        {
-            return WebHost.CreateDefaultBuilder(args).UseStartup<Startup>();
-        }
+        public static IWebAssemblyHostBuilder CreateHostBuilder(string[] args) =>
+            BlazorWebAssemblyHost.CreateDefaultBuilder()
+                .UseBlazorStartup<Startup>();
     }
 }
