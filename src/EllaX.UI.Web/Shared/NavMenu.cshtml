@@ -1,25 +1,29 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="">EllaX.UI.Web</a>
-    <button class="navbar-toggler" onclick=@ToggleNavMenu>
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</div>
-
-<div class=@(collapseNavMenu ? "collapse" : null) onclick=@ToggleNavMenu>
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match=NavLinkMatch.All>
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </li>
-    </ul>
-</div>
+﻿@using BlazorStrap
+<Navbar IsExpand="true" IsDark="false" Color="@Color.Light">
+    <NavbarBrand Href="#">Navbar</NavbarBrand>
+    <NavbarToggler onclick="@onclick"/>
+    <Collapse isOpen="@IsOpen" IsNavbar="true">
+        <BlazorNav IsList="true" Class="mr-auto" IsNavbar="true">
+            <NavItem>
+                <BlazorNavLink IsActive="true" Href="#">Home</BlazorNavLink>
+            </NavItem>
+            <NavItem>
+                <BlazorNavLink Href="#">Link</BlazorNavLink>
+            </NavItem>
+            <NavItem>
+                <BlazorNavLink IsDisabled="true" Href="#">Disabled</BlazorNavLink>
+            </NavItem>
+        </BlazorNav>
+    </Collapse>
+</Navbar>
 
 @functions {
-    bool collapseNavMenu = true;
+    bool IsOpen { get; set; } = true;
 
-    void ToggleNavMenu()
+    void onclick(UIMouseEventArgs e)
     {
-        collapseNavMenu = !collapseNavMenu;
+        IsOpen = !IsOpen;
+        StateHasChanged();
     }
+
 }
