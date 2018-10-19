@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -8,7 +8,6 @@ using EllaX.Core;
 using EllaX.Core.Models;
 using EllaX.Data;
 using EllaX.Logic.Extensions;
-using LiteDB;
 
 namespace EllaX.Logic
 {
@@ -31,6 +30,15 @@ namespace EllaX.Logic
                 .OrderByDescending(peer => peer.LastSeenDate).MapTo<TDto>(_mapper).ToArray();
 
             return Task.FromResult(health);
+        }
+
+        public Task SnapshotRecentPeerCountAsync(int ageMinutes = Consts.DefaultAgeMinutes)
+        {
+            int count = _repository.Query<Peer>()
+                .Where(peer => peer.LastSeenDate >= DateTime.UtcNow.AddMinutes(-Math.Abs(ageMinutes))).Count();
+            _repository.Insert(Statistic.Create(Consts.Statistics.PeerCountSnapshot, count.ToString()));
+
+            return Task.CompletedTask;
         }
     }
 }

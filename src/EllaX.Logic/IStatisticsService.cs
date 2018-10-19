@@ -9,5 +9,7 @@ namespace EllaX.Logic
     {
         Task<IReadOnlyList<TDto>> GetHealthAsync<TDto>(int ageMinutes = Consts.DefaultAgeMinutes,
             CancellationToken cancellationToken = default);
+
+        Task SnapshotRecentPeerCountAsync(int ageMinutes = Consts.DefaultAgeMinutes);
     }
 }

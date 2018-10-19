@@ -14,11 +14,14 @@ namespace EllaX.Api.Infrastructure.Hosting
         private readonly IBlockchainService _blockchainService;
         private readonly IList<string> _hosts;
         private readonly ILogger<NetworkHealthHostedService> _logger;
+        private readonly IStatisticsService _statisticsService;
+        private DateTimeOffset _lastPeerCountSnapshot = DateTimeOffset.MinValue;
 
-        public NetworkHealthHostedService(IBlockchainService blockchainService, IConfiguration configuration,
-            ILogger<NetworkHealthHostedService> logger)
+        public NetworkHealthHostedService(IBlockchainService blockchainService, IStatisticsService statisticsService,
+            IConfiguration configuration, ILogger<NetworkHealthHostedService> logger)
         {
             _blockchainService = blockchainService;
+            _statisticsService = statisticsService;
             _logger = logger;
             _hosts = configuration.GetSection("Network:HealthNodes").Get<IList<string>>();
         }
@@ -31,6 +34,12 @@ namespace EllaX.Api.Infrastructure.Hosting
             while (!cancellationToken.IsCancellationRequested)
             {
                 await CheckNetworkHealthAsync(cancellationToken);
+
+                if (_lastPeerCountSnapshot == DateTimeOffset.MinValue ||
+                    DateTimeOffset.UtcNow - _lastPeerCountSnapshot > TimeSpan.FromMinutes(60))
+                {
+                    await Snapshot(cancellationToken);
+                }
             }
         }
 
@@ -39,6 +48,15 @@ namespace EllaX.Api.Infrastructure.Hosting
             _logger.LogInformation("Network health hosted service is stopping");
 
             return Task.CompletedTask;
+        }
+
+        private async Task Snapshot(CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            _logger.LogInformation("Taking snapshot of recent peers");
+
+            await _statisticsService.SnapshotRecentPeerCountAsync();
+            _lastPeerCountSnapshot = DateTimeOffset.UtcNow;
         }
 
         private async Task CheckNetworkHealthAsync(CancellationToken cancellationToken)
