@@ -1,4 +1,4 @@
-﻿@page "/"
+@page "/"
 @using EllaX.Core.Dtos
 @using EllaX.Core.Extensions
 @using Humanizer
@@ -38,25 +38,11 @@ else
 <div id="mapid"></div>
 
 @functions {
-    HealthDto[] _healthDtos;
+    PeerHealthResponseDto _healthResponse;
 
     protected override async Task OnInitAsync()
     {
-        HealthDto[] healthDtos = await Http.GetJsonAsync<HealthDto[]>("http://localhost:5000/api/network/health");
-        Dictionary<string, HealthDto> uniques = new Dictionary<string, HealthDto>();
-        foreach (HealthDto dto in healthDtos)
-        {
-            string key = $"{dto.Latitude}{dto.Longitude}".Md5();
-
-            if (uniques.ContainsKey(key))
-            {
-                continue;
-            }
-
-            uniques[key] = dto;
-        }
-
-        _healthDtos = uniques.Select(x => x.Value).ToArray();
+        _healthResponse = await Http.GetJsonAsync<PeerHealthResponseDto>("http://localhost:5000/api/network/health");
     }
 
 }
