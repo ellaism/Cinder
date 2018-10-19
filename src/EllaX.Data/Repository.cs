@@ -21,7 +21,16 @@ namespace EllaX.Data
                 LiteCollection<Peer> peerCollection = Database.GetCollection<Peer>();
                 peerCollection.EnsureIndex(peer => peer.Id);
                 peerCollection.EnsureIndex(peer => peer.LastSeenDate);
+
                 engine.UserVersion = 1;
+            }
+
+            if (engine.UserVersion == 1)
+            {
+                LiteCollection<Statistic> statisticCollection = Database.GetCollection<Statistic>();
+                statisticCollection.EnsureIndex(peer => peer.CreatedDate);
+
+                engine.UserVersion = 2;
             }
         }
     }
