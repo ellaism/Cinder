@@ -1,4 +1,4 @@
-using EllaX.Core.Models;
+﻿using EllaX.Core.Models;
 using EllaX.Data.Options;
 using LiteDB;
 using Microsoft.Extensions.Options;
@@ -7,7 +7,7 @@ namespace EllaX.Data
 {
     public class Repository : LiteRepository
     {
-        public Repository(IOptions<RepositoryOptions> options) : base(options.Value.ConnectionString, null)
+        public Repository(IOptions<RepositoryOptions> options) : base(options.Value.ConnectionString)
         {
             Migrate();
         }
