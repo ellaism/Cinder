@@ -1,6 +1,6 @@
 ﻿namespace EllaX.Core.Dtos
 {
-    public class HealthDto
+    public class PeerHealthDto
     {
         public decimal? Latitude { get; set; }
         public decimal? Longitude { get; set; }
