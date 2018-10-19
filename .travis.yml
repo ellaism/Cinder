@@ -4,14 +4,7 @@ dist: trusty
 dotnet: "2.1.403"
 solution: EllaX.sln
 
-before_install: 
-  - "nvm install 8"
-  - "nvm use 8"
-cache: 
-  directories: 
-    - ./src/EllaX.UI.Web/ClientApp/node_modules
 install: 
   - "dotnet restore"
-  - "npm install --prefix ./src/EllaX.UI.Web/ClientApp"
 script: 
   - "dotnet build"
