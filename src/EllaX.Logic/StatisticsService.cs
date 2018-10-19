@@ -22,10 +22,10 @@ namespace EllaX.Logic
             _repository = repository;
         }
 
-        public Task<IReadOnlyList<TDto>> GetHealthAsync<TDto>(int ageMinutes = Consts.DefaultAgeMinutes,
+        public Task<IReadOnlyCollection<TDto>> GetHealthAsync<TDto>(int ageMinutes = Consts.DefaultAgeMinutes,
             CancellationToken cancellationToken = default)
         {
-            IReadOnlyList<TDto> health = _repository.Query<Peer>()
+            IReadOnlyCollection<TDto> health = _repository.Query<Peer>()
                 .Where(peer => peer.LastSeenDate >= DateTime.UtcNow.AddMinutes(-Math.Abs(ageMinutes))).ToArray()
                 .OrderByDescending(peer => peer.LastSeenDate).MapTo<TDto>(_mapper).ToArray();
 

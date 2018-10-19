@@ -7,7 +7,7 @@ namespace EllaX.Logic
 {
     public interface IStatisticsService
     {
-        Task<IReadOnlyList<TDto>> GetHealthAsync<TDto>(int ageMinutes = Consts.DefaultAgeMinutes,
+        Task<IReadOnlyCollection<TDto>> GetHealthAsync<TDto>(int ageMinutes = Consts.DefaultAgeMinutes,
             CancellationToken cancellationToken = default);
 
         Task SnapshotRecentPeerCountAsync(int ageMinutes = Consts.DefaultAgeMinutes);
