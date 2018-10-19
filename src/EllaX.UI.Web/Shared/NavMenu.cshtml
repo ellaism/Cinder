@@ -1,17 +1,14 @@
 ﻿@using BlazorStrap
 <Navbar IsExpand="true" IsDark="false" Color="@Color.Light">
-    <NavbarBrand Href="#">Navbar</NavbarBrand>
+    <NavbarBrand Href="/">EllaX</NavbarBrand>
     <NavbarToggler onclick="@onclick"/>
     <Collapse isOpen="@IsOpen" IsNavbar="true">
         <BlazorNav IsList="true" Class="mr-auto" IsNavbar="true">
             <NavItem>
-                <BlazorNavLink IsActive="true" Href="#">Home</BlazorNavLink>
+                <BlazorNavLink IsActive="true" Href="/">Home</BlazorNavLink>
             </NavItem>
             <NavItem>
-                <BlazorNavLink Href="#">Link</BlazorNavLink>
-            </NavItem>
-            <NavItem>
-                <BlazorNavLink IsDisabled="true" Href="#">Disabled</BlazorNavLink>
+                <BlazorNavLink Href="/Health">Health</BlazorNavLink>
             </NavItem>
         </BlazorNav>
     </Collapse>
