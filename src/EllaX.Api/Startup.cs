@@ -3,6 +3,7 @@ using Autofac;
 using AutoMapper;
 using EllaX.Api.Infrastructure.Hosting;
 using EllaX.Data;
+using EllaX.Data.Options;
 using EllaX.Logic;
 using EllaX.Logic.Clients;
 using EllaX.Logic.Options;

@@ -1,5 +1,5 @@
-﻿using EllaX.Core.Models;
-using EllaX.Logic.Options;
+using EllaX.Core.Models;
+using EllaX.Data.Options;
 using LiteDB;
 using Microsoft.Extensions.Options;
 

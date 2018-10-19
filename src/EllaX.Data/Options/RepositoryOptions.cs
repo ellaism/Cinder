@@ -1,4 +1,4 @@
-﻿namespace EllaX.Logic.Options
+﻿namespace EllaX.Data.Options
 {
     public class RepositoryOptions
     {
