@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -26,9 +26,9 @@ namespace EllaX.Logic
         public Task<IReadOnlyList<TDto>> GetHealthAsync<TDto>(int ageMinutes = Consts.DefaultAgeMinutes,
             CancellationToken cancellationToken = default)
         {
-            IReadOnlyList<TDto> health = _repository
-                .Fetch<Peer>(Query.GTE("LastSeenDate", DateTime.UtcNow.AddMinutes(-Math.Abs(ageMinutes))))
-                .OrderByDescending(x => x.LastSeenDate).MapTo<TDto>(_mapper).ToArray();
+            IReadOnlyList<TDto> health = _repository.Query<Peer>()
+                .Where(peer => peer.LastSeenDate >= DateTime.UtcNow.AddMinutes(-Math.Abs(ageMinutes))).ToArray()
+                .OrderByDescending(peer => peer.LastSeenDate).MapTo<TDto>(_mapper).ToArray();
 
             return Task.FromResult(health);
         }
