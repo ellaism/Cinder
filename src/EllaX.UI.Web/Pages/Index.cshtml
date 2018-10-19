@@ -1,12 +1,11 @@
-@page "/"
+﻿@page "/"
 @using EllaX.Core.Dtos
-@using EllaX.Core.Extensions
 @using Humanizer
 @inject HttpClient Http
 
 <h1>Hello, world!</h1>
 
-@if (_healthDtos == null)
+@if (_healthResponse == null)
 {
     <p>
         <em>Loading...</em>
@@ -23,12 +22,12 @@ else
         </tr>
         </thead>
         <tbody>
-        @foreach (HealthDto healthDto in _healthDtos)
+        @foreach (PeerHealthDto peer in _healthResponse.Peers)
         {
             <tr>
-                <td>@healthDto.Latitude</td>
-                <td>@healthDto.Longitude</td>
-                <td>@DateTimeOffset.UtcNow.AddMinutes(-healthDto.Age).Humanize()</td>
+                <td>@peer.Latitude</td>
+                <td>@peer.Longitude</td>
+                <td>@DateTimeOffset.UtcNow.AddMinutes(-peer.Age).Humanize()</td>
             </tr>
         }
         </tbody>

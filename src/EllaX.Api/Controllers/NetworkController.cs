@@ -18,9 +18,11 @@ namespace EllaX.Api.Controllers
         }
 
         [HttpGet("health")]
-        public async Task<IEnumerable<HealthDto>> GetHealthAsync()
+        public async Task<PeerHealthResponseDto> GetHealthAsync()
         {
-            return await _statisticsService.GetHealthAsync<HealthDto>();
+            IReadOnlyList<PeerHealthDto> peers = await _statisticsService.GetHealthAsync<PeerHealthDto>();
+
+            return PeerHealthResponseDto.Create(peers);
         }
     }
 }
