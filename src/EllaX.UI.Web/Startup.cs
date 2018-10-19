@@ -5,9 +5,7 @@ namespace EllaX.UI.Web
 {
     public class Startup
     {
-        public void ConfigureServices(IServiceCollection services)
-        {
-        }
+        public void ConfigureServices(IServiceCollection services) { }
 
         public void Configure(IBlazorApplicationBuilder app)
         {
