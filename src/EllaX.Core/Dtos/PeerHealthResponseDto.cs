@@ -31,7 +31,7 @@ namespace EllaX.Core.Dtos
         }
 
         public int Count { get; set; }
-        public IReadOnlyCollection<PeerHealthDto> Peers { get; set; }
+        public IReadOnlyCollection<PeerHealthDto> Peers { get; set; } = new PeerHealthDto[0];
 
         public static PeerHealthResponseDto Create(IEnumerable<PeerHealthDto> peers)
         {
