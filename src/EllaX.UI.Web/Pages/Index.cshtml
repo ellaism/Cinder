@@ -1,47 +1,4 @@
 ﻿@page "/"
-@using EllaX.Core.Dtos
-@using Humanizer
-@inject HttpClient Http
+@inherits IndexModel
 
-<h1>Hello, world!</h1>
-
-@if (_healthResponse == null)
-{
-    <p>
-        <em>Loading...</em>
-    </p>
-}
-else
-{
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Latitude</th>
-            <th>Longitude</th>
-            <th>Last Seen</th>
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (PeerHealthDto peer in _healthResponse.Peers)
-        {
-            <tr>
-                <td>@peer.Latitude</td>
-                <td>@peer.Longitude</td>
-                <td>@DateTimeOffset.UtcNow.AddMinutes(-peer.Age).Humanize()</td>
-            </tr>
-        }
-        </tbody>
-    </table>
-}
-
-<div id="mapid"></div>
-
-@functions {
-    PeerHealthResponseDto _healthResponse;
-
-    protected override async Task OnInitAsync()
-    {
-        _healthResponse = await Http.GetJsonAsync<PeerHealthResponseDto>("http://localhost:5000/api/network/health");
-    }
-
-}
+<h1>Hello</h1>
