@@ -40,6 +40,8 @@ namespace EllaX.Api
 
             services.AddHttpClient<IBlockchainClient, BlockchainClient>()
                 .AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(600)));
+            services.AddHttpClient<INetworkClient, NetworkClient>()
+                .AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(600)));
             services.AddMediatR();
             services.AddAutoMapper(cfg => cfg.AddProfiles(typeof(Service)));
 
