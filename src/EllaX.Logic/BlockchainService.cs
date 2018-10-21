@@ -29,16 +29,16 @@ namespace EllaX.Logic
             _networkClient = networkClient;
         }
 
-        public async Task GetHealthAsync(IList<string> hosts, CancellationToken cancellationToken = default)
+        public async Task GetHealthAsync(CancellationToken cancellationToken = default)
         {
-            List<Task<Response<NetPeerResult>>> tasks =
-                hosts.Select(host => _networkClient.GetNetPeersAsync(host, cancellationToken)).ToList();
+            List<Task<Response<NetPeerResult>>> tasks = _networkClient.Nodes
+                .Select(node => _networkClient.GetNetPeersAsync(node, cancellationToken)).ToList();
 
-            await Task.WhenAll(tasks.Select(async task => await ProcessNetPeerResult(task.Result, cancellationToken)))
-                .ConfigureAwait(false);
+            await Task.WhenAll(tasks.Select(async task =>
+                await ProcessNetPeerResultAsync(task.Result, cancellationToken))).ConfigureAwait(false);
         }
 
-        private async Task ProcessNetPeerResult(Response<NetPeerResult> response,
+        private async Task ProcessNetPeerResultAsync(Response<NetPeerResult> response,
             CancellationToken cancellationToken = default)
         {
             if (!response.Result.Peers.Any())

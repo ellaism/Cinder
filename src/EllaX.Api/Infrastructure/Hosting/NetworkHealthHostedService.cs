@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using EllaX.Logic;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -12,18 +10,16 @@ namespace EllaX.Api.Infrastructure.Hosting
     public class NetworkHealthHostedService : IHostedService
     {
         private readonly IBlockchainService _blockchainService;
-        private readonly IList<string> _hosts;
         private readonly ILogger<NetworkHealthHostedService> _logger;
         private readonly IStatisticsService _statisticsService;
         private DateTimeOffset _lastPeerCountSnapshot = DateTimeOffset.MinValue;
 
         public NetworkHealthHostedService(IBlockchainService blockchainService, IStatisticsService statisticsService,
-            IConfiguration configuration, ILogger<NetworkHealthHostedService> logger)
+            ILogger<NetworkHealthHostedService> logger)
         {
             _blockchainService = blockchainService;
             _statisticsService = statisticsService;
             _logger = logger;
-            _hosts = configuration.GetSection("Network:HealthNodes").Get<IList<string>>();
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -64,7 +60,7 @@ namespace EllaX.Api.Infrastructure.Hosting
             cancellationToken.ThrowIfCancellationRequested();
             _logger.LogInformation("Retrieving latest network health snapshot");
 
-            await _blockchainService.GetHealthAsync(_hosts, cancellationToken);
+            await _blockchainService.GetHealthAsync(cancellationToken);
             await Task.Delay(TimeSpan.FromSeconds(120), cancellationToken);
         }
     }
