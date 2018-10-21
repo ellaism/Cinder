@@ -30,7 +30,7 @@ namespace EllaX.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // database
+            // configuration
             services.Configure<RepositoryOptions>(options =>
                 options.ConnectionString = Configuration.GetConnectionString("RepositoryConnection"));
             services.Configure<LocationOptions>(options =>
@@ -38,10 +38,13 @@ namespace EllaX.Api
             services.Configure<BlockchainClientOptions>(Configuration.GetSection("Blockchain"));
             services.Configure<NetworkClientOptions>(Configuration.GetSection("Network"));
 
+            // http clients
             services.AddHttpClient<IBlockchainClient, BlockchainClient>()
                 .AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(600)));
             services.AddHttpClient<INetworkClient, NetworkClient>()
                 .AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(600)));
+
+            // messaging and mapping
             services.AddMediatR();
             services.AddAutoMapper(cfg => cfg.AddProfiles(typeof(Service)));
 
