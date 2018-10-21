@@ -19,13 +19,12 @@ namespace EllaX.Logic.Clients
 
         protected virtual HttpRequestMessage CreateRequest(Message message, string host)
         {
-            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, host))
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, host)
             {
-                request.Content = new StringContent(JsonConvert.SerializeObject(message), Encoding.UTF8,
-                    "application/json");
+                Content = new StringContent(JsonConvert.SerializeObject(message), Encoding.UTF8, "application/json")
+            };
 
-                return request;
-            }
+            return request;
         }
 
         protected virtual async Task<Response<TResult>> SendAsync<TResult>(HttpRequestMessage request,
