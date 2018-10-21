@@ -6,6 +6,7 @@ using EllaX.Data;
 using EllaX.Data.Options;
 using EllaX.Logic;
 using EllaX.Logic.Clients;
+using EllaX.Logic.Clients.Options;
 using EllaX.Logic.Options;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -34,6 +35,8 @@ namespace EllaX.Api
                 options.ConnectionString = Configuration.GetConnectionString("RepositoryConnection"));
             services.Configure<LocationOptions>(options =>
                 options.ConnectionString = Configuration.GetConnectionString("GeoIpConnection"));
+            services.Configure<BlockchainClientOptions>(Configuration.GetSection("Blockchain"));
+            services.Configure<NetworkClientOptions>(Configuration.GetSection("Network"));
 
             services.AddHttpClient<IBlockchainClient, BlockchainClient>()
                 .AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(600)));
