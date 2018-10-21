@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using EllaX.Core.Models;
+using EllaX.Core.Entities;
 using EllaX.Logic.Clients;
 using EllaX.Logic.Clients.Responses;
 using EllaX.Logic.Clients.Responses.Parity.NetPeers;

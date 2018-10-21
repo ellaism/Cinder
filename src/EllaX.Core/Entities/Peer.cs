@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EllaX.Core.Models
+namespace EllaX.Core.Entities
 {
     public class Peer
     {

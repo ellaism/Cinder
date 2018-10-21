@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using EllaX.Core;
-using EllaX.Core.Models;
+using EllaX.Core.Entities;
 using EllaX.Data;
 using EllaX.Logic.Extensions;
 

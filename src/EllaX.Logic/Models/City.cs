@@ -1,4 +1,4 @@
-﻿namespace EllaX.Core.Models
+﻿namespace EllaX.Logic.Models
 {
     public class City
     {

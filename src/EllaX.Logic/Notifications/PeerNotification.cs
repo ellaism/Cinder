@@ -1,4 +1,4 @@
-﻿using EllaX.Core.Models;
+﻿using EllaX.Core.Entities;
 using MediatR;
 
 namespace EllaX.Logic.Notifications

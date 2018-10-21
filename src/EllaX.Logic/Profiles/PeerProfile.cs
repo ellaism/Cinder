@@ -1,7 +1,8 @@
 ﻿using System;
 using AutoMapper;
 using EllaX.Core.Dtos;
-using EllaX.Core.Models;
+using EllaX.Core.Entities;
+using EllaX.Logic.Models;
 using EllaX.Logic.Resolvers;
 
 namespace EllaX.Logic.Profiles

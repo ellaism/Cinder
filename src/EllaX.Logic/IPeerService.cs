@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using EllaX.Core.Models;
+using EllaX.Core.Entities;
 
 namespace EllaX.Logic
 {

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoMapper;
-using EllaX.Core.Models;
+using EllaX.Core.Entities;
 using EllaX.Data;
+using EllaX.Logic.Models;
 using MediatR;
 using Microsoft.Extensions.Logging;
 

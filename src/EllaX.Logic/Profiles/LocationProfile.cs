@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using EllaX.Core.Models;
+using EllaX.Logic.Models;
 using MaxMind.GeoIP2.Responses;
 
 namespace EllaX.Logic.Profiles
