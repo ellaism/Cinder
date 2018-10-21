@@ -1,22 +1,52 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using EllaX.Logic.Clients.Options;
 using EllaX.Logic.Clients.Requests;
 using EllaX.Logic.Clients.Responses;
-using EllaX.Logic.Clients.Responses.Parity.NetPeers;
+using EllaX.Logic.Clients.Responses.Eth;
+using Microsoft.Extensions.Options;
 
 namespace EllaX.Logic.Clients
 {
     public class BlockchainClient : Client, IBlockchainClient
     {
-        public BlockchainClient(HttpClient client) : base(client) { }
+        private readonly IOptions<BlockchainClientOptions> _options;
 
-        public async Task<Response<NetPeerResult>> GetNetPeersAsync(string host,
+        public BlockchainClient(HttpClient client, IOptions<BlockchainClientOptions> options) : base(client)
+        {
+            _options = options;
+        }
+
+        public async Task<Response<ulong>> GetHeight(CancellationToken cancellationToken = default)
+        {
+            using (HttpRequestMessage request =
+                CreateRequest(Message.CreateMessage("eth_blockNumber"), _options.Value.Endpoint))
+            {
+                return await SendAsync<ulong>(request, cancellationToken).ConfigureAwait(false);
+            }
+        }
+
+        public async Task<Response<BlockResult>> GetBlock(string blockHash,
             CancellationToken cancellationToken = default)
         {
-            using (HttpRequestMessage request = CreateRequest(Message.CreateMessage("parity_netPeers"), host))
+            using (HttpRequestMessage request =
+                CreateRequest(Message.CreateMessage("eth_getBlockByHash", new List<object> {blockHash, true}),
+                    _options.Value.Endpoint))
             {
-                return await SendAsync<NetPeerResult>(request, cancellationToken).ConfigureAwait(false);
+                return await SendAsync<BlockResult>(request, cancellationToken).ConfigureAwait(false);
+            }
+        }
+
+        public async Task<Response<BlockResult>> GetBlock(ulong blockNumber,
+            CancellationToken cancellationToken = default)
+        {
+            using (HttpRequestMessage request =
+                CreateRequest(Message.CreateMessage("eth_getBlockByNumber", new List<object> {blockNumber, true}),
+                    _options.Value.Endpoint))
+            {
+                return await SendAsync<BlockResult>(request, cancellationToken).ConfigureAwait(false);
             }
         }
     }

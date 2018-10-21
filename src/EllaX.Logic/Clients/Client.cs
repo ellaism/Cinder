@@ -19,16 +19,17 @@ namespace EllaX.Logic.Clients
 
         protected virtual HttpRequestMessage CreateRequest(Message message, string host)
         {
-            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, host)
+            using (HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, host))
             {
-                Content = new StringContent(JsonConvert.SerializeObject(message), Encoding.UTF8, "application/json")
-            };
+                request.Content = new StringContent(JsonConvert.SerializeObject(message), Encoding.UTF8,
+                    "application/json");
 
-            return request;
+                return request;
+            }
         }
 
         protected virtual async Task<Response<TResult>> SendAsync<TResult>(HttpRequestMessage request,
-            CancellationToken cancellationToken = default) where TResult : IResult
+            CancellationToken cancellationToken = default)
         {
             using (HttpResponseMessage response = await _client.SendAsync(request, cancellationToken))
             {
