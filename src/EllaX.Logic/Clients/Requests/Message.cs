@@ -15,13 +15,18 @@ namespace EllaX.Logic.Clients.Requests
         public string Method { get; set; }
 
         [JsonProperty(PropertyName = "params")]
-        public IList<object> Params { get; set; }
+        public IList<object> Parameters { get; set; }
 
         [JsonProperty(PropertyName = "id")] public Guid Id { get; set; } = Guid.NewGuid();
 
         public static Message CreateMessage(string method)
         {
             return new Message {Method = method};
+        }
+
+        public static Message CreateMessage(string method, IList<object> parameters)
+        {
+            return new Message {Method = method, Parameters = parameters};
         }
     }
 }
