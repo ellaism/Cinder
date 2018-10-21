@@ -18,19 +18,21 @@ namespace EllaX.Logic
         private readonly IBlockchainClient _blockchainClient;
         private readonly ILogger<BlockchainService> _logger;
         private readonly IMapper _mapper;
+        private readonly INetworkClient _networkClient;
 
         public BlockchainService(IMediator eventBus, ILogger<BlockchainService> logger, IMapper mapper,
-            IBlockchainClient blockchainClient) : base(eventBus)
+            IBlockchainClient blockchainClient, INetworkClient networkClient) : base(eventBus)
         {
             _logger = logger;
             _mapper = mapper;
             _blockchainClient = blockchainClient;
+            _networkClient = networkClient;
         }
 
         public async Task GetHealthAsync(IList<string> hosts, CancellationToken cancellationToken = default)
         {
             List<Task<Response<NetPeerResult>>> tasks =
-                hosts.Select(host => _blockchainClient.GetNetPeersAsync(host, cancellationToken)).ToList();
+                hosts.Select(host => _networkClient.GetNetPeersAsync(host, cancellationToken)).ToList();
 
             await Task.WhenAll(tasks.Select(async task => await ProcessNetPeerResult(task.Result, cancellationToken)))
                 .ConfigureAwait(false);
