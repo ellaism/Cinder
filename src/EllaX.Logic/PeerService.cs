@@ -34,7 +34,7 @@ namespace EllaX.Logic
 
             Uri uri = new Uri("http://" + peer.RemoteAddress);
             string peerId = peer.Id;
-            _logger.LogDebug("Processig peer {Id} at address {Address}", peerId, peer.RemoteAddress);
+            _logger.LogDebug("Processing peer {Id} at address {Address}", peerId, peer.RemoteAddress);
 
             City city = await _locationService.GetCityByIpAsync(uri.Host);
             Peer updated = _mapper.Map(city, peer);
