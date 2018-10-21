@@ -2,7 +2,7 @@
 
 namespace EllaX.Logic.Clients.Responses.Parity.NetPeers
 {
-    public class NetPeerResult : IResult
+    public class NetPeerResult
     {
         public int Active { get; set; }
         public int Connected { get; set; }

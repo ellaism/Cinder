@@ -2,7 +2,7 @@
 
 namespace EllaX.Logic.Clients.Responses
 {
-    public class Response<TResult> where TResult : IResult
+    public class Response<TResult>
     {
         public string JsonRpc { get; set; }
         public TResult Result { get; set; }
