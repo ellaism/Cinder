@@ -25,14 +25,7 @@ namespace EllaX.Api.Infrastructure.Hosting
         {
             _logger.LogInformation("Network health hosted service is starting");
             await Task.Delay(TimeSpan.FromSeconds(10), cancellationToken);
-
-            using (IServiceScope scope = _serviceScopeFactory.CreateScope())
-            {
-                IBlockchainService blockchainService = scope.ServiceProvider.GetService<IBlockchainService>();
-                IStatisticsService statisticsService = scope.ServiceProvider.GetService<IStatisticsService>();
-
-                await DoWork(blockchainService, statisticsService, cancellationToken);
-            }
+            await DoWork(cancellationToken);
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
@@ -42,18 +35,25 @@ namespace EllaX.Api.Infrastructure.Hosting
             return Task.CompletedTask;
         }
 
-        private async Task DoWork(IBlockchainService blockchainService, IStatisticsService statisticsService,
-            CancellationToken cancellationToken)
+        private async Task DoWork(CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                await CheckNetworkHealthAsync(blockchainService, cancellationToken);
-
-                if (_lastPeerCountSnapshot == DateTimeOffset.MinValue ||
-                    DateTimeOffset.UtcNow - _lastPeerCountSnapshot > TimeSpan.FromMinutes(60))
+                using (IServiceScope scope = _serviceScopeFactory.CreateScope())
                 {
-                    await Snapshot(statisticsService, cancellationToken);
+                    IBlockchainService blockchainService = scope.ServiceProvider.GetService<IBlockchainService>();
+                    IStatisticsService statisticsService = scope.ServiceProvider.GetService<IStatisticsService>();
+
+                    await CheckNetworkHealthAsync(blockchainService, cancellationToken);
+
+                    if (_lastPeerCountSnapshot == DateTimeOffset.MinValue ||
+                        DateTimeOffset.UtcNow - _lastPeerCountSnapshot > TimeSpan.FromMinutes(60))
+                    {
+                        await Snapshot(statisticsService, cancellationToken);
+                    }
                 }
+
+                await Task.Delay(TimeSpan.FromMinutes(2), cancellationToken);
             }
         }
 
@@ -73,7 +73,6 @@ namespace EllaX.Api.Infrastructure.Hosting
             _logger.LogInformation("Retrieving latest network health snapshot");
 
             await blockchainService.GetHealthAsync(cancellationToken);
-            await Task.Delay(TimeSpan.FromSeconds(120), cancellationToken);
         }
     }
 }
