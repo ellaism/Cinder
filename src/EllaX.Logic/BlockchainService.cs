@@ -46,7 +46,7 @@ namespace EllaX.Logic
                 return;
             }
 
-            IEnumerable<Task> events = response.Result.Peers.Select(peer =>
+            IEnumerable<Task> events = response.Result.Peers.Where(peer => peer.Protocols.Eth != null).Select(peer =>
                 EventBus.Publish(new PeerNotification {Peer = _mapper.Map<Peer>(peer)}, cancellationToken));
 
             await Task.WhenAll(events).ConfigureAwait(false);
