@@ -34,8 +34,24 @@ namespace EllaX.Logic
             List<Task<Response<NetPeerResult>>> tasks = _networkClient.Nodes
                 .Select(node => _networkClient.GetNetPeersAsync(node, cancellationToken)).ToList();
 
-            await Task.WhenAll(tasks.Select(async task =>
-                await ProcessNetPeerResultAsync(task.Result, cancellationToken))).ConfigureAwait(false);
+            await Task.Factory.ContinueWhenAll(tasks.ToArray(), async task =>
+            {
+                foreach (Task<Response<NetPeerResult>> t in task)
+                {
+                    if (t.IsFaulted)
+                    {
+                        _logger.LogError(t.Exception, "BlockchainService -> GetHealthAsync");
+                        continue;
+                    }
+
+                    if (!t.IsCompleted)
+                    {
+                        continue;
+                    }
+
+                    await ProcessNetPeerResultAsync(t.Result, cancellationToken);
+                }
+            });
         }
 
         private async Task ProcessNetPeerResultAsync(Response<NetPeerResult> response,
