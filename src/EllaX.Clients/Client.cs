@@ -2,7 +2,6 @@
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using EllaX.Clients.Requests;
 using EllaX.Clients.Responses;
 using Newtonsoft.Json;
 

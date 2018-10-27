@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace EllaX.Clients.Requests
+namespace EllaX.Clients
 {
     public class Message
     {

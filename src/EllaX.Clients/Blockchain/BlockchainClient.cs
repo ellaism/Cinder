@@ -2,7 +2,6 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using EllaX.Clients.Requests;
 using EllaX.Clients.Responses;
 using EllaX.Clients.Responses.Eth;
 using Microsoft.Extensions.Options;
