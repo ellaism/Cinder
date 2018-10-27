@@ -3,7 +3,7 @@ using AutoMapper;
 using EllaX.Core.Dtos;
 using EllaX.Core.Entities;
 using EllaX.Logic.Resolvers;
-using EllaX.Logic.Services.Location.Models;
+using EllaX.Logic.Services.Location.Results;
 using EllaX.Logic.Services.Statistics.Results;
 
 namespace EllaX.Logic.Services.Statistics
@@ -15,7 +15,7 @@ namespace EllaX.Logic.Services.Statistics
             CreateMap<Peer, Peer>().ForMember(dest => dest.FirstSeenDate, opt => opt.Ignore());
             CreateMap<Peer, PeerHealthDto>().ForMember(dest => dest.Age,
                 opt => opt.ResolveUsing<DateTimeOffsetToAgeResolver, DateTimeOffset>(src => src.LastSeenDate));
-            CreateMap<City, Peer>().ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Name))
+            CreateMap<CityResult, Peer>().ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country))
                 .ForMember(dest => dest.Latitude,
                     opt => opt.MapFrom(src =>

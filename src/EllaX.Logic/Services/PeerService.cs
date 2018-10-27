@@ -4,7 +4,7 @@ using AutoMapper;
 using EllaX.Core.Entities;
 using EllaX.Data;
 using EllaX.Logic.Services.Location;
-using EllaX.Logic.Services.Location.Models;
+using EllaX.Logic.Services.Location.Results;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -37,8 +37,8 @@ namespace EllaX.Logic.Services
             string peerId = peer.Id;
             _logger.LogDebug("Processing peer {Id} at address {Address}", peerId, peer.RemoteAddress);
 
-            City city = await _locationService.GetCityByIpAsync(uri.Host);
-            Peer updated = _mapper.Map(city, peer);
+            CityResult result = await _locationService.GetCityByIpAsync(uri.Host);
+            Peer updated = _mapper.Map(result, peer);
 
             Peer original = _repository.FirstOrDefault<Peer>(x => x.Id == peerId);
             if (original != null)

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using EllaX.Logic.Services.Location.Models;
+using EllaX.Logic.Services.Location.Results;
 using MaxMind.GeoIP2.Responses;
 
 namespace EllaX.Logic.Services.Location
@@ -8,7 +8,7 @@ namespace EllaX.Logic.Services.Location
     {
         public LocationProfile()
         {
-            CreateMap<CityResponse, City>().ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.City.Name))
+            CreateMap<CityResponse, CityResult>().ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.City.Name))
                 .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country.IsoCode))
                 .ForMember(dest => dest.Latitude, opt => opt.MapFrom(src => src.Location.Latitude))
                 .ForMember(dest => dest.Longitude, opt => opt.MapFrom(src => src.Location.Longitude));

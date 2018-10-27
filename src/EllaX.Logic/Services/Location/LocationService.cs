@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoMapper;
-using EllaX.Logic.Services.Location.Models;
+using EllaX.Logic.Services.Location.Results;
 using MaxMind.GeoIP2;
 using MaxMind.GeoIP2.Responses;
 using Microsoft.Extensions.Options;
@@ -27,11 +27,11 @@ namespace EllaX.Logic.Services.Location
             GC.SuppressFinalize(this);
         }
 
-        public Task<City> GetCityByIpAsync(string ip)
+        public Task<CityResult> GetCityByIpAsync(string ip)
         {
             CityResponse response = _reader.City(ip);
 
-            return Task.FromResult(_mapper.Map<City>(response));
+            return Task.FromResult(_mapper.Map<CityResult>(response));
         }
 
         protected virtual void Dispose(bool disposing)

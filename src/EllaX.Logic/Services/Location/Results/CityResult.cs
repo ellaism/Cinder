@@ -1,6 +1,6 @@
-﻿namespace EllaX.Logic.Services.Location.Models
+﻿namespace EllaX.Logic.Services.Location.Results
 {
-    public class City
+    public class CityResult
     {
         public string Name { get; set; }
         public string Country { get; set; }
