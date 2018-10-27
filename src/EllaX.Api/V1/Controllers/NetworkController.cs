@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using EllaX.Core.Dtos;
-using EllaX.Logic;
+using EllaX.Logic.Services.Statistics;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EllaX.Api.V1.Controllers

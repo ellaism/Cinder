@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using EllaX.Logic.Notifications;
+using EllaX.Logic.Services;
 using MediatR;
 
 namespace EllaX.Logic.Handlers
