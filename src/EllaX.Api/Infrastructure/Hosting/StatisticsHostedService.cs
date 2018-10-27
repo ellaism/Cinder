@@ -9,14 +9,14 @@ using Microsoft.Extensions.Logging;
 
 namespace EllaX.Api.Infrastructure.Hosting
 {
-    public class NetworkHealthHostedService : IHostedService
+    public class StatisticsHostedService : IHostedService
     {
-        private readonly ILogger<NetworkHealthHostedService> _logger;
+        private readonly ILogger<StatisticsHostedService> _logger;
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private DateTimeOffset _lastPeerCountSnapshot = DateTimeOffset.MinValue;
 
-        public NetworkHealthHostedService(IServiceScopeFactory serviceScopeFactory,
-            ILogger<NetworkHealthHostedService> logger)
+        public StatisticsHostedService(IServiceScopeFactory serviceScopeFactory,
+            ILogger<StatisticsHostedService> logger)
         {
             _serviceScopeFactory = serviceScopeFactory;
             _logger = logger;
@@ -24,14 +24,14 @@ namespace EllaX.Api.Infrastructure.Hosting
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Network health hosted service is starting");
+            _logger.LogInformation("Statistics hosted service is starting");
             await Task.Delay(TimeSpan.FromSeconds(10), cancellationToken);
             await DoWork(cancellationToken);
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Network health hosted service is stopping");
+            _logger.LogInformation("Statistics health hosted service is stopping");
 
             return Task.CompletedTask;
         }
