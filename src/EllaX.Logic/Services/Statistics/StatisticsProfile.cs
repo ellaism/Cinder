@@ -2,14 +2,15 @@
 using AutoMapper;
 using EllaX.Core.Dtos;
 using EllaX.Core.Entities;
-using EllaX.Logic.Models;
 using EllaX.Logic.Resolvers;
+using EllaX.Logic.Services.Location.Models;
+using EllaX.Logic.Services.Statistics.Results;
 
-namespace EllaX.Logic.Profiles
+namespace EllaX.Logic.Services.Statistics
 {
-    public class PeerProfile : Profile
+    public class StatisticsProfile : Profile
     {
-        public PeerProfile()
+        public StatisticsProfile()
         {
             CreateMap<Peer, Peer>().ForMember(dest => dest.FirstSeenDate, opt => opt.Ignore());
             CreateMap<Peer, PeerHealthDto>().ForMember(dest => dest.Age,
@@ -23,6 +24,7 @@ namespace EllaX.Logic.Profiles
                     opt => opt.MapFrom(src =>
                         src.Longitude.HasValue ? Math.Round(src.Longitude.Value, 2) : (decimal?) null))
                 .ForAllOtherMembers(opt => opt.Ignore());
+            CreateMap<NetworkHealthResult, NetworkHealthResultDto>();
         }
     }
 }
