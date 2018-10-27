@@ -1,9 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 
 namespace EllaX.Indexing
 {
     public interface IIndexer
     {
-        Task Run();
+        Task RunAsync(CancellationToken cancellationToken = default);
     }
 }

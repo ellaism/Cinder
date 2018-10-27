@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using EllaX.Clients;
 using EllaX.Clients.Blockchain;
 using EllaX.Clients.Network;
 using EllaX.Clients.Responses;

@@ -1,5 +1,4 @@
 ﻿using System;
-using EllaX.Clients;
 using EllaX.Clients.Blockchain;
 using EllaX.Clients.Network;
 using EllaX.Data;
