@@ -4,9 +4,10 @@ using EllaX.Core.Dtos;
 using EllaX.Logic;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EllaX.Api.Controllers
+namespace EllaX.Api.V1.Controllers
 {
-    [Route("api/[controller]")]
+    [ApiVersion("1.0")]
+    [Route("v{api-version:apiVersion}/[controller]")]
     [ApiController]
     public class NetworkController : ControllerBase
     {
@@ -17,7 +18,12 @@ namespace EllaX.Api.Controllers
             _statisticsService = statisticsService;
         }
 
+        /// <summary>
+        /// </summary>
+        /// <returns></returns>
+        /// <response code="200"></response>
         [HttpGet("health")]
+        [ProducesResponseType(typeof(PeerHealthResponseDto), 200)]
         public async Task<PeerHealthResponseDto> GetHealthAsync()
         {
             IReadOnlyCollection<PeerHealthDto> peers = await _statisticsService.GetHealthAsync<PeerHealthDto>();
