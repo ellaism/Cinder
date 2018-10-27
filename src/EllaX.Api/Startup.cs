@@ -1,17 +1,9 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Reflection;
 using Autofac;
 using AutoMapper;
+using EllaX.Api.Infrastructure.Extensions;
 using EllaX.Api.Infrastructure.Hosting;
-using EllaX.Data;
-using EllaX.Data.Options;
-using EllaX.Logic.Clients;
-using EllaX.Logic.Clients.Options;
-using EllaX.Logic.Options;
-using EllaX.Logic.Services;
-using EllaX.Logic.Services.Location;
-using EllaX.Logic.Services.Statistics;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,7 +12,6 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.PlatformAbstractions;
-using Polly;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace EllaX.Api
@@ -48,23 +39,12 @@ namespace EllaX.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // configuration
-            services.Configure<RepositoryOptions>(options =>
-                options.ConnectionString = Configuration.GetConnectionString("RepositoryConnection"));
-            services.Configure<LocationOptions>(options =>
-                options.ConnectionString = Configuration.GetConnectionString("GeoIpConnection"));
-            services.Configure<BlockchainClientOptions>(Configuration.GetSection("Blockchain"));
-            services.Configure<NetworkClientOptions>(Configuration.GetSection("Network"));
-
-            // http clients
-            services.AddHttpClient<IBlockchainClient, BlockchainClient>()
-                .AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(600)));
-            services.AddHttpClient<INetworkClient, NetworkClient>()
-                .AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(3, _ => TimeSpan.FromMilliseconds(600)));
+            // ellax
+            services.AddEllaX(Configuration);
 
             // messaging and mapping
             services.AddMediatR();
-            services.AddAutoMapper(cfg => cfg.AddProfiles(typeof(Service)));
+            services.AddAutoMapper();
 
             // hosted services
             services.AddHostedService<NetworkHealthHostedService>();
@@ -108,12 +88,7 @@ namespace EllaX.Api
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterType<Repository>().SingleInstance();
-            builder.RegisterType<LocationService>().As<ILocationService>().SingleInstance();
-
-            builder.RegisterType<BlockchainService>().As<IBlockchainService>().InstancePerLifetimeScope();
-            builder.RegisterType<PeerService>().As<IPeerService>().InstancePerLifetimeScope();
-            builder.RegisterType<StatisticsService>().As<IStatisticsService>().InstancePerLifetimeScope();
+            builder.RegisterEllaXTypes();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
