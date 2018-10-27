@@ -11,7 +11,7 @@ using EllaX.Logic.Notifications;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace EllaX.Logic
+namespace EllaX.Logic.Services
 {
     public class BlockchainService : Service, IBlockchainService
     {
@@ -40,7 +40,7 @@ namespace EllaX.Logic
                 {
                     if (t.IsFaulted)
                     {
-                        _logger.LogError(t.Exception, "BlockchainService -> GetHealthAsync");
+                        _logger.LogError(t.Exception, "BlockchainService -> GetNetworkHealthAsync");
                         continue;
                     }
 

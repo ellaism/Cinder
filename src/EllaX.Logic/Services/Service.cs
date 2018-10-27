@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace EllaX.Logic
+namespace EllaX.Logic.Services
 {
     public abstract class Service
     {

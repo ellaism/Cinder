@@ -3,11 +3,12 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EllaX.Core.Entities;
 using EllaX.Data;
-using EllaX.Logic.Models;
+using EllaX.Logic.Services.Location;
+using EllaX.Logic.Services.Location.Models;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace EllaX.Logic
+namespace EllaX.Logic.Services
 {
     public class PeerService : Service, IPeerService
     {
