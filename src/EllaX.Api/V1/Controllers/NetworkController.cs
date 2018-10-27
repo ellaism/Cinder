@@ -1,4 +1,4 @@
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using EllaX.Core.Dtos;
 using EllaX.Logic.Services.Statistics;
 using Microsoft.AspNetCore.Mvc;
@@ -22,12 +22,12 @@ namespace EllaX.Api.V1.Controllers
         /// <returns></returns>
         /// <response code="200"></response>
         [HttpGet("health")]
-        [ProducesResponseType(typeof(PeerHealthResponseDto), 200)]
-        public async Task<PeerHealthResponseDto> GetHealthAsync()
+        [ProducesResponseType(typeof(NetworkHealthResultDto), 200)]
+        public async Task<NetworkHealthResultDto> GetHealthAsync()
         {
-            IReadOnlyCollection<PeerHealthDto> peers = await _statisticsService.GetHealthAsync<PeerHealthDto>();
+            NetworkHealthResultDto response = await _statisticsService.GetNetworkHealthAsync<NetworkHealthResultDto>();
 
-            return PeerHealthResponseDto.Create(peers);
+            return response;
         }
     }
 }
