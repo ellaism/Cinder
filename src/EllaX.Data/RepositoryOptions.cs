@@ -1,6 +1,6 @@
-﻿namespace EllaX.Logic.Options
+﻿namespace EllaX.Data
 {
-    public class LocationOptions
+    public class RepositoryOptions
     {
         public string ConnectionString { get; set; }
     }
