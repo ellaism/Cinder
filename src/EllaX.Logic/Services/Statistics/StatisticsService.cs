@@ -23,8 +23,8 @@ namespace EllaX.Logic.Services.Statistics
             _repository = repository;
         }
 
-        public Task<TDto> GetNetworkHealthAsync<TDto>(bool uniquesOnly = true, int ageMinutes = Consts.DefaultAgeMinutes,
-            CancellationToken cancellationToken = default)
+        public Task<TDto> GetNetworkHealthAsync<TDto>(bool uniquesOnly = true,
+            int ageMinutes = Consts.DefaultAgeMinutes, CancellationToken cancellationToken = default)
         {
             NetworkHealthResult response = new NetworkHealthResult();
             Peer[] peers = _repository.Query<Peer>()
@@ -63,7 +63,7 @@ namespace EllaX.Logic.Services.Statistics
         {
             int count = _repository.Query<Peer>()
                 .Where(peer => peer.LastSeenDate >= DateTime.UtcNow.AddMinutes(-Math.Abs(ageMinutes))).Count();
-            _repository.Insert(Statistic.Create(Consts.Statistics.PeerCountSnapshot, count.ToString()));
+            _repository.Insert(Statistic.Create(StatisticType.PeerCountSnapshot.ToString(), count.ToString()));
 
             return Task.CompletedTask;
         }
