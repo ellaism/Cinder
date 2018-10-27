@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace EllaX.Logic.Indexing
+namespace EllaX.Indexing
 {
     public abstract class Indexer : IIndexer
     {
