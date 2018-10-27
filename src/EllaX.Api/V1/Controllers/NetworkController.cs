@@ -18,9 +18,10 @@ namespace EllaX.Api.V1.Controllers
         }
 
         /// <summary>
+        ///     Gets the network health.
         /// </summary>
-        /// <returns></returns>
-        /// <response code="200"></response>
+        /// <returns>The network health.</returns>
+        /// <response code="200">The network health was successfully retrieved.</response>
         [HttpGet("health")]
         [ProducesResponseType(typeof(NetworkHealthResultDto), 200)]
         public async Task<NetworkHealthResultDto> GetHealthAsync()
