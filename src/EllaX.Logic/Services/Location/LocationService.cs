@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoMapper;
-using EllaX.Logic.Options;
 using EllaX.Logic.Services.Location.Models;
 using MaxMind.GeoIP2;
 using MaxMind.GeoIP2.Responses;

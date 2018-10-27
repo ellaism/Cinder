@@ -1,5 +1,4 @@
 ﻿using EllaX.Core.Entities;
-using EllaX.Data.Options;
 using LiteDB;
 using Microsoft.Extensions.Options;
 
