@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
 using Autofac;
 using AutoMapper;
@@ -11,7 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.PlatformAbstractions;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace EllaX.Api
@@ -29,7 +29,7 @@ namespace EllaX.Api
         {
             get
             {
-                string basePath = PlatformServices.Default.Application.ApplicationBasePath;
+                string basePath = AppContext.BaseDirectory;
                 string fileName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name + ".xml";
 
                 return Path.Combine(basePath, fileName);
