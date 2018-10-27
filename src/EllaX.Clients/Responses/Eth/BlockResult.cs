@@ -1,4 +1,4 @@
-﻿namespace EllaX.Logic.Clients.Responses.Eth
+﻿namespace EllaX.Clients.Responses.Eth
 {
     public class BlockResult
     {

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using EllaX.Clients.Responses.Parity.NetPeers;
 using EllaX.Core.Entities;
-using EllaX.Logic.Clients.Responses.Parity.NetPeers;
 
-namespace EllaX.Logic.Clients
+namespace EllaX.Clients.Blockchain
 {
     public class BlockchainClientProfile : Profile
     {

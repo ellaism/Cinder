@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using EllaX.Logic.Clients.Responses;
-using EllaX.Logic.Clients.Responses.Parity.NetPeers;
+using EllaX.Clients.Responses;
+using EllaX.Clients.Responses.Parity.NetPeers;
 
-namespace EllaX.Logic.Clients
+namespace EllaX.Clients.Network
 {
     public interface INetworkClient
     {

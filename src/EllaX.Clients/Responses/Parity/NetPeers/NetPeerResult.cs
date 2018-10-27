@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace EllaX.Logic.Clients.Responses.Parity.NetPeers
+namespace EllaX.Clients.Responses.Parity.NetPeers
 {
     public class NetPeerResult
     {

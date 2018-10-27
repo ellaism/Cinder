@@ -2,11 +2,11 @@
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using EllaX.Logic.Clients.Requests;
-using EllaX.Logic.Clients.Responses;
+using EllaX.Clients.Requests;
+using EllaX.Clients.Responses;
 using Newtonsoft.Json;
 
-namespace EllaX.Logic.Clients
+namespace EllaX.Clients
 {
     public abstract class Client
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace EllaX.Logic.Clients.Options
+namespace EllaX.Clients
 {
     public class NetworkClientOptions
     {

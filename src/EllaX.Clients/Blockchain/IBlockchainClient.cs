@@ -1,9 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using EllaX.Logic.Clients.Responses;
-using EllaX.Logic.Clients.Responses.Eth;
+using EllaX.Clients.Responses;
+using EllaX.Clients.Responses.Eth;
 
-namespace EllaX.Logic.Clients
+namespace EllaX.Clients.Blockchain
 {
     public interface IBlockchainClient
     {

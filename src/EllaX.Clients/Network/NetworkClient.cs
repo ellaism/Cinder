@@ -3,13 +3,12 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using EllaX.Logic.Clients.Options;
-using EllaX.Logic.Clients.Requests;
-using EllaX.Logic.Clients.Responses;
-using EllaX.Logic.Clients.Responses.Parity.NetPeers;
+using EllaX.Clients.Requests;
+using EllaX.Clients.Responses;
+using EllaX.Clients.Responses.Parity.NetPeers;
 using Microsoft.Extensions.Options;
 
-namespace EllaX.Logic.Clients
+namespace EllaX.Clients.Network
 {
     public class NetworkClient : Client, INetworkClient
     {

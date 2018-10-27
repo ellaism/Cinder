@@ -2,13 +2,12 @@
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using EllaX.Logic.Clients.Options;
-using EllaX.Logic.Clients.Requests;
-using EllaX.Logic.Clients.Responses;
-using EllaX.Logic.Clients.Responses.Eth;
+using EllaX.Clients.Requests;
+using EllaX.Clients.Responses;
+using EllaX.Clients.Responses.Eth;
 using Microsoft.Extensions.Options;
 
-namespace EllaX.Logic.Clients
+namespace EllaX.Clients.Blockchain
 {
     public class BlockchainClient : Client, IBlockchainClient
     {

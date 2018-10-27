@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EllaX.Logic.Clients.Responses
+namespace EllaX.Clients.Responses
 {
     public class Response<TResult>
     {
