@@ -1,4 +1,4 @@
-﻿namespace EllaX.Clients
+﻿namespace EllaX.Clients.Blockchain
 {
     public class BlockchainClientOptions
     {

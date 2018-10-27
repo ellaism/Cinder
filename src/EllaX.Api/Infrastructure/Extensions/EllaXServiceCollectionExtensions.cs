@@ -3,12 +3,13 @@ using EllaX.Clients;
 using EllaX.Clients.Blockchain;
 using EllaX.Clients.Network;
 using EllaX.Data;
-using EllaX.Logic;
+using EllaX.Logic.Services.Location;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Polly;
 
 // ReSharper disable once CheckNamespace
-namespace Microsoft.Extensions.DependencyInjection
+namespace EllaX.Api.Infrastructure.Extensions
 {
     public static class EllaXServiceCollectionExtensions
     {
