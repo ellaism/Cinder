@@ -25,7 +25,6 @@ namespace EllaX.Api.Infrastructure.Hosting
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Statistics hosted service is starting");
-            await Task.Delay(TimeSpan.FromSeconds(10), cancellationToken);
             await DoWork(cancellationToken);
         }
 
@@ -38,24 +37,30 @@ namespace EllaX.Api.Infrastructure.Hosting
 
         private async Task DoWork(CancellationToken cancellationToken)
         {
-            while (!cancellationToken.IsCancellationRequested)
+            await Task.Factory.StartNew(async () =>
             {
-                using (IServiceScope scope = _serviceScopeFactory.CreateScope())
+                // delay startup
+                await Task.Delay(TimeSpan.FromSeconds(10), cancellationToken);
+
+                while (!cancellationToken.IsCancellationRequested)
                 {
-                    IBlockchainService blockchainService = scope.ServiceProvider.GetService<IBlockchainService>();
-                    IStatisticsService statisticsService = scope.ServiceProvider.GetService<IStatisticsService>();
-
-                    await CheckNetworkHealthAsync(blockchainService, cancellationToken);
-
-                    if (_lastPeerCountSnapshot == DateTimeOffset.MinValue ||
-                        DateTimeOffset.UtcNow - _lastPeerCountSnapshot > TimeSpan.FromMinutes(60))
+                    using (IServiceScope scope = _serviceScopeFactory.CreateScope())
                     {
-                        await Snapshot(statisticsService, cancellationToken);
-                    }
-                }
+                        IBlockchainService blockchainService = scope.ServiceProvider.GetService<IBlockchainService>();
+                        IStatisticsService statisticsService = scope.ServiceProvider.GetService<IStatisticsService>();
 
-                await Task.Delay(TimeSpan.FromMinutes(2), cancellationToken);
-            }
+                        await CheckNetworkHealthAsync(blockchainService, cancellationToken);
+
+                        if (_lastPeerCountSnapshot == DateTimeOffset.MinValue ||
+                            DateTimeOffset.UtcNow - _lastPeerCountSnapshot > TimeSpan.FromMinutes(60))
+                        {
+                            await Snapshot(statisticsService, cancellationToken);
+                        }
+                    }
+
+                    await Task.Delay(TimeSpan.FromMinutes(2), cancellationToken);
+                }
+            }, cancellationToken);
         }
 
         private async Task Snapshot(IStatisticsService statisticsService, CancellationToken cancellationToken)
