@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using EllaX.Data;
-using EllaX.Indexing;
+using EllaX.Logic.Indexing;
 using EllaX.Logic.Services;
 using EllaX.Logic.Services.Location;
 using EllaX.Logic.Services.Statistics;
@@ -20,8 +20,10 @@ namespace EllaX.Api.Infrastructure.Extensions
             builder.RegisterType<PeerService>().As<IPeerService>().InstancePerLifetimeScope();
             builder.RegisterType<StatisticsService>().As<IStatisticsService>().InstancePerLifetimeScope();
 
-            // indexer
-            builder.RegisterType<Indexer>().As<IIndexer>().InstancePerLifetimeScope();
+            // indexers
+            builder.RegisterType<BlockchainIndexer>().As<IIndexer>().InstancePerLifetimeScope();
+            builder.RegisterType<StatisticsIndexer>().As<IIndexer>().InstancePerLifetimeScope();
+            builder.RegisterType<IndexerManager>().As<IIndexerManager>().InstancePerLifetimeScope();
         }
     }
 }

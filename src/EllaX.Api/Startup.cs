@@ -47,8 +47,7 @@ namespace EllaX.Api
             services.AddAutoMapper();
 
             // hosted services
-            services.AddHostedService<IndexerHostedService>();
-            services.AddHostedService<StatisticsHostedService>();
+            services.AddHostedService<EllaXIndexerHostedService>();
 
             // add the versioned api explorer, which also adds IApiVersionDescriptionProvider service
             // note: the specified format code will format the version as "'v'major[.minor][-status]"
