@@ -7,8 +7,6 @@ using EllaX.Clients.Blockchain;
 using EllaX.Clients.Network;
 using EllaX.Clients.Responses;
 using EllaX.Clients.Responses.Parity.NetPeers;
-using EllaX.Core.Entities;
-using EllaX.Logic.Notifications;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -30,18 +28,19 @@ namespace EllaX.Logic.Services
             _networkClient = networkClient;
         }
 
-        public async Task GetHealthAsync(CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyCollection<PeerItem>> GetPeersAsync(CancellationToken cancellationToken = default)
         {
             List<Task<Response<NetPeerResult>>> tasks = _networkClient.Nodes
                 .Select(node => _networkClient.GetNetPeersAsync(node, cancellationToken)).ToList();
+            List<PeerItem> results = new List<PeerItem>();
 
-            await Task.Factory.ContinueWhenAll(tasks.ToArray(), async task =>
+            await Task.Factory.ContinueWhenAll(tasks.ToArray(), task =>
             {
                 foreach (Task<Response<NetPeerResult>> t in task)
                 {
                     if (t.IsFaulted)
                     {
-                        _logger.LogError(t.Exception, "BlockchainService -> GetNetworkHealthAsync");
+                        _logger.LogError(t.Exception, "BlockchainService -> GetPeersAsync");
                         continue;
                     }
 
@@ -50,23 +49,11 @@ namespace EllaX.Logic.Services
                         continue;
                     }
 
-                    await ProcessNetPeerResultAsync(t.Result, cancellationToken);
+                    results.AddRange(t.Result.Result.Peers.Where(peer => peer.Protocols.Eth != null));
                 }
             });
-        }
 
-        private async Task ProcessNetPeerResultAsync(Response<NetPeerResult> response,
-            CancellationToken cancellationToken = default)
-        {
-            if (!response.Result.Peers.Any())
-            {
-                return;
-            }
-
-            IEnumerable<Task> events = response.Result.Peers.Where(peer => peer.Protocols.Eth != null).Select(peer =>
-                EventBus.Publish(new PeerNotification {Peer = _mapper.Map<Peer>(peer)}, cancellationToken));
-
-            await Task.WhenAll(events).ConfigureAwait(false);
+            return results;
         }
     }
 }
