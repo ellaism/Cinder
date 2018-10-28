@@ -1,17 +1,39 @@
-﻿using EllaX.Core.Entities;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using EllaX.Core.Entities;
 using LiteDB;
 using Microsoft.Extensions.Options;
 
 namespace EllaX.Data
 {
-    public class Repository : LiteRepository
+    public class Repository : LiteRepository, IRepository
     {
         public Repository(IOptions<RepositoryOptions> options) : base(options.Value.ConnectionString)
         {
             Migrate();
         }
 
-        public void Migrate()
+        public LiteRepository Provider => this;
+
+        public Task SaveAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default)
+        {
+            Upsert(entity);
+
+            return Task.CompletedTask;
+        }
+
+        public Task SaveBatchAsync<TEntity>(IEnumerable<TEntity> entities,
+            CancellationToken cancellationToken = default)
+        {
+            // set to enumerable explicitly to avoid exception
+            Upsert(entities.AsEnumerable());
+
+            return Task.CompletedTask;
+        }
+
+        protected void Migrate()
         {
             LiteEngine engine = Engine;
 

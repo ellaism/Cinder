@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using EllaX.Core.Entities;
@@ -15,10 +15,10 @@ namespace EllaX.Logic.Services
         private readonly ILocationService _locationService;
         private readonly ILogger<PeerService> _logger;
         private readonly IMapper _mapper;
-        private readonly Repository _repository;
+        private readonly IRepository _repository;
 
         public PeerService(IMediator eventBus, ILogger<PeerService> logger, IMapper mapper,
-            ILocationService locationService, Repository repository) : base(eventBus)
+            ILocationService locationService, IRepository repository) : base(eventBus)
         {
             _logger = logger;
             _mapper = mapper;

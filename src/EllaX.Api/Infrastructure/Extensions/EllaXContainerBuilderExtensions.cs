@@ -12,7 +12,7 @@ namespace EllaX.Api.Infrastructure.Extensions
         public static void RegisterEllaXTypes(this ContainerBuilder builder)
         {
             // repository
-            builder.RegisterType<Repository>().SingleInstance();
+            builder.RegisterType<Repository>().As<IRepository>().SingleInstance();
 
             // services
             builder.RegisterType<LocationService>().As<ILocationService>().SingleInstance();

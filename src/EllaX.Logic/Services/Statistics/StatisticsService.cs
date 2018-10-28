@@ -15,22 +15,21 @@ namespace EllaX.Logic.Services.Statistics
     public class StatisticsService : IStatisticsService
     {
         private readonly IMapper _mapper;
-        private readonly Repository _repository;
+        private readonly IRepository _repository;
 
-        public StatisticsService(IMapper mapper, Repository repository)
+        public StatisticsService(IMapper mapper, IRepository repository)
         {
             _mapper = mapper;
             _repository = repository;
         }
 
-        public Task CreateRecentPeerSnapshotAsync(int ageMinutes = Consts.DefaultAgeMinutes,
+        public async Task CreateRecentPeerSnapshotAsync(int ageMinutes = Consts.DefaultAgeMinutes,
             CancellationToken cancellationToken = default)
         {
-            int count = _repository.Query<Peer>()
+            int count = _repository.Provider.Query<Peer>()
                 .Where(peer => peer.LastSeenDate >= DateTime.UtcNow.AddMinutes(-Math.Abs(ageMinutes))).Count();
-            _repository.Insert(Statistic.Create(StatisticType.PeerCountSnapshot.ToString(), count.ToString()));
-
-            return Task.CompletedTask;
+            await _repository.SaveAsync(Statistic.Create(StatisticType.PeerCountSnapshot.ToString(), count.ToString()),
+                cancellationToken);
         }
 
         public Task<TDto> GetNetworkHealthAsync<TDto>(bool uniquesOnly = true,
@@ -44,7 +43,7 @@ namespace EllaX.Logic.Services.Statistics
         private NetworkHealthResult GetNetworkHealth(bool uniquesOnly, int ageMinutes)
         {
             NetworkHealthResult response = new NetworkHealthResult();
-            Peer[] peers = _repository.Query<Peer>()
+            Peer[] peers = _repository.Provider.Query<Peer>()
                 .Where(peer => peer.LastSeenDate >= DateTime.UtcNow.AddMinutes(-Math.Abs(ageMinutes))).ToArray()
                 .OrderByDescending(peer => peer.LastSeenDate).ToArray();
 
