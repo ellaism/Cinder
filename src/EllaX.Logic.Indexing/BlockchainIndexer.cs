@@ -3,22 +3,24 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
-namespace EllaX.Indexing
+namespace EllaX.Logic.Indexing
 {
-    public class Indexer : IIndexer
+    public class BlockchainIndexer : IIndexer
     {
-        private readonly ILogger<Indexer> _logger;
+        private readonly ILogger<BlockchainIndexer> _logger;
 
-        public Indexer(ILogger<Indexer> logger)
+        public BlockchainIndexer(ILogger<BlockchainIndexer> logger)
         {
             _logger = logger;
         }
 
         public async Task RunAsync(CancellationToken cancellationToken = default)
         {
+            _logger.LogInformation("Blockchain indexer starting");
+
             while (!cancellationToken.IsCancellationRequested)
             {
-                _logger.LogDebug("Indexer polling");
+                _logger.LogDebug("Blockchain indexer polling");
                 await Task.Delay(TimeSpan.FromSeconds(10), cancellationToken);
             }
         }

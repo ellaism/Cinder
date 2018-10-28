@@ -1,9 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace EllaX.Indexing
+namespace EllaX.Logic.Indexing
 {
-    public interface IIndexer
+    public interface IRunnable
     {
         Task RunAsync(CancellationToken cancellationToken = default);
     }

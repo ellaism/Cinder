@@ -28,8 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EllaX.Indexing\EllaX.Indexing.csproj" />
-    <ProjectReference Include="..\EllaX.Logic\EllaX.Logic.csproj" />
+    <ProjectReference Include="..\EllaX.Logic.Indexing\EllaX.Logic.Indexing.csproj" />
   </ItemGroup>
 
 </Project>
