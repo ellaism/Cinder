@@ -51,7 +51,7 @@ namespace EllaX.Logic.Services
                 return;
             }
 
-            _logger.LogInformation("Found {Count} peers", validPeers.Count);
+            _logger.LogInformation("Processed {Count} unique peers", validPeers.Count);
 
             try
             {

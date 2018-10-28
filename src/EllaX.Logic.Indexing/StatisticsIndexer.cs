@@ -12,7 +12,6 @@ using EllaX.Logic.Services.Statistics;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using static System.Threading.Tasks.Task;
 
 namespace EllaX.Logic.Indexing
 {
@@ -20,7 +19,7 @@ namespace EllaX.Logic.Indexing
     {
         private readonly ILogger<StatisticsIndexer> _logger;
         private readonly IServiceScopeFactory _serviceScopeFactory;
-        private DateTimeOffset _lastPeerCountSnapshot = DateTimeOffset.MinValue;
+        private DateTimeOffset _lastPeerSnapshot = DateTimeOffset.MinValue;
 
         public StatisticsIndexer(IServiceScopeFactory serviceScopeFactory, ILogger<StatisticsIndexer> logger)
         {
@@ -50,14 +49,14 @@ namespace EllaX.Logic.Indexing
 
                 await CheckNetworkHealthAsync(mediator, mapper, blockchainService, cancellationToken);
 
-                if (_lastPeerCountSnapshot == DateTimeOffset.MinValue ||
-                    DateTimeOffset.UtcNow - _lastPeerCountSnapshot > TimeSpan.FromMinutes(60))
+                if (_lastPeerSnapshot == DateTimeOffset.MinValue ||
+                    DateTimeOffset.UtcNow - _lastPeerSnapshot > TimeSpan.FromMinutes(60))
                 {
                     await Snapshot(statisticsService, cancellationToken);
                 }
             }
 
-            await Delay(TimeSpan.FromMinutes(2), cancellationToken);
+            await Task.Delay(TimeSpan.FromMinutes(2), cancellationToken);
         }
 
         private async Task Snapshot(IStatisticsService statisticsService, CancellationToken cancellationToken)
@@ -66,7 +65,7 @@ namespace EllaX.Logic.Indexing
             _logger.LogInformation("Taking snapshot of recent peers");
 
             await statisticsService.CreateRecentPeerSnapshotAsync(cancellationToken: cancellationToken);
-            _lastPeerCountSnapshot = DateTimeOffset.UtcNow;
+            _lastPeerSnapshot = DateTimeOffset.UtcNow;
         }
 
         private async Task CheckNetworkHealthAsync(IMediator mediator, IMapper mapper,

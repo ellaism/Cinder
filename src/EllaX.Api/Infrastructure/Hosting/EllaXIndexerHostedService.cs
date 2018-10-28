@@ -44,7 +44,7 @@ namespace EllaX.Api.Infrastructure.Hosting
                 {
                     IIndexerManager indexerManager = scope.ServiceProvider.GetService<IIndexerManager>();
 
-                    // run indexer
+                    // run indexer manager
                     await indexerManager.RunAsync(cancellationToken);
                 }
             }, cancellationToken);
