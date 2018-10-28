@@ -7,6 +7,6 @@ namespace EllaX.Clients.Responses.Parity.NetPeers
         public int Active { get; set; }
         public int Connected { get; set; }
         public int Max { get; set; }
-        public IList<PeerItem> Peers { get; set; }
+        public IReadOnlyCollection<PeerItem> Peers { get; set; }
     }
 }

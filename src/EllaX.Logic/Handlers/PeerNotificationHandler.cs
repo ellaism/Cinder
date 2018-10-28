@@ -6,18 +6,18 @@ using MediatR;
 
 namespace EllaX.Logic.Handlers
 {
-    public class NetworkHealthHandler : INotificationHandler<PeerNotification>
+    public class PeerNotificationHandler : INotificationHandler<PeerNotification>
     {
         private readonly IPeerService _peerService;
 
-        public NetworkHealthHandler(IPeerService peerService)
+        public PeerNotificationHandler(IPeerService peerService)
         {
             _peerService = peerService;
         }
 
         public Task Handle(PeerNotification notification, CancellationToken cancellationToken)
         {
-            return _peerService.ProcessPeerAsync(notification.Peer);
+            return _peerService.ProcessPeersAsync(notification.Peers, cancellationToken);
         }
     }
 }

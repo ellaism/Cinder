@@ -1,8 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
+using EllaX.Clients.Responses.Parity.NetPeers;
+using EllaX.Core.Entities;
+using EllaX.Logic.Notifications;
 using EllaX.Logic.Services;
 using EllaX.Logic.Services.Statistics;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using static System.Threading.Tasks.Task;
@@ -36,10 +43,12 @@ namespace EllaX.Logic.Indexing
         {
             using (IServiceScope scope = _serviceScopeFactory.CreateScope())
             {
+                IMapper mapper = scope.ServiceProvider.GetService<IMapper>();
+                IMediator mediator = scope.ServiceProvider.GetService<IMediator>();
                 IBlockchainService blockchainService = scope.ServiceProvider.GetService<IBlockchainService>();
                 IStatisticsService statisticsService = scope.ServiceProvider.GetService<IStatisticsService>();
 
-                await CheckNetworkHealthAsync(blockchainService, cancellationToken);
+                await CheckNetworkHealthAsync(mediator, mapper, blockchainService, cancellationToken);
 
                 if (_lastPeerCountSnapshot == DateTimeOffset.MinValue ||
                     DateTimeOffset.UtcNow - _lastPeerCountSnapshot > TimeSpan.FromMinutes(60))
@@ -60,13 +69,20 @@ namespace EllaX.Logic.Indexing
             _lastPeerCountSnapshot = DateTimeOffset.UtcNow;
         }
 
-        private async Task CheckNetworkHealthAsync(IBlockchainService blockchainService,
-            CancellationToken cancellationToken)
+        private async Task CheckNetworkHealthAsync(IMediator mediator, IMapper mapper,
+            IBlockchainService blockchainService, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             _logger.LogInformation("Retrieving latest network health snapshot");
 
-            await blockchainService.GetHealthAsync(cancellationToken);
+            IReadOnlyCollection<PeerItem> peers = await blockchainService.GetPeersAsync(cancellationToken);
+            if (!peers.Any())
+            {
+                return;
+            }
+
+            await mediator.Publish(new PeerNotification {Peers = mapper.Map<IEnumerable<Peer>>(peers)},
+                cancellationToken);
         }
     }
 }
