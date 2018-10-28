@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using EllaX.Logic.Services.Location.Results;
@@ -27,7 +28,7 @@ namespace EllaX.Logic.Services.Location
             GC.SuppressFinalize(this);
         }
 
-        public Task<CityResult> GetCityByIpAsync(string ip)
+        public Task<CityResult> GetCityByIpAsync(string ip, CancellationToken cancellationToken = default)
         {
             CityResponse response = _reader.City(ip);
 
