@@ -23,8 +23,25 @@ namespace EllaX.Logic.Services.Statistics
             _repository = repository;
         }
 
+        public Task CreateRecentPeerSnapshotAsync(int ageMinutes = Consts.DefaultAgeMinutes,
+            CancellationToken cancellationToken = default)
+        {
+            int count = _repository.Query<Peer>()
+                .Where(peer => peer.LastSeenDate >= DateTime.UtcNow.AddMinutes(-Math.Abs(ageMinutes))).Count();
+            _repository.Insert(Statistic.Create(StatisticType.PeerCountSnapshot.ToString(), count.ToString()));
+
+            return Task.CompletedTask;
+        }
+
         public Task<TDto> GetNetworkHealthAsync<TDto>(bool uniquesOnly = true,
             int ageMinutes = Consts.DefaultAgeMinutes, CancellationToken cancellationToken = default)
+        {
+            NetworkHealthResult response = GetNetworkHealth(uniquesOnly, ageMinutes);
+
+            return Task.FromResult(_mapper.Map<TDto>(response));
+        }
+
+        private NetworkHealthResult GetNetworkHealth(bool uniquesOnly, int ageMinutes)
         {
             NetworkHealthResult response = new NetworkHealthResult();
             Peer[] peers = _repository.Query<Peer>()
@@ -38,7 +55,7 @@ namespace EllaX.Logic.Services.Statistics
             {
                 response.Peers = peers;
 
-                return Task.FromResult(_mapper.Map<TDto>(response));
+                return response;
             }
 
             Dictionary<string, Peer> uniques = new Dictionary<string, Peer>();
@@ -56,16 +73,7 @@ namespace EllaX.Logic.Services.Statistics
                 response.Peers = uniques.Select(x => x.Value).ToArray();
             }
 
-            return Task.FromResult(_mapper.Map<TDto>(response));
-        }
-
-        public Task SnapshotRecentPeerCountAsync(int ageMinutes = Consts.DefaultAgeMinutes)
-        {
-            int count = _repository.Query<Peer>()
-                .Where(peer => peer.LastSeenDate >= DateTime.UtcNow.AddMinutes(-Math.Abs(ageMinutes))).Count();
-            _repository.Insert(Statistic.Create(StatisticType.PeerCountSnapshot.ToString(), count.ToString()));
-
-            return Task.CompletedTask;
+            return response;
         }
     }
 }

@@ -6,9 +6,10 @@ namespace EllaX.Logic.Services.Statistics
 {
     public interface IStatisticsService
     {
-        Task<TDto> GetNetworkHealthAsync<TDto>(bool uniquesOnly = true, int ageMinutes = Consts.DefaultAgeMinutes,
+        Task CreateRecentPeerSnapshotAsync(int ageMinutes = Consts.DefaultAgeMinutes,
             CancellationToken cancellationToken = default);
 
-        Task SnapshotRecentPeerCountAsync(int ageMinutes = Consts.DefaultAgeMinutes);
+        Task<TDto> GetNetworkHealthAsync<TDto>(bool uniquesOnly = true, int ageMinutes = Consts.DefaultAgeMinutes,
+            CancellationToken cancellationToken = default);
     }
 }

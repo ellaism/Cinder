@@ -56,7 +56,7 @@ namespace EllaX.Logic.Indexing
             cancellationToken.ThrowIfCancellationRequested();
             _logger.LogInformation("Taking snapshot of recent peers");
 
-            await statisticsService.CreateRecentPeerSnapshotAsync();
+            await statisticsService.CreateRecentPeerSnapshotAsync(cancellationToken: cancellationToken);
             _lastPeerCountSnapshot = DateTimeOffset.UtcNow;
         }
 
