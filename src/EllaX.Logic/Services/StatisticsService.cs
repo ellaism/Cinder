@@ -10,13 +10,12 @@ using EllaX.Core.Exceptions;
 using EllaX.Core.Extensions;
 using EllaX.Data;
 using EllaX.Logic.Notifications;
-using EllaX.Logic.Services.Location;
-using EllaX.Logic.Services.Location.Results;
-using EllaX.Logic.Services.Statistics.Results;
+using EllaX.Logic.Services.Results.Location;
+using EllaX.Logic.Services.Results.Statistics;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace EllaX.Logic.Services.Statistics
+namespace EllaX.Logic.Services
 {
     public class StatisticsService : IStatisticsService
     {
@@ -46,7 +45,8 @@ namespace EllaX.Logic.Services.Statistics
             {
                 // save record to repository
                 await _repository.SaveAsync(
-                    Statistic.Create(StatisticType.RecentPeerSnapshot.ToString(), count.ToString()), cancellationToken);
+                    Statistic.Create(StatisticsType.RecentPeerSnapshot.ToString(), count.ToString()),
+                    cancellationToken);
             }
             catch (Exception e)
             {

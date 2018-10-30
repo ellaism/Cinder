@@ -2,7 +2,7 @@
 using EllaX.Clients.Blockchain;
 using EllaX.Clients.Network;
 using EllaX.Data;
-using EllaX.Logic.Services.Location;
+using EllaX.Logic.Services.Options;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;

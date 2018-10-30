@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using EllaX.Core.Dtos;
-using EllaX.Logic.Services.Statistics;
+using EllaX.Logic.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EllaX.Api.V1.Controllers

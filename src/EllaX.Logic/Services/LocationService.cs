@@ -2,12 +2,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using EllaX.Logic.Services.Location.Results;
+using EllaX.Logic.Services.Options;
+using EllaX.Logic.Services.Results.Location;
 using MaxMind.GeoIP2;
 using MaxMind.GeoIP2.Responses;
 using Microsoft.Extensions.Options;
 
-namespace EllaX.Logic.Services.Location
+namespace EllaX.Logic.Services
 {
     public class LocationService : ILocationService, IDisposable
     {

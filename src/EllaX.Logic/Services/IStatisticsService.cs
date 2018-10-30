@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using EllaX.Core;
 using EllaX.Core.Entities;
 
-namespace EllaX.Logic.Services.Statistics
+namespace EllaX.Logic.Services
 {
     public interface IStatisticsService
     {

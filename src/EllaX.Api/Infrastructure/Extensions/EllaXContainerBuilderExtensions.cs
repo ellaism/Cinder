@@ -2,9 +2,6 @@
 using EllaX.Data;
 using EllaX.Logic.Indexing;
 using EllaX.Logic.Services;
-using EllaX.Logic.Services.Blockchain;
-using EllaX.Logic.Services.Location;
-using EllaX.Logic.Services.Statistics;
 
 namespace EllaX.Api.Infrastructure.Extensions
 {

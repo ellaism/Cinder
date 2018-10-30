@@ -1,8 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using EllaX.Logic.Services.Location.Results;
+using EllaX.Logic.Services.Results.Location;
 
-namespace EllaX.Logic.Services.Location
+namespace EllaX.Logic.Services
 {
     public interface ILocationService
     {

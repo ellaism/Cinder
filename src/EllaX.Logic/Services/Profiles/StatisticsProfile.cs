@@ -3,10 +3,10 @@ using AutoMapper;
 using EllaX.Core.Dtos;
 using EllaX.Core.Entities;
 using EllaX.Logic.Resolvers;
-using EllaX.Logic.Services.Location.Results;
-using EllaX.Logic.Services.Statistics.Results;
+using EllaX.Logic.Services.Results.Location;
+using EllaX.Logic.Services.Results.Statistics;
 
-namespace EllaX.Logic.Services.Statistics
+namespace EllaX.Logic.Services.Profiles
 {
     public class StatisticsProfile : Profile
     {

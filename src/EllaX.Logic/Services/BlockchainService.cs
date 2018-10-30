@@ -7,20 +7,19 @@ using EllaX.Clients.Blockchain;
 using EllaX.Clients.Network;
 using EllaX.Clients.Responses;
 using EllaX.Clients.Responses.Parity.NetPeers;
-using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace EllaX.Logic.Services.Blockchain
+namespace EllaX.Logic.Services
 {
-    public class BlockchainService : Service, IBlockchainService
+    public class BlockchainService : IBlockchainService
     {
         private readonly IBlockchainClient _blockchainClient;
         private readonly ILogger<BlockchainService> _logger;
         private readonly IMapper _mapper;
         private readonly INetworkClient _networkClient;
 
-        public BlockchainService(IMediator eventBus, ILogger<BlockchainService> logger, IMapper mapper,
-            IBlockchainClient blockchainClient, INetworkClient networkClient) : base(eventBus)
+        public BlockchainService(ILogger<BlockchainService> logger, IMapper mapper, IBlockchainClient blockchainClient,
+            INetworkClient networkClient)
         {
             _logger = logger;
             _mapper = mapper;

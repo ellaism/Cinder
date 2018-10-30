@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using EllaX.Logic.Services.Location.Results;
+using EllaX.Logic.Services.Results.Location;
 using MaxMind.GeoIP2.Responses;
 
-namespace EllaX.Logic.Services.Location
+namespace EllaX.Logic.Services.Profiles
 {
     public class LocationProfile : Profile
     {

@@ -1,4 +1,4 @@
-﻿namespace EllaX.Logic.Services.Location
+﻿namespace EllaX.Logic.Services.Options
 {
     public class LocationOptions
     {

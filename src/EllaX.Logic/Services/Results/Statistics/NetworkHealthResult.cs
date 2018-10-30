@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using EllaX.Core.Entities;
 
-namespace EllaX.Logic.Services.Statistics.Results
+namespace EllaX.Logic.Services.Results.Statistics
 {
     public class NetworkHealthResult
     {
