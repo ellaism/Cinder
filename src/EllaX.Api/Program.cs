@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
+using EllaX.Core.Exceptions;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -32,7 +33,10 @@ namespace EllaX.Api
             }
             catch (Exception ex)
             {
-                Log.Fatal(ex, "Host terminated unexpectedly");
+                if (!(ex is LoggedException))
+                {
+                    Log.Fatal(ex, $"{nameof(Program)} -> {nameof(Main)} -> Host terminated unexpectedly");
+                }
 
                 return 1;
             }
