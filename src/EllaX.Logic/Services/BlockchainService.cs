@@ -40,7 +40,8 @@ namespace EllaX.Logic.Services
                 {
                     if (t.IsFaulted)
                     {
-                        _logger.LogError(t.Exception, "BlockchainService -> GetPeersAsync");
+                        _logger.LogError(t.Exception, $"{nameof(BlockchainService)} -> {nameof(GetPeersAsync)}");
+
                         continue;
                     }
 
