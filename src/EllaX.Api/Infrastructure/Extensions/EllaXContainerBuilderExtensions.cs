@@ -17,7 +17,6 @@ namespace EllaX.Api.Infrastructure.Extensions
             // services
             builder.RegisterType<LocationService>().As<ILocationService>().SingleInstance();
             builder.RegisterType<BlockchainService>().As<IBlockchainService>().InstancePerLifetimeScope();
-            builder.RegisterType<PeerService>().As<IPeerService>().InstancePerLifetimeScope();
             builder.RegisterType<StatisticsService>().As<IStatisticsService>().InstancePerLifetimeScope();
 
             // indexers

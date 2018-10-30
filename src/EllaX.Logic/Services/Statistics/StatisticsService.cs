@@ -8,19 +8,31 @@ using EllaX.Core;
 using EllaX.Core.Entities;
 using EllaX.Core.Extensions;
 using EllaX.Data;
+using EllaX.Logic.Notifications;
+using EllaX.Logic.Services.Location;
+using EllaX.Logic.Services.Location.Results;
 using EllaX.Logic.Services.Statistics.Results;
+using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace EllaX.Logic.Services.Statistics
 {
     public class StatisticsService : IStatisticsService
     {
+        private readonly ILocationService _locationService;
+        private readonly ILogger<StatisticsService> _logger;
         private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
         private readonly IRepository _repository;
 
-        public StatisticsService(IMapper mapper, IRepository repository)
+        public StatisticsService(ILogger<StatisticsService> logger, IMapper mapper, IMediator mediator,
+            IRepository repository, ILocationService locationService)
         {
+            _logger = logger;
             _mapper = mapper;
+            _mediator = mediator;
             _repository = repository;
+            _locationService = locationService;
         }
 
         public async Task CreateRecentPeerSnapshotAsync(int ageMinutes = Consts.DefaultAgeMinutes,
@@ -32,12 +44,70 @@ namespace EllaX.Logic.Services.Statistics
                 cancellationToken);
         }
 
+        public async Task ProcessPeersAsync(IEnumerable<Peer> peers, CancellationToken cancellationToken = default)
+        {
+            IEnumerable<Peer> uniquePeers = peers.GroupBy(peer => peer.Id).Select(peer => peer.First());
+            List<Peer> validPeers = new List<Peer>();
+
+            foreach (Peer peer in uniquePeers)
+            {
+                Peer validated = await ProcessPeerAsync(peer, cancellationToken);
+
+                if (validated == null)
+                {
+                    continue;
+                }
+
+                validPeers.Add(validated);
+            }
+
+            if (!validPeers.Any())
+            {
+                return;
+            }
+
+            _logger.LogInformation("Processed {Count} unique peers", validPeers.Count);
+            await _mediator.Publish(new PeerNotification {Peers = validPeers}, cancellationToken);
+
+            try
+            {
+                await _repository.SaveBatchAsync(validPeers, cancellationToken);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "PeerService -> ProcessPeersAsync");
+            }
+        }
+
         public Task<TDto> GetNetworkHealthAsync<TDto>(bool uniquesOnly = true,
             int ageMinutes = Consts.DefaultAgeMinutes, CancellationToken cancellationToken = default)
         {
             NetworkHealthResult response = GetNetworkHealth(uniquesOnly, ageMinutes);
 
             return Task.FromResult(_mapper.Map<TDto>(response));
+        }
+
+        private async Task<Peer> ProcessPeerAsync(Peer peer, CancellationToken cancellationToken = default)
+        {
+            if (peer.RemoteAddress.Contains("Handshake"))
+            {
+                return null;
+            }
+
+            Uri uri = new Uri("http://" + peer.RemoteAddress);
+            string peerId = peer.Id;
+            _logger.LogDebug("Processing peer {Id} at address {Address}", peerId, peer.RemoteAddress);
+
+            CityResult result = await _locationService.GetCityByIpAsync(uri.Host, cancellationToken);
+            Peer updated = _mapper.Map(result, peer);
+
+            Peer original = _repository.Provider.FirstOrDefault<Peer>(x => x.Id == peerId);
+            if (original != null)
+            {
+                updated = _mapper.Map(updated, original);
+            }
+
+            return updated;
         }
 
         private NetworkHealthResult GetNetworkHealth(bool uniquesOnly, int ageMinutes)
