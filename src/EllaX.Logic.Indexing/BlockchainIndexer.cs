@@ -21,8 +21,21 @@ namespace EllaX.Logic.Indexing
             while (!cancellationToken.IsCancellationRequested)
             {
                 _logger.LogDebug("Blockchain indexer polling");
-                await Task.Delay(TimeSpan.FromSeconds(10), cancellationToken);
+
+                try
+                {
+                    await DoWorkAsync(cancellationToken);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, $"{nameof(StatisticsIndexer)} -> {nameof(RunAsync)}");
+                }
             }
+        }
+
+        private async Task DoWorkAsync(CancellationToken cancellationToken = default)
+        {
+            await Task.Delay(TimeSpan.FromSeconds(10), cancellationToken);
         }
     }
 }
