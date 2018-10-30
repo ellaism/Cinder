@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EllaX.Clients.Responses.Parity.NetPeers;
 
-namespace EllaX.Logic.Services
+namespace EllaX.Logic.Services.Blockchain
 {
     public interface IBlockchainService
     {

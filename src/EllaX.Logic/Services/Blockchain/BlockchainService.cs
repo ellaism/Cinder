@@ -10,7 +10,7 @@ using EllaX.Clients.Responses.Parity.NetPeers;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace EllaX.Logic.Services
+namespace EllaX.Logic.Services.Blockchain
 {
     public class BlockchainService : Service, IBlockchainService
     {

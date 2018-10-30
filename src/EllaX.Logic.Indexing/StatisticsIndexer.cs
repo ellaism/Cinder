@@ -7,7 +7,7 @@ using AutoMapper;
 using EllaX.Clients.Responses.Parity.NetPeers;
 using EllaX.Core.Entities;
 using EllaX.Core.Exceptions;
-using EllaX.Logic.Services;
+using EllaX.Logic.Services.Blockchain;
 using EllaX.Logic.Services.Statistics;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
