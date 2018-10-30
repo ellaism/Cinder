@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EllaX.Core;
 using EllaX.Core.Entities;
+using EllaX.Core.Exceptions;
 using EllaX.Core.Extensions;
 using EllaX.Data;
 using EllaX.Logic.Notifications;
@@ -40,8 +41,20 @@ namespace EllaX.Logic.Services.Statistics
         {
             int count = _repository.Provider.Query<Peer>()
                 .Where(peer => peer.LastSeenDate >= DateTime.UtcNow.AddMinutes(-Math.Abs(ageMinutes))).Count();
-            await _repository.SaveAsync(Statistic.Create(StatisticType.PeerCountSnapshot.ToString(), count.ToString()),
-                cancellationToken);
+
+            try
+            {
+                // save record to repository
+                await _repository.SaveAsync(
+                    Statistic.Create(StatisticType.RecentPeerSnapshot.ToString(), count.ToString()), cancellationToken);
+            }
+            catch (Exception e)
+            {
+                _logger.LogDebug(e,
+                    $"{nameof(StatisticsService)} -> {nameof(CreateRecentPeerSnapshotAsync)} -> When saving recent peer snapshot to repository");
+
+                throw new LoggedException(e);
+            }
         }
 
         public async Task ProcessPeersAsync(IEnumerable<Peer> peers, CancellationToken cancellationToken = default)
@@ -67,15 +80,31 @@ namespace EllaX.Logic.Services.Statistics
             }
 
             _logger.LogInformation("Processed {Count} unique peers", validPeers.Count);
-            await _mediator.Publish(new PeerNotification {Peers = validPeers}, cancellationToken);
 
             try
             {
+                // save changes to repository
                 await _repository.SaveBatchAsync(validPeers, cancellationToken);
             }
             catch (Exception e)
             {
-                _logger.LogError(e, "PeerService -> ProcessPeersAsync");
+                _logger.LogDebug(e,
+                    $"{nameof(StatisticsService)} -> {nameof(ProcessPeersAsync)} -> When saving peers to repository");
+
+                throw new LoggedException(e);
+            }
+
+            try
+            {
+                // publish notification to mediator
+                await _mediator.Publish(new PeerNotification {Peers = validPeers}, cancellationToken);
+            }
+            catch (Exception e)
+            {
+                _logger.LogDebug(e,
+                    $"{nameof(StatisticsService)} -> {nameof(ProcessPeersAsync)} -> When publishing peer notification");
+
+                throw new LoggedException(e);
             }
         }
 
