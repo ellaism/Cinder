@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -32,11 +32,19 @@ namespace EllaX.Logic.Indexing
             while (!cancellationToken.IsCancellationRequested)
             {
                 _logger.LogDebug("Statistics indexer polling");
-                await DoWOrk(cancellationToken);
+
+                try
+                {
+                    await DoWorkAsync(cancellationToken);
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError(e, $"{nameof(StatisticsIndexer)} -> {nameof(RunAsync)}");
+                }
             }
         }
 
-        private async Task DoWOrk(CancellationToken cancellationToken = default)
+        private async Task DoWorkAsync(CancellationToken cancellationToken = default)
         {
             using (IServiceScope scope = _serviceScopeFactory.CreateScope())
             {
@@ -49,14 +57,14 @@ namespace EllaX.Logic.Indexing
                 if (_lastPeerSnapshot == DateTimeOffset.MinValue ||
                     DateTimeOffset.UtcNow - _lastPeerSnapshot > TimeSpan.FromMinutes(60))
                 {
-                    await Snapshot(statisticsService, cancellationToken);
+                    await SnapshotAsync(statisticsService, cancellationToken);
                 }
             }
 
             await Task.Delay(TimeSpan.FromMinutes(2), cancellationToken);
         }
 
-        private async Task Snapshot(IStatisticsService statisticsService, CancellationToken cancellationToken)
+        private async Task SnapshotAsync(IStatisticsService statisticsService, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             _logger.LogInformation("Taking snapshot of recent peers");
