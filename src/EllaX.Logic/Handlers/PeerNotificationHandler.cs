@@ -1,23 +1,26 @@
-﻿using System.Threading;
+﻿using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using EllaX.Logic.Notifications;
-using EllaX.Logic.Services;
 using MediatR;
+using Microsoft.Extensions.Logging;
 
 namespace EllaX.Logic.Handlers
 {
     public class PeerNotificationHandler : INotificationHandler<PeerNotification>
     {
-        private readonly IPeerService _peerService;
+        private readonly ILogger<PeerNotificationHandler> _logger;
 
-        public PeerNotificationHandler(IPeerService peerService)
+        public PeerNotificationHandler(ILogger<PeerNotificationHandler> logger)
         {
-            _peerService = peerService;
+            _logger = logger;
         }
 
         public Task Handle(PeerNotification notification, CancellationToken cancellationToken)
         {
-            return _peerService.ProcessPeersAsync(notification.Peers, cancellationToken);
+            _logger.LogTrace("Peer notification received, {Count} peers found", notification.Peers.Count());
+
+            return Task.CompletedTask;
         }
     }
 }
