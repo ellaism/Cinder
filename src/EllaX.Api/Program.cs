@@ -31,11 +31,11 @@ namespace EllaX.Api
 
                 return 0;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                if (!(ex is LoggedException))
+                if (!(e is LoggedException))
                 {
-                    Log.Fatal(ex, $"{nameof(Program)} -> {nameof(Main)} -> Host terminated unexpectedly");
+                    Log.Fatal(e, $"{nameof(Program)} -> {nameof(Main)} -> Host terminated unexpectedly");
                 }
 
                 return 1;

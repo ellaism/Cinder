@@ -23,7 +23,7 @@ namespace EllaX.Api.Infrastructure.Hosting
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Indexer hosted service is starting");
-            await DoWork(cancellationToken);
+            await DoWorkAsync(cancellationToken);
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
@@ -33,7 +33,7 @@ namespace EllaX.Api.Infrastructure.Hosting
             return Task.CompletedTask;
         }
 
-        private async Task DoWork(CancellationToken cancellationToken)
+        private async Task DoWorkAsync(CancellationToken cancellationToken)
         {
             await Task.Factory.StartNew(async () =>
             {

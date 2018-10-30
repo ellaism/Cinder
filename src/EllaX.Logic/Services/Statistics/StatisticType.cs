@@ -2,6 +2,6 @@
 {
     public enum StatisticType
     {
-        PeerCountSnapshot
+        RecentPeerSnapshot
     }
 }
