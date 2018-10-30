@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EllaX.Clients.Responses.Parity.NetPeers;
 using EllaX.Core.Entities;
+using EllaX.Core.Exceptions;
 using EllaX.Logic.Services;
 using EllaX.Logic.Services.Statistics;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,6 +38,7 @@ namespace EllaX.Logic.Indexing
                 {
                     await DoWorkAsync(cancellationToken);
                 }
+                catch (LoggedException) { }
                 catch (Exception e)
                 {
                     _logger.LogError(e, $"{nameof(StatisticsIndexer)} -> {nameof(RunAsync)}");

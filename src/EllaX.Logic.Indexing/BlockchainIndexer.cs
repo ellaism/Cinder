@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using EllaX.Core.Exceptions;
 using Microsoft.Extensions.Logging;
 
 namespace EllaX.Logic.Indexing
@@ -26,6 +27,7 @@ namespace EllaX.Logic.Indexing
                 {
                     await DoWorkAsync(cancellationToken);
                 }
+                catch (LoggedException) { }
                 catch (Exception e)
                 {
                     _logger.LogError(e, $"{nameof(StatisticsIndexer)} -> {nameof(RunAsync)}");
