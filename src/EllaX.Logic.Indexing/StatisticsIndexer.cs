@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 using AutoMapper;
 using EllaX.Clients.Responses.Parity.NetPeers;
 using EllaX.Core.Entities;
-using EllaX.Logic.Notifications;
 using EllaX.Logic.Services;
 using EllaX.Logic.Services.Statistics;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -43,11 +41,10 @@ namespace EllaX.Logic.Indexing
             using (IServiceScope scope = _serviceScopeFactory.CreateScope())
             {
                 IMapper mapper = scope.ServiceProvider.GetService<IMapper>();
-                IMediator mediator = scope.ServiceProvider.GetService<IMediator>();
                 IBlockchainService blockchainService = scope.ServiceProvider.GetService<IBlockchainService>();
                 IStatisticsService statisticsService = scope.ServiceProvider.GetService<IStatisticsService>();
 
-                await CheckNetworkHealthAsync(mediator, mapper, blockchainService, cancellationToken);
+                await CheckNetworkHealthAsync(mapper, blockchainService, statisticsService, cancellationToken);
 
                 if (_lastPeerSnapshot == DateTimeOffset.MinValue ||
                     DateTimeOffset.UtcNow - _lastPeerSnapshot > TimeSpan.FromMinutes(60))
@@ -68,8 +65,8 @@ namespace EllaX.Logic.Indexing
             _lastPeerSnapshot = DateTimeOffset.UtcNow;
         }
 
-        private async Task CheckNetworkHealthAsync(IMediator mediator, IMapper mapper,
-            IBlockchainService blockchainService, CancellationToken cancellationToken)
+        private async Task CheckNetworkHealthAsync(IMapper mapper, IBlockchainService blockchainService,
+            IStatisticsService statisticsService, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             _logger.LogInformation("Retrieving latest network health snapshot");
@@ -80,8 +77,7 @@ namespace EllaX.Logic.Indexing
                 return;
             }
 
-            await mediator.Publish(new PeerNotification {Peers = mapper.Map<IEnumerable<Peer>>(peers)},
-                cancellationToken);
+            await statisticsService.ProcessPeersAsync(mapper.Map<IEnumerable<Peer>>(peers), cancellationToken);
         }
     }
 }
