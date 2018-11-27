@@ -3,7 +3,7 @@ using EllaX.Core.Dtos;
 using EllaX.Logic.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EllaX.Api.V1.Controllers
+namespace EllaX.Api.Explorer.V1.Controllers
 {
     [ApiVersion("1.0")]
     [Route("v{api-version:apiVersion}/[controller]")]

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 
-namespace EllaX.Api
+namespace EllaX.Api.Explorer
 {
     public class Program
     {
