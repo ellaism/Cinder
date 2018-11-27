@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace EllaX.Api.Infrastructure.Hosting
+namespace EllaX.Api.Indexer.Infrastructure.Hosting
 {
     public class EllaXIndexerBackgroundService : BackgroundService
     {
@@ -39,14 +39,14 @@ namespace EllaX.Api.Infrastructure.Hosting
 
         public override Task StartAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("EllaX Indexer is starting");
+            _logger.LogInformation("Indexer is starting");
 
             return base.StartAsync(cancellationToken);
         }
 
         public override Task StopAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("EllaX Indexer is stopping");
+            _logger.LogInformation("Indexer is stopping");
 
             return base.StopAsync(cancellationToken);
         }

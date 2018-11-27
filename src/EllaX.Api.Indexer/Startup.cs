@@ -3,8 +3,9 @@ using System.IO;
 using System.Reflection;
 using Autofac;
 using AutoMapper;
-using EllaX.Api.Infrastructure.Extensions;
-using EllaX.Api.Infrastructure.Hosting;
+using EllaX.Api.Indexer.Infrastructure.Hosting;
+using EllaX.Mvc;
+using EllaX.Mvc.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,7 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 
-namespace EllaX.Api
+namespace EllaX.Api.Indexer
 {
     public class Startup
     {
@@ -105,6 +106,7 @@ namespace EllaX.Api
 
             app.UseCors(options => options.AllowAnyOrigin());
             //app.UseHttpsRedirection();
+            app.UseStaticFiles();
             app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUI(options =>
@@ -122,9 +124,9 @@ namespace EllaX.Api
         {
             Info info = new Info
             {
-                Title = $"EllaX API {description.ApiVersion}",
+                Title = $"Indexer API {description.ApiVersion}",
                 Version = description.ApiVersion.ToString(),
-                Description = "An explorer and indexer for the Ellaism blockchain.",
+                Description = "An indexer API for the Ellaism blockchain.",
                 Contact = new Contact
                 {
                     Name = "Nodestry", Email = "hi@nodestry.com", Url = "https://github.com/Nodestry/EllaX"
