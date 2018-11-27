@@ -1,11 +1,10 @@
 ﻿using Autofac;
 using EllaX.Data;
-using EllaX.Logic.Indexing;
 using EllaX.Logic.Services;
 
-namespace EllaX.Api.Infrastructure.Extensions
+namespace EllaX.Mvc.Extensions
 {
-    public static class EllaXContainerBuilderExtensions
+    public static class ContainerBuilderExtensions
     {
         public static void RegisterEllaXTypes(this ContainerBuilder builder)
         {
@@ -16,11 +15,6 @@ namespace EllaX.Api.Infrastructure.Extensions
             builder.RegisterType<LocationService>().As<ILocationService>().SingleInstance();
             builder.RegisterType<BlockchainService>().As<IBlockchainService>().InstancePerLifetimeScope();
             builder.RegisterType<StatisticsService>().As<IStatisticsService>().InstancePerLifetimeScope();
-
-            // indexers
-            builder.RegisterType<BlockchainIndexer>().As<IIndexer>().InstancePerLifetimeScope();
-            builder.RegisterType<StatisticsIndexer>().As<IIndexer>().InstancePerLifetimeScope();
-            builder.RegisterType<IndexerManager>().As<IIndexerManager>().InstancePerLifetimeScope();
         }
     }
 }

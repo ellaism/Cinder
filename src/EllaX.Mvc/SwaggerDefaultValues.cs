@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace EllaX.Api
+namespace EllaX.Mvc
 {
     /// <summary>
     ///     Represents the Swagger/Swashbuckle operation filter used to document the implicit API version parameter.

@@ -7,10 +7,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
 
-// ReSharper disable once CheckNamespace
-namespace EllaX.Api.Infrastructure.Extensions
+namespace EllaX.Mvc.Extensions
 {
-    public static class EllaXServiceCollectionExtensions
+    public static class ServiceCollectionExtensions
     {
         public static IServiceCollection AddEllaX(this IServiceCollection services, IConfiguration configuration)
         {
