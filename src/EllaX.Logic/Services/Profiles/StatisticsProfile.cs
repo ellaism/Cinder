@@ -14,7 +14,7 @@ namespace EllaX.Logic.Services.Profiles
         {
             CreateMap<Peer, Peer>().ForMember(dest => dest.FirstSeenDate, opt => opt.Ignore());
             CreateMap<Peer, PeerHealthDto>().ForMember(dest => dest.Age,
-                opt => opt.ResolveUsing<DateTimeOffsetToAgeResolver, DateTimeOffset>(src => src.LastSeenDate));
+                opt => opt.MapFrom<DateTimeOffsetToAgeResolver, DateTimeOffset>(src => src.LastSeenDate));
             CreateMap<CityResult, Peer>().ForMember(dest => dest.City, opt => opt.MapFrom(src => src.Name))
                 .ForMember(dest => dest.Country, opt => opt.MapFrom(src => src.Country))
                 .ForMember(dest => dest.Latitude,
