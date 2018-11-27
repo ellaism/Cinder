@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
+using EllaX.Api.Indexer.Infrastructure;
 using EllaX.Core.Exceptions;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -24,7 +25,7 @@ namespace EllaX.Api.Indexer
 
             try
             {
-                Log.Information("Starting web host");
+                Log.Information("Starting Indexer API v{Version}", Constants.Version);
                 IWebHost host = BuildWebHost(args);
                 host.Start();
                 await host.WaitForShutdownAsync();
@@ -35,7 +36,7 @@ namespace EllaX.Api.Indexer
             {
                 if (!(e is LoggedException))
                 {
-                    Log.Fatal(e, $"{nameof(Program)} -> {nameof(Main)} -> Host terminated unexpectedly");
+                    Log.Fatal(e, $"{nameof(Program)} -> {nameof(Main)} -> Indexer API terminated unexpectedly");
                 }
 
                 return 1;

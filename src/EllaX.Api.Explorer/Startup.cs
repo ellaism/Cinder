@@ -122,7 +122,7 @@ namespace EllaX.Api.Explorer
             {
                 Title = $"Explorer API {description.ApiVersion}",
                 Version = description.ApiVersion.ToString(),
-                Description = "An explorer API Ellaism blockchain.",
+                Description = "An explorer API for the Ellaism blockchain.",
                 Contact = new Contact
                 {
                     Name = "Nodestry", Email = "hi@nodestry.com", Url = "https://github.com/Nodestry/EllaX"
