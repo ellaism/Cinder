@@ -1,6 +1,7 @@
 # EllaX
 
 [![Build Status](https://travis-ci.org/Nodestry/EllaX.svg?branch=develop)](https://travis-ci.org/Nodestry/EllaX)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Nodestry/EllaX)
 
 https://nodestry.com
 
