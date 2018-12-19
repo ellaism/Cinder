@@ -1,7 +1,7 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <LangVersion>7.1</LangVersion>
     <UserSecretsId>3e4aac63-74ca-4546-855c-fb3a3b0fe13e</UserSecretsId>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
