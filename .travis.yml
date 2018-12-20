@@ -1,10 +1,10 @@
 language: csharp
 mono: none
 dist: trusty
-dotnet: "2.2.101"
+dotnet: 2.2
 solution: EllaX.sln
 
 install: 
-  - "dotnet restore"
+  - dotnet restore
 script: 
-  - "dotnet build"
+  - dotnet build
