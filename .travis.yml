@@ -1,6 +1,6 @@
 language: csharp
 mono: none
-dist: trusty
+dist: xenial
 dotnet: 2.2
 solution: EllaX.sln
 
