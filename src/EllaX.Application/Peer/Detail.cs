@@ -1,13 +1,25 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation;
 using MediatR;
 
 namespace EllaX.Application.Peer
 {
     public class Detail
     {
-        public class Query : IRequest<Model> { }
+        public class Validator : AbstractValidator<Query>
+        {
+            public Validator()
+            {
+                RuleFor(m => m.Id).NotEmpty();
+            }
+        }
+
+        public class Query : IRequest<Model>
+        {
+            public string Id { get; set; }
+        }
 
         public class Model
         {
