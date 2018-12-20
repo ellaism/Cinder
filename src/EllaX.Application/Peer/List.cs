@@ -2,13 +2,25 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using FluentValidation;
 using MediatR;
 
 namespace EllaX.Application.Peer
 {
     public class List
     {
-        public class Query : IRequest<IEnumerable<Model>> { }
+        public class Validator : AbstractValidator<Query>
+        {
+            public Validator()
+            {
+                RuleFor(m => m.Page).GreaterThanOrEqualTo(1);
+            }
+        }
+
+        public class Query : IRequest<IEnumerable<Model>>
+        {
+            public int Page { get; set; } = 1;
+        }
 
         public class Model
         {
