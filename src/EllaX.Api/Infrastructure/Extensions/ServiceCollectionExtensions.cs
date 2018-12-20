@@ -59,6 +59,9 @@ namespace EllaX.Extensions
                 // add a custom operation filter which sets default values
                 options.OperationFilter<SwaggerDefaultValues>();
 
+                // configure custom schema ids
+                options.CustomSchemaIds(x => x.FullName);
+
                 // integrate xml comments
                 options.IncludeXmlComments(XmlCommentsFilePath);
             });
