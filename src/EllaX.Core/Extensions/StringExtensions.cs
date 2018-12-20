@@ -2,11 +2,12 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace EllaX.Core.Extensions
+// ReSharper disable once CheckNamespace
+namespace EllaX.Extensions
 {
-    public static class HashExtensions
+    public static class StringExtensions
     {
-        public static string Md5(this string input)
+        public static string ToMd5(this string input)
         {
             using (MD5 md5 = MD5.Create())
             {
@@ -17,7 +18,7 @@ namespace EllaX.Core.Extensions
             }
         }
 
-        public static string Sha256(this string input)
+        public static string ToSha256(this string input)
         {
             using (SHA512 sha = SHA512.Create())
             {
@@ -28,7 +29,7 @@ namespace EllaX.Core.Extensions
             }
         }
 
-        public static string Sha512(this string input)
+        public static string ToSha512(this string input)
         {
             using (SHA512 sha = SHA512.Create())
             {
