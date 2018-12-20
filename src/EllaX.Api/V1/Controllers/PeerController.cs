@@ -26,12 +26,12 @@ namespace EllaX.Api.V1.Controllers
         /// <returns>A list of peers.</returns>
         /// <response code="200">A list of Peers was successfully retrieved.</response>
         [HttpGet]
-        [ProducesResponseType(typeof(List.Model), StatusCodes.Status200OK)]
-        public async Task<IEnumerable<List.Model>> GetAsync([FromQuery] List.Query query)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<IEnumerable<List.Model>>> GetAsync([FromQuery] List.Query query)
         {
             IEnumerable<List.Model> models = await _mediator.Send(query);
 
-            return models;
+            return Ok(models);
         }
 
         /// <summary>
@@ -39,13 +39,13 @@ namespace EllaX.Api.V1.Controllers
         /// </summary>
         /// <returns>A Peer.</returns>
         /// <response code="200">A Peer was successfully retrieved.</response>
-        [HttpGet("{id}")]
-        [ProducesResponseType(typeof(Detail.Model), StatusCodes.Status200OK)]
-        public async Task<ActionResult<Detail.Model>> GetAsync([FromRoute] [Required] string id)
+        [HttpGet("{id}", Name = nameof(GetByIdAsync))]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<Detail.Model>> GetByIdAsync([FromRoute] [Required] string id)
         {
             Detail.Model model = await _mediator.Send(new Detail.Query {Id = id});
 
-            return model;
+            return Ok(model);
         }
 
         /// <summary>
@@ -54,12 +54,12 @@ namespace EllaX.Api.V1.Controllers
         /// <returns>A newly created Peer.</returns>
         /// <response code="201">A Peer was successfully created.</response>
         [HttpPost]
-        [ProducesResponseType(typeof(Create.Model), StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<Create.Model>> PostAsync([FromBody] Create.Command command)
         {
             Create.Model model = await _mediator.Send(command);
 
-            return CreatedAtRoute(nameof(GetAsync), new {id = model.Id}, model);
+            return CreatedAtRoute(nameof(GetByIdAsync), new {id = model.Id}, model);
         }
 
         /// <summary>
