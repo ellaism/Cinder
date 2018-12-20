@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
+using EllaX.Data;
+using EllaX.Extensions;
 using FluentValidation;
 using MediatR;
 
@@ -38,10 +41,20 @@ namespace EllaX.Application.Peer
 
         public class Handler : IRequestHandler<Query, IEnumerable<Model>>
         {
+            private readonly ApplicationDbContext _db;
+            private readonly IMapper _mapper;
+
+            public Handler(ApplicationDbContext db, IMapper mapper)
+            {
+                _db = db;
+                _mapper = mapper;
+            }
+
             public async Task<IEnumerable<Model>> Handle(Query request, CancellationToken cancellationToken)
             {
-                // todo
-                return await Task.FromResult(new List<Model>());
+                List<Model> models = await _db.Peers.ProjectToListAsync<Model>(_mapper.ConfigurationProvider);
+
+                return models;
             }
         }
     }

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using AutoMapper;
+using EllaX.Data;
 using FluentValidation;
 using MediatR;
 
@@ -41,10 +43,23 @@ namespace EllaX.Application.Peer
 
         public class Handler : IRequestHandler<Command, Model>
         {
+            private readonly ApplicationDbContext _db;
+            private readonly IMapper _mapper;
+
+            public Handler(ApplicationDbContext db, IMapper mapper)
+            {
+                _db = db;
+                _mapper = mapper;
+            }
+
             public async Task<Model> Handle(Command request, CancellationToken cancellationToken)
             {
-                // todo
-                return await Task.FromResult(new Model());
+                Core.Entities.Peer peer = _mapper.Map<Command, Core.Entities.Peer>(request);
+                await _db.Peers.AddAsync(peer, cancellationToken);
+                Model model = _mapper.Map<Core.Entities.Peer, Model>(peer);
+                await _db.SaveChangesAsync(cancellationToken);
+
+                return model;
             }
         }
     }
