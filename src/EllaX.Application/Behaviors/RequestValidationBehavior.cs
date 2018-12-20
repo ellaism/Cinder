@@ -24,7 +24,9 @@ namespace EllaX.Application.Behaviors
             ValidationContext context = new ValidationContext(request);
 
             List<ValidationFailure> failures = _validators.Select(v => v.Validate(context))
-                .SelectMany(result => result.Errors).Where(f => f != null).ToList();
+                .SelectMany(result => result.Errors)
+                .Where(f => f != null)
+                .ToList();
 
             if (failures.Count != 0)
             {

@@ -13,10 +13,11 @@ namespace EllaX.Api.Infrastructure
     public class Program
     {
         public static IConfiguration Configuration { get; } = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json", false, true)
-            .AddJsonFile(
-                $"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json",
-                true).AddEnvironmentVariables().Build();
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", false, true)
+            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", true)
+            .AddEnvironmentVariables()
+            .Build();
 
         public static async Task<int> Main(string[] args)
         {
@@ -24,10 +25,9 @@ namespace EllaX.Api.Infrastructure
 
             try
             {
-                Log.Information("Starting Explorer API v{Version}", Constants.Version);
+                Log.Information("Starting EllaX API v{Version}", Constants.Version);
                 IWebHost host = BuildWebHost(args);
-                host.Start();
-                await host.WaitForShutdownAsync();
+                await host.RunAsync();
 
                 return 0;
             }
@@ -35,7 +35,7 @@ namespace EllaX.Api.Infrastructure
             {
                 if (!(e is LoggedException))
                 {
-                    Log.Fatal(e, $"{nameof(Program)} -> {nameof(Main)} -> Explorer API terminated unexpectedly");
+                    Log.Fatal(e, "{Class} -> {Method} -> EllaX API terminated unexpectedly", nameof(Program), nameof(Main));
                 }
 
                 return 1;
@@ -48,8 +48,12 @@ namespace EllaX.Api.Infrastructure
 
         public static IWebHost BuildWebHost(string[] args)
         {
-            return WebHost.CreateDefaultBuilder(args).ConfigureServices(services => services.AddAutofac())
-                .UseConfiguration(Configuration).UseStartup<Startup>().UseSerilog().Build();
+            return WebHost.CreateDefaultBuilder(args)
+                .ConfigureServices(services => services.AddAutofac())
+                .UseConfiguration(Configuration)
+                .UseStartup<Startup>()
+                .UseSerilog()
+                .Build();
         }
     }
 }

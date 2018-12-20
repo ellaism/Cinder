@@ -66,10 +66,7 @@ namespace EllaX.Extensions
 
         private static Info CreateInfoForApiVersion(ApiVersionDescription description)
         {
-            Info info = new Info
-            {
-                Title = $"EllaX API {description.ApiVersion}", Version = description.ApiVersion.ToString()
-            };
+            Info info = new Info {Title = $"EllaX API {description.ApiVersion}", Version = description.ApiVersion.ToString()};
 
             if (description.IsDeprecated)
             {

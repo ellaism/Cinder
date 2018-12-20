@@ -19,7 +19,8 @@ namespace EllaX.Application.Exceptions
             foreach (string propertyName in propertyNames)
             {
                 string[] propertyFailures = failures.Where(e => e.PropertyName == propertyName)
-                    .Select(e => e.ErrorMessage).ToArray();
+                    .Select(e => e.ErrorMessage)
+                    .ToArray();
 
                 Failures.Add(propertyName, propertyFailures);
             }

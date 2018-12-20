@@ -12,25 +12,30 @@ namespace EllaX.Indexer.Infrastructure
 
         {
             IHost host = new HostBuilder().ConfigureHostConfiguration(configHost =>
-            {
-                configHost.SetBasePath(Directory.GetCurrentDirectory());
-                configHost.AddJsonFile("hostsettings.json", true);
-                configHost.AddEnvironmentVariables("PREFIX_");
-                configHost.AddCommandLine(args);
-            }).ConfigureAppConfiguration((hostContext, configApp) =>
-            {
-                configApp.AddJsonFile("appsettings.json", true);
-                configApp.AddJsonFile($"appsettings.{hostContext.HostingEnvironment.EnvironmentName}.json", true);
-                configApp.AddEnvironmentVariables("PREFIX_");
-                configApp.AddCommandLine(args);
-            }).ConfigureServices((hostContext, services) =>
-            {
-                //services.AddHostedService<LifetimeEventsHostedService>();
-            }).ConfigureLogging((hostContext, configLogging) =>
-            {
-                configLogging.AddConsole();
-                configLogging.AddDebug();
-            }).UseConsoleLifetime().Build();
+                {
+                    configHost.SetBasePath(Directory.GetCurrentDirectory());
+                    configHost.AddJsonFile("hostsettings.json", true);
+                    configHost.AddEnvironmentVariables("ELLAX_");
+                    configHost.AddCommandLine(args);
+                })
+                .ConfigureAppConfiguration((hostContext, configApp) =>
+                {
+                    configApp.AddJsonFile("appsettings.json", true);
+                    configApp.AddJsonFile($"appsettings.{hostContext.HostingEnvironment.EnvironmentName}.json", true);
+                    configApp.AddEnvironmentVariables("PREFIX_");
+                    configApp.AddCommandLine(args);
+                })
+                .ConfigureServices((hostContext, services) =>
+                {
+                    //services.AddHostedService<LifetimeEventsHostedService>();
+                })
+                .ConfigureLogging((hostContext, configLogging) =>
+                {
+                    configLogging.AddConsole();
+                    configLogging.AddDebug();
+                })
+                .UseConsoleLifetime()
+                .Build();
 
             await host.RunAsync();
         }
