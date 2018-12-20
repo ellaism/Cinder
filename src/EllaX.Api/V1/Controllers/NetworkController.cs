@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using EllaX.Core.Dtos;
-using EllaX.Logic.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EllaX.Api.V1.Controllers
@@ -10,13 +10,6 @@ namespace EllaX.Api.V1.Controllers
     [ApiController]
     public class NetworkController : ControllerBase
     {
-        private readonly IStatisticsService _statisticsService;
-
-        public NetworkController(IStatisticsService statisticsService)
-        {
-            _statisticsService = statisticsService;
-        }
-
         /// <summary>
         ///     Gets the network health.
         /// </summary>
@@ -26,9 +19,7 @@ namespace EllaX.Api.V1.Controllers
         [ProducesResponseType(typeof(NetworkHealthResultDto), 200)]
         public async Task<NetworkHealthResultDto> GetHealthAsync()
         {
-            NetworkHealthResultDto response = await _statisticsService.GetNetworkHealthAsync<NetworkHealthResultDto>();
-
-            return response;
+            return await Task.FromResult(new NetworkHealthResultDto());
         }
     }
 }

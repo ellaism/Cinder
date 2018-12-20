@@ -2,15 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>7.1</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MediatR" Version="6.0.0" />
+    <PackageReference Include="Autofac" Version="4.8.1" />
+    <PackageReference Include="FluentValidation" Version="8.1.2" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\EllaX.Core\EllaX.Core.csproj" />
+    <ProjectReference Include="..\EllaX.Data\EllaX.Data.csproj" />
   </ItemGroup>
 
 </Project>

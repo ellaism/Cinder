@@ -1,17 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using Autofac;
-using AutoMapper;
+﻿using Autofac;
 using EllaX.Extensions;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Swashbuckle.AspNetCore.Swagger;
 
 namespace EllaX.Api.Infrastructure
 {
@@ -24,67 +18,23 @@ namespace EllaX.Api.Infrastructure
 
         public IConfiguration Configuration { get; }
 
-        private static string XmlCommentsFilePath
-        {
-            get
-            {
-                string basePath = AppContext.BaseDirectory;
-                string fileName = typeof(Startup).GetTypeInfo().Assembly.GetName().Name + ".xml";
-
-                return Path.Combine(basePath, fileName);
-            }
-        }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             // ellax
-            services.AddEllaX(Configuration);
-
-            // messaging and mapping
-            services.AddMediatR();
-            services.AddAutoMapper();
-
-            // add the versioned api explorer, which also adds IApiVersionDescriptionProvider service
-            // note: the specified format code will format the version as "'v'major[.minor][-status]"
-            services.AddVersionedApiExplorer(options =>
-            {
-                options.GroupNameFormat = "'v'VVV";
-
-                // note: this option is only necessary when versioning by url segment. the SubstitutionFormat
-                // can also be used to control the format of the API version in route templates
-                options.SubstituteApiVersionInUrl = true;
-            });
+            services.AddDatabase(Configuration);
+            services.AddMapper();
+            services.AddMediation();
 
             // mvc
             services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddApiVersioning(options => options.ReportApiVersions = true);
-            services.AddSwaggerGen(options =>
-            {
-                // resolve the IApiVersionDescriptionProvider service
-                // note: that we have to build a temporary service provider here because one has not been created yet
-                IApiVersionDescriptionProvider provider = services.BuildServiceProvider()
-                    .GetRequiredService<IApiVersionDescriptionProvider>();
-
-                // add a swagger document for each discovered API version
-                // note: you might choose to skip or document deprecated API versions differently
-                foreach (ApiVersionDescription description in provider.ApiVersionDescriptions)
-                {
-                    options.SwaggerDoc(description.GroupName, CreateInfoForApiVersion(description));
-                }
-
-                // add a custom operation filter which sets default values
-                options.OperationFilter<SwaggerDefaultValues>();
-
-                // integrate xml comments
-                options.IncludeXmlComments(XmlCommentsFilePath);
-            });
+            services.AddApiDocumentation();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
-            builder.RegisterEllaXTypes();
+            builder.RegisterBehaviors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -103,38 +53,7 @@ namespace EllaX.Api.Infrastructure
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseMvc();
-            app.UseSwagger();
-            app.UseSwaggerUI(options =>
-            {
-                // build a swagger endpoint for each discovered API version
-                foreach (ApiVersionDescription description in provider.ApiVersionDescriptions)
-                {
-                    options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",
-                        description.GroupName.ToUpperInvariant());
-                }
-            });
-        }
-
-        private static Info CreateInfoForApiVersion(ApiVersionDescription description)
-        {
-            Info info = new Info
-            {
-                Title = $"Explorer API {description.ApiVersion}",
-                Version = description.ApiVersion.ToString(),
-                Description = "An explorer API for the Ellaism blockchain.",
-                Contact = new Contact
-                {
-                    Name = "Nodestry", Email = "hi@nodestry.com", Url = "https://github.com/Nodestry/EllaX"
-                },
-                License = new License {Name = "MIT", Url = "https://opensource.org/licenses/MIT"}
-            };
-
-            if (description.IsDeprecated)
-            {
-                info.Description += " This API version has been deprecated.";
-            }
-
-            return info;
+            app.UseApiDocumentation(provider);
         }
     }
 }
