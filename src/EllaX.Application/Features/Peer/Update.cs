@@ -1,12 +1,11 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using EllaX.Data;
 using FluentValidation;
 using MediatR;
 
-namespace EllaX.Application.Peer
+namespace EllaX.Application.Features.Peer
 {
     public class Update
     {

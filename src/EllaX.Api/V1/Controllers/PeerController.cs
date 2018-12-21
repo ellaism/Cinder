@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using EllaX.Application.Peer;
+using EllaX.Application.Features.Peer;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +23,7 @@ namespace EllaX.Api.V1.Controllers
         /// <summary>
         ///     Get a list of Peers.
         /// </summary>
-        /// <returns>A list of peers.</returns>
+        /// <returns>A list of Peers.</returns>
         /// <response code="200">A list of Peers was successfully retrieved.</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]

@@ -1,30 +1,28 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using EllaX.Data;
+using EllaX.Extensions;
 using FluentValidation;
 using MediatR;
 
-namespace EllaX.Application.Peer
+namespace EllaX.Application.Features.Peer
 {
-    public class Create
+    public class List
     {
-        public class Validator : AbstractValidator<Command>
+        public class Validator : AbstractValidator<Query>
         {
             public Validator()
             {
-                RuleFor(m => m.Id).NotEmpty();
-                RuleFor(m => m.RemoteAddress).NotEmpty();
+                RuleFor(m => m.Page).GreaterThanOrEqualTo(1);
             }
         }
 
-        public class Command : IRequest<Model>
+        public class Query : IRequest<IEnumerable<Model>>
         {
-            public string Id { get; set; }
-            public string Name { get; set; }
-            public string LocalAddress { get; set; }
-            public string RemoteAddress { get; set; }
+            public int Page { get; set; } = 1;
         }
 
         public class Model
@@ -41,7 +39,7 @@ namespace EllaX.Application.Peer
             public DateTimeOffset LastSeenDate { get; set; }
         }
 
-        public class Handler : IRequestHandler<Command, Model>
+        public class Handler : IRequestHandler<Query, IEnumerable<Model>>
         {
             private readonly ApplicationDbContext _db;
             private readonly IMapper _mapper;
@@ -52,14 +50,11 @@ namespace EllaX.Application.Peer
                 _mapper = mapper;
             }
 
-            public async Task<Model> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<IEnumerable<Model>> Handle(Query request, CancellationToken cancellationToken)
             {
-                Core.Entities.Peer peer = _mapper.Map<Command, Core.Entities.Peer>(request);
-                await _db.Peers.AddAsync(peer, cancellationToken);
-                Model model = _mapper.Map<Core.Entities.Peer, Model>(peer);
-                await _db.SaveChangesAsync(cancellationToken);
+                List<Model> models = await _db.Peers.ProjectToListAsync<Model>(_mapper.ConfigurationProvider);
 
-                return model;
+                return models;
             }
         }
     }

@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -8,21 +8,21 @@ using EllaX.Extensions;
 using FluentValidation;
 using MediatR;
 
-namespace EllaX.Application.Peer
+namespace EllaX.Application.Features.Peer
 {
-    public class List
+    public class Detail
     {
         public class Validator : AbstractValidator<Query>
         {
             public Validator()
             {
-                RuleFor(m => m.Page).GreaterThanOrEqualTo(1);
+                RuleFor(m => m.Id).NotEmpty();
             }
         }
 
-        public class Query : IRequest<IEnumerable<Model>>
+        public class Query : IRequest<Model>
         {
-            public int Page { get; set; } = 1;
+            public string Id { get; set; }
         }
 
         public class Model
@@ -39,7 +39,7 @@ namespace EllaX.Application.Peer
             public DateTimeOffset LastSeenDate { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, IEnumerable<Model>>
+        public class Handler : IRequestHandler<Query, Model>
         {
             private readonly ApplicationDbContext _db;
             private readonly IMapper _mapper;
@@ -50,11 +50,12 @@ namespace EllaX.Application.Peer
                 _mapper = mapper;
             }
 
-            public async Task<IEnumerable<Model>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Model> Handle(Query request, CancellationToken cancellationToken)
             {
-                List<Model> models = await _db.Peers.ProjectToListAsync<Model>(_mapper.ConfigurationProvider);
+                Model model = await _db.Peers.Where(peer => peer.Id == request.Id)
+                    .ProjectToSingleOrDefaultAsync<Model>(_mapper.ConfigurationProvider);
 
-                return models;
+                return model;
             }
         }
     }

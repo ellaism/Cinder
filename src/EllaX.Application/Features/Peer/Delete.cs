@@ -4,7 +4,7 @@ using EllaX.Data;
 using FluentValidation;
 using MediatR;
 
-namespace EllaX.Application.Peer
+namespace EllaX.Application.Features.Peer
 {
     public class Delete
     {

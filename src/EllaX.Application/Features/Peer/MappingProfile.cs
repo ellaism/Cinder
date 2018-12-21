@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace EllaX.Application.Peer
+namespace EllaX.Application.Features.Peer
 {
     public class MappingProfile : Profile
     {
