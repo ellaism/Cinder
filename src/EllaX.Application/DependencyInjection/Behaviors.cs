@@ -4,9 +4,9 @@ using MediatR;
 using MediatR.Pipeline;
 
 // ReSharper disable once CheckNamespace
-namespace EllaX.Extensions
+namespace EllaX.DependencyInjection
 {
-    public static class ContainerBuilderExtensions
+    public static class Behaviors
     {
         public static void RegisterBehaviors(this ContainerBuilder builder)
         {

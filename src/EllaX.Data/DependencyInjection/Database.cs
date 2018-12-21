@@ -5,9 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable once CheckNamespace
-namespace EllaX.Extensions
+namespace EllaX.DependencyInjection
 {
-    public static class ServiceCollectionExtensions
+    public static class Database
     {
         public static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {

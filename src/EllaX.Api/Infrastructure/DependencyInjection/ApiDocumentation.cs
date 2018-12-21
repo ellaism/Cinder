@@ -1,16 +1,15 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using AutoMapper;
 using EllaX.Api.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.DependencyInjection;
 using Swashbuckle.AspNetCore.Swagger;
 
 // ReSharper disable once CheckNamespace
-namespace EllaX.Extensions
+namespace EllaX.DependencyInjection
 {
-    public static class ServiceCollectionExtensions
+    public static class ApiDocumentation
     {
         private static string XmlCommentsFilePath
         {
@@ -21,11 +20,6 @@ namespace EllaX.Extensions
 
                 return Path.Combine(basePath, fileName);
             }
-        }
-
-        public static void AddMapper(this IServiceCollection services)
-        {
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         public static void AddApiDocumentation(this IServiceCollection services)

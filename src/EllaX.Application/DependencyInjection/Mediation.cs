@@ -3,9 +3,9 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable once CheckNamespace
-namespace EllaX.Extensions
+namespace EllaX.DependencyInjection
 {
-    public static class ServiceCollectionExtensions
+    public static class Mediation
     {
         public static void AddMediation(this IServiceCollection services)
         {

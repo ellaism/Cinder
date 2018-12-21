@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 // ReSharper disable once CheckNamespace
-namespace EllaX.Extensions
+namespace EllaX.Builder
 {
-    public static class ApplicationBuilderExtensions
+    public static class ApiDocumentation
     {
         public static void UseApiDocumentation(this IApplicationBuilder app, IApiVersionDescriptionProvider provider)
         {
