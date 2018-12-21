@@ -1,5 +1,6 @@
 ﻿using Autofac;
-using EllaX.Extensions;
+using EllaX.Builder;
+using EllaX.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -49,6 +50,7 @@ namespace EllaX.Api.Infrastructure
                 app.UseHsts();
             }
 
+            app.UseErrorHandling();
             app.UseCors(options => options.AllowAnyOrigin());
             //app.UseHttpsRedirection();
             app.UseStaticFiles();
