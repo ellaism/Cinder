@@ -16,6 +16,16 @@ namespace EllaX.Data.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.2.0-rtm-35687");
 
+            modelBuilder.Entity("EllaX.Core.Entities.Block", b =>
+                {
+                    b.Property<string>("Height")
+                        .ValueGeneratedOnAdd();
+
+                    b.HasKey("Height");
+
+                    b.ToTable("Blocks");
+                });
+
             modelBuilder.Entity("EllaX.Core.Entities.Peer", b =>
                 {
                     b.Property<string>("Id")

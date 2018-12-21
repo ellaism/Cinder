@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EllaX.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181220061435_Initial")]
+    [Migration("20181221071006_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -17,6 +17,16 @@ namespace EllaX.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.2.0-rtm-35687");
+
+            modelBuilder.Entity("EllaX.Core.Entities.Block", b =>
+                {
+                    b.Property<string>("Height")
+                        .ValueGeneratedOnAdd();
+
+                    b.HasKey("Height");
+
+                    b.ToTable("Blocks");
+                });
 
             modelBuilder.Entity("EllaX.Core.Entities.Peer", b =>
                 {
