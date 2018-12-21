@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
 namespace EllaX.Api.Infrastructure.Dtos
@@ -10,7 +9,7 @@ namespace EllaX.Api.Infrastructure.Dtos
             new JsonSerializerSettings {ContractResolver = new CamelCasePropertyNamesContractResolver()};
 
         public string Message { get; set; }
-        
+
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public ExceptionDto Exception { get; set; }
 
