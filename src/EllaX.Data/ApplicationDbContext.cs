@@ -5,7 +5,7 @@ namespace EllaX.Data
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+        public ApplicationDbContext(DbContextOptions options) : base(options) { }
 
         public DbSet<Block> Blocks { get; set; }
         public DbSet<Peer> Peers { get; set; }

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
+using EllaX.Api.Infrastructure.Extensions;
 using EllaX.Core.Exceptions;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -27,6 +28,8 @@ namespace EllaX.Api.Infrastructure
             {
                 Log.Information("Starting EllaX API v{Version}", Constants.Version);
                 IWebHost host = BuildWebHost(args);
+                // TODO: 20181221 make this optional
+                host.ApplyDbMigrations();
                 await host.RunAsync();
 
                 return 0;
