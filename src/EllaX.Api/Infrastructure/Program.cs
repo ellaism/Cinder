@@ -1,8 +1,8 @@
 ﻿using System;
-using System.IO;
 using System.Threading.Tasks;
 using Autofac.Extensions.DependencyInjection;
 using EllaX.Api.Infrastructure.Extensions;
+using EllaX.Application.Helpers;
 using EllaX.Core.Exceptions;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
@@ -13,12 +13,7 @@ namespace EllaX.Api.Infrastructure
 {
     public class Program
     {
-        public static IConfiguration Configuration { get; } = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json", false, true)
-            .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production"}.json", true)
-            .AddEnvironmentVariables()
-            .Build();
+        public static IConfiguration Configuration { get; } = ConfigurationHelpers.GetConfiguration();
 
         public static async Task<int> Main(string[] args)
         {
