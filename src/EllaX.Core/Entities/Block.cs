@@ -1,6 +1,8 @@
-﻿namespace EllaX.Core.Entities
+﻿using EllaX.Core.SharedKernel;
+
+namespace EllaX.Core.Entities
 {
-    public class Block
+    public class Block : IEntity
     {
         public string Height { get; set; }
     }

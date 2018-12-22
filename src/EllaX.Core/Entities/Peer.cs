@@ -1,8 +1,9 @@
 ﻿using System;
+using EllaX.Core.SharedKernel;
 
 namespace EllaX.Core.Entities
 {
-    public class Peer
+    public class Peer : IEntity
     {
         public string Id { get; set; }
         public string Name { get; set; }
