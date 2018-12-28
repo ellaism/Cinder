@@ -12,8 +12,6 @@ namespace EllaX.Data
 
         public void SeedEverything(ApplicationDbContext context)
         {
-            context.Database.EnsureCreated();
-
             if (context.Peers.Any())
             {
                 // Db has been seeded
