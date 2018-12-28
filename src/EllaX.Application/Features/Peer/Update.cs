@@ -4,6 +4,7 @@ using AutoMapper;
 using EllaX.Data;
 using FluentValidation;
 using MediatR;
+using static EllaX.Core.Constants;
 
 namespace EllaX.Application.Features.Peer
 {
@@ -13,8 +14,12 @@ namespace EllaX.Application.Features.Peer
         {
             public Validator()
             {
-                RuleFor(m => m.Id).NotEmpty();
-                RuleFor(m => m.RemoteAddress).NotEmpty();
+                RuleFor(command => command.Id).NotEmpty().Length(Entities.Peer.IdMaxLength);
+                RuleFor(command => command.Name).MaximumLength(Entities.Peer.NameMaxLength);
+                RuleFor(command => command.LocalAddress).NotEmpty().MaximumLength(Entities.Peer.AddressMaxLength);
+                RuleFor(command => command.RemoteAddress).NotEmpty().MaximumLength(Entities.Peer.AddressMaxLength);
+                RuleFor(command => command.City).MaximumLength(Entities.Peer.CityMaxLength);
+                RuleFor(command => command.Country).MaximumLength(Entities.Peer.CountryMaxLength);
             }
         }
 
@@ -24,6 +29,10 @@ namespace EllaX.Application.Features.Peer
             public string Name { get; set; }
             public string LocalAddress { get; set; }
             public string RemoteAddress { get; set; }
+            public decimal? Latitude { get; set; }
+            public decimal? Longitude { get; set; }
+            public string City { get; set; }
+            public string Country { get; set; }
         }
 
         public class Handler : AsyncRequestHandler<Command>
