@@ -26,16 +26,19 @@ namespace EllaX.Api.Infrastructure
             services.AddDatabase(Configuration);
             services.AddMapper();
             services.AddMediation();
+            services.AddHostedServices();
 
             // mvc
             services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            //services.AddAuthorizationPolicies();
             services.AddApiDocumentation();
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterBehaviors();
+            builder.RegisterIndexers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
