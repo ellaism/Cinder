@@ -1,10 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using EllaX.Api.Infrastructure;
-using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.Extensions.DependencyInjection;
-using Swashbuckle.AspNetCore.Swagger;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable once CheckNamespace
 namespace EllaX.DependencyInjection
@@ -13,10 +7,7 @@ namespace EllaX.DependencyInjection
     {
         public static void AddAuthorizationPolicies(this IServiceCollection services)
         {
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("Management", policy => policy.RequireClaim("Manager"));
-            });
+            services.AddAuthorization(options => { options.AddPolicy("Management", policy => policy.RequireClaim("Manager")); });
         }
     }
 }
