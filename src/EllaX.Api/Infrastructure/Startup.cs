@@ -24,9 +24,10 @@ namespace EllaX.Api.Infrastructure
         {
             // ellax
             services.AddDatabase(Configuration);
+            services.AddClientConfiguration(Configuration);
+            services.AddIndexerHosting();
             services.AddMapper();
             services.AddMediation();
-            services.AddHostedServices();
 
             // mvc
             services.AddCors();
@@ -38,6 +39,7 @@ namespace EllaX.Api.Infrastructure
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterBehaviors();
+            builder.RegisterClients();
             builder.RegisterIndexers();
         }
 
