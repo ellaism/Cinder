@@ -47,46 +47,5 @@ namespace EllaX.Api.V1.Controllers
 
             return Ok(model);
         }
-
-        /// <summary>
-        ///     Create a Block.
-        /// </summary>
-        /// <returns>A newly created Block.</returns>
-        /// <response code="201">A Block was successfully created.</response>
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<Create.Model>> PostAsync([FromBody] Create.Command command)
-        {
-            Create.Model model = await _mediator.Send(command);
-
-            return CreatedAtRoute(nameof(GetByHeightAsync), new {height = model.Height}, model);
-        }
-
-        /// <summary>
-        ///     Update a Block.
-        /// </summary>
-        /// <response code="204">A Block was successfully updated.</response>
-        [HttpPut("{height}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult<Create.Model>> PutAsync([FromRoute] [Required] string height,
-            [FromBody] Update.Command command)
-        {
-            await _mediator.Send(command);
-
-            return NoContent();
-        }
-
-        /// <summary>
-        ///     Delete a Block.
-        /// </summary>
-        /// <response code="204">A Block was successfully deleted.</response>
-        [HttpDelete("{height}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult<Create.Model>> DeleteAsync([FromRoute] [Required] string height)
-        {
-            await _mediator.Send(new Delete.Command {Height = height});
-
-            return NoContent();
-        }
     }
 }
