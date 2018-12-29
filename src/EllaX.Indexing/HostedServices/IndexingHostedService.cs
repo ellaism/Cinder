@@ -4,11 +4,11 @@ using Microsoft.Extensions.Hosting;
 
 namespace EllaX.Indexing.HostedServices
 {
-    public class IndexerHostedService : BackgroundService
+    public class IndexingHostedService : BackgroundService
     {
         private readonly IIndexerManager _indexManager;
 
-        public IndexerHostedService(IIndexerManager indexManager)
+        public IndexingHostedService(IIndexerManager indexManager)
         {
             _indexManager = indexManager;
         }

@@ -4,11 +4,11 @@ using Microsoft.Extensions.DependencyInjection;
 // ReSharper disable once CheckNamespace
 namespace EllaX.DependencyInjection
 {
-    public static class IndexerHosting
+    public static class IndexingHosting
     {
-        public static void AddIndexerHosting(this IServiceCollection services)
+        public static void AddIndexingHosting(this IServiceCollection services)
         {
-            services.AddHostedService<IndexerHostedService>();
+            services.AddHostedService<IndexingHostedService>();
         }
     }
 }
