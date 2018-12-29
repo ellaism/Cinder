@@ -37,5 +37,13 @@ namespace EllaX.Clients.Blockchain
                 .PostJsonAsync<BlockResult>(Message.CreateMessage("eth_getBlockByNumber", new List<object> {blockNumber, true}),
                     cancellationToken);
         }
+
+        public async Task<Response<BlockResult>> GetBlockAsync(BlockType type, CancellationToken cancellationToken = default)
+        {
+            return await _client.Request()
+                .PostJsonAsync<BlockResult>(
+                    Message.CreateMessage("eth_getBlockByNumber", new List<object> {type.ToString().ToLowerInvariant(), true}),
+                    cancellationToken);
+        }
     }
 }

@@ -10,5 +10,6 @@ namespace EllaX.Clients.Blockchain
         Task<Response<ulong>> GetHeightAsync(CancellationToken cancellationToken = default);
         Task<Response<BlockResult>> GetBlockAsync(string blockHash, CancellationToken cancellationToken = default);
         Task<Response<BlockResult>> GetBlockAsync(ulong blockNumber, CancellationToken cancellationToken = default);
+        Task<Response<BlockResult>> GetBlockAsync(BlockType earliest, CancellationToken cancellationToken = default);
     }
 }
