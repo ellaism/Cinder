@@ -34,7 +34,7 @@ namespace EllaX.Indexing
                 catch (LoggedException) { }
                 catch (Exception e)
                 {
-                    _logger.LogError(e, $"{nameof(StatisticsIndexer)} -> {nameof(RunAsync)}");
+                    _logger.LogError(e, "{Class} -> {Method}", nameof(StatisticsIndexer), nameof(RunAsync));
                 }
             }
         }
