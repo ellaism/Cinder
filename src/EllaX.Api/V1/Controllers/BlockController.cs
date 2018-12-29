@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using EllaX.Application.Features.Block;
+using EllaX.Data.Pagination;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,9 +27,9 @@ namespace EllaX.Api.V1.Controllers
         /// <response code="200">A list of Blocks was successfully retrieved.</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<List.Model>>> GetAsync([FromQuery] List.Query query)
+        public async Task<ActionResult<IPaginatedResult<List.Model>>> GetAsync([FromQuery] List.Query query)
         {
-            IEnumerable<List.Model> models = await _mediator.Send(query);
+            IPaginatedResult<List.Model> models = await _mediator.Send(query);
 
             return Ok(models);
         }

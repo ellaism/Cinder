@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using EllaX.Data;
+using EllaX.Data.Pagination;
 using EllaX.Extensions;
 using FluentValidation;
 using MediatR;
@@ -20,9 +20,10 @@ namespace EllaX.Application.Features.Peer
             }
         }
 
-        public class Query : IRequest<IEnumerable<Model>>
+        public class Query : IRequest<IPaginatedResult<Model>>
         {
             public int Page { get; set; } = 1;
+            public int Size { get; set; } = 10;
         }
 
         public class Model
@@ -39,7 +40,7 @@ namespace EllaX.Application.Features.Peer
             public DateTimeOffset LastSeenDate { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, IEnumerable<Model>>
+        public class Handler : IRequestHandler<Query, IPaginatedResult<Model>>
         {
             private readonly ApplicationDbContext _db;
             private readonly IMapper _mapper;
@@ -50,9 +51,10 @@ namespace EllaX.Application.Features.Peer
                 _mapper = mapper;
             }
 
-            public async Task<IEnumerable<Model>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<IPaginatedResult<Model>> Handle(Query request, CancellationToken cancellationToken)
             {
-                List<Model> models = await _db.Peers.ProjectToListAsync<Model>(_mapper.ConfigurationProvider);
+                IPaginatedResult<Model> models =
+                    await _db.Peers.ProjectToPaginatedResultAsync<Model, Core.Entities.Peer>(_mapper, request.Page, request.Size);
 
                 return models;
             }
