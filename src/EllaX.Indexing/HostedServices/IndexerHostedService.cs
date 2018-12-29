@@ -1,9 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using EllaX.Indexing;
 using Microsoft.Extensions.Hosting;
 
-namespace EllaX.Api.Infrastructure.HostedServices
+namespace EllaX.Indexing.HostedServices
 {
     public class IndexerHostedService : BackgroundService
     {
