@@ -1,31 +1,27 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using EllaX.Clients.Responses;
 using EllaX.Clients.Responses.Parity.NetPeers;
+using EllaX.Extensions;
+using Flurl.Http;
+using Flurl.Http.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace EllaX.Clients.Network
 {
-    public class NetworkClient : Client, INetworkClient
+    public class NetworkClient : INetworkClient
     {
-        private readonly IOptions<NetworkClientOptions> _options;
+        private readonly IFlurlClient _client;
 
-        public NetworkClient(HttpClient client, IOptions<NetworkClientOptions> options) : base(client)
+        public NetworkClient(IFlurlClientFactory flurlClientFactory, IOptions<NetworkClientOptions> options)
         {
-            _options = options;
+            _client = flurlClientFactory.Get(options.Value.Endpoint);
         }
-
-        public IReadOnlyCollection<string> Nodes => _options.Value?.Nodes.ToArray() ?? new string[0];
 
         public async Task<Response<NetPeerResult>> GetNetPeersAsync(string host, CancellationToken cancellationToken = default)
         {
-            using (HttpRequestMessage request = CreateRequest(Message.CreateMessage("parity_netPeers"), host))
-            {
-                return await SendAsync<NetPeerResult>(request, cancellationToken).ConfigureAwait(false);
-            }
+            return await _client.Request()
+                .PostJsonAsync<NetPeerResult>(Message.CreateMessage("parity_netPeers"), cancellationToken);
         }
     }
 }

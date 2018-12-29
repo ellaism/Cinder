@@ -7,8 +7,8 @@ namespace EllaX.Clients.Blockchain
 {
     public interface IBlockchainClient
     {
-        Task<Response<ulong>> GetHeight(CancellationToken cancellationToken = default);
-        Task<Response<BlockResult>> GetBlock(string blockHash, CancellationToken cancellationToken = default);
-        Task<Response<BlockResult>> GetBlock(ulong blockNumber, CancellationToken cancellationToken = default);
+        Task<Response<ulong>> GetHeightAsync(CancellationToken cancellationToken = default);
+        Task<Response<BlockResult>> GetBlockAsync(string blockHash, CancellationToken cancellationToken = default);
+        Task<Response<BlockResult>> GetBlockAsync(ulong blockNumber, CancellationToken cancellationToken = default);
     }
 }

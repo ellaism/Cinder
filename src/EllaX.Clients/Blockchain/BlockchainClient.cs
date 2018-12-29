@@ -1,48 +1,41 @@
 ﻿using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using EllaX.Clients.Responses;
 using EllaX.Clients.Responses.Eth;
+using EllaX.Extensions;
+using Flurl.Http;
+using Flurl.Http.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace EllaX.Clients.Blockchain
 {
-    public class BlockchainClient : Client, IBlockchainClient
+    public class BlockchainClient : IBlockchainClient
     {
-        private readonly IOptions<BlockchainClientOptions> _options;
+        private readonly IFlurlClient _client;
 
-        public BlockchainClient(HttpClient client, IOptions<BlockchainClientOptions> options) : base(client)
+        public BlockchainClient(IFlurlClientFactory flurlClientFactory, IOptions<BlockchainClientOptions> options)
         {
-            _options = options;
+            _client = flurlClientFactory.Get(options.Value.Endpoint);
         }
 
-        public async Task<Response<ulong>> GetHeight(CancellationToken cancellationToken = default)
+        public async Task<Response<ulong>> GetHeightAsync(CancellationToken cancellationToken = default)
         {
-            using (HttpRequestMessage request = CreateRequest(Message.CreateMessage("eth_blockNumber"), _options.Value.Endpoint))
-            {
-                return await SendAsync<ulong>(request, cancellationToken).ConfigureAwait(false);
-            }
+            return await _client.Request().PostJsonAsync<ulong>(Message.CreateMessage("eth_blockNumber"), cancellationToken);
         }
 
-        public async Task<Response<BlockResult>> GetBlock(string blockHash, CancellationToken cancellationToken = default)
+        public async Task<Response<BlockResult>> GetBlockAsync(string blockHash, CancellationToken cancellationToken = default)
         {
-            using (HttpRequestMessage request =
-                CreateRequest(Message.CreateMessage("eth_getBlockByHash", new List<object> {blockHash, true}),
-                    _options.Value.Endpoint))
-            {
-                return await SendAsync<BlockResult>(request, cancellationToken).ConfigureAwait(false);
-            }
+            return await _client.Request()
+                .PostJsonAsync<BlockResult>(Message.CreateMessage("eth_getBlockByHash", new List<object> {blockHash, true}),
+                    cancellationToken);
         }
 
-        public async Task<Response<BlockResult>> GetBlock(ulong blockNumber, CancellationToken cancellationToken = default)
+        public async Task<Response<BlockResult>> GetBlockAsync(ulong blockNumber, CancellationToken cancellationToken = default)
         {
-            using (HttpRequestMessage request =
-                CreateRequest(Message.CreateMessage("eth_getBlockByNumber", new List<object> {blockNumber, true}),
-                    _options.Value.Endpoint))
-            {
-                return await SendAsync<BlockResult>(request, cancellationToken).ConfigureAwait(false);
-            }
+            return await _client.Request()
+                .PostJsonAsync<BlockResult>(Message.CreateMessage("eth_getBlockByNumber", new List<object> {blockNumber, true}),
+                    cancellationToken);
         }
     }
 }
