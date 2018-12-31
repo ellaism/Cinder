@@ -24,8 +24,6 @@ namespace EllaX.Api.Infrastructure
         {
             // ellax
             services.AddDatabase(Configuration);
-            services.AddClientConfiguration(Configuration);
-            services.AddIndexingHosting();
             services.AddMapper();
             services.AddMediation();
 
@@ -39,8 +37,6 @@ namespace EllaX.Api.Infrastructure
         public void ConfigureContainer(ContainerBuilder builder)
         {
             builder.RegisterApplication();
-            builder.RegisterClients();
-            builder.RegisterIndexing();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

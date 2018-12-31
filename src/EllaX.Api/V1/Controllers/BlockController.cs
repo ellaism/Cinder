@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
-using EllaX.Application.Features.Block;
+using EllaX.Api.Application.Features.Block;
 using EllaX.Data.Pagination;
 using MediatR;
 using Microsoft.AspNetCore.Http;

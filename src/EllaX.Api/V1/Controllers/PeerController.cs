@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using EllaX.Application.Features.Peer;
+using EllaX.Api.Application.Features.Peer;
 using EllaX.Data.Pagination;
 using MediatR;
 using Microsoft.AspNetCore.Http;

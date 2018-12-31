@@ -30,8 +30,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EllaX.Application\EllaX.Application.csproj" />
-    <ProjectReference Include="..\EllaX.Indexing\EllaX.Indexing.csproj" />
+    <ProjectReference Include="..\EllaX.Api.Application\EllaX.Api.Application.csproj" />
+    <ProjectReference Include="..\EllaX.Configuration\EllaX.Configuration.csproj" />
   </ItemGroup>
 
 </Project>
