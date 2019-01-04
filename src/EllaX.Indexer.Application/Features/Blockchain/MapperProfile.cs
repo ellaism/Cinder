@@ -1,10 +1,5 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using AutoMapper;
-using EllaX.Clients.Blockchain;
-using EllaX.Clients.Responses;
-using EllaX.Clients.Responses.Eth;
-using MediatR;
+﻿using AutoMapper;
+using Nethereum.RPC.Eth.DTOs;
 
 namespace EllaX.Indexer.Application.Features.Blockchain
 {
@@ -12,7 +7,8 @@ namespace EllaX.Indexer.Application.Features.Blockchain
     {
         public MapperProfile()
         {
-            CreateMap<BlockResult, GetBlockWithTransactions.Model>();
+            CreateMap<BlockWithTransactions, GetBlockWithTransactions.Model>();
+            CreateMap<Transaction, GetBlockWithTransactions.Model.Transaction>();
         }
     }
 }

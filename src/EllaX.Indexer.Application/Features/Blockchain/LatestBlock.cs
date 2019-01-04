@@ -2,8 +2,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using EllaX.Clients.Blockchain;
-using EllaX.Clients.Responses;
 using MediatR;
+using Nethereum.Hex.HexTypes;
 
 namespace EllaX.Indexer.Application.Features.Blockchain
 {
@@ -22,9 +22,9 @@ namespace EllaX.Indexer.Application.Features.Blockchain
 
             public async Task<BigInteger> Handle(Query request, CancellationToken cancellationToken)
             {
-                Response<BigInteger> response = await _blockchainClient.GetLatestBlockAsync(cancellationToken);
+                HexBigInteger response = await _blockchainClient.Web3.Eth.Blocks.GetBlockNumber.SendRequestAsync();
 
-                return response.Result;
+                return response.Value;
             }
         }
     }
