@@ -20,12 +20,12 @@ namespace EllaX.Clients
         [JsonProperty(PropertyName = "id")]
         public Guid Id { get; set; } = Guid.NewGuid();
 
-        public static Message CreateMessage(string method)
+        public static Message Create(string method)
         {
             return new Message {Method = method};
         }
 
-        public static Message CreateMessage(string method, IList<object> parameters)
+        public static Message Create(string method, IList<object> parameters)
         {
             return new Message {Method = method, Parameters = parameters};
         }

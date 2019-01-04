@@ -20,8 +20,7 @@ namespace EllaX.Clients.Network
 
         public async Task<Response<NetPeerResult>> GetNetPeersAsync(string host, CancellationToken cancellationToken = default)
         {
-            return await _client.Request()
-                .PostJsonAsync<NetPeerResult>(Message.CreateMessage("parity_netPeers"), cancellationToken);
+            return await _client.Request().PostJsonAsync<NetPeerResult>(Message.Create("parity_netPeers"), cancellationToken);
         }
     }
 }

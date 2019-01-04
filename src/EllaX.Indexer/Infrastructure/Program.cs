@@ -55,6 +55,7 @@ namespace EllaX.Indexer.Infrastructure
                 .ConfigureAppConfiguration((hostContext, configApp) =>
                 {
                     configApp.AddConfiguration(Configuration);
+                    configApp.AddJsonFile($"appsettings.{hostContext.HostingEnvironment.EnvironmentName}.json", true);
                     configApp.AddCommandLine(args);
                 })
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
@@ -62,6 +63,7 @@ namespace EllaX.Indexer.Infrastructure
                 {
                     // ellax
                     services.AddDatabase(Configuration);
+                    services.AddClientConfiguration(Configuration);
                     services.AddMapper();
                     services.AddMediation();
                     services.AddIndexingHosting();
