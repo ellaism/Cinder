@@ -8,7 +8,7 @@ namespace EllaX.Data.Configurations
     {
         public void Configure(EntityTypeBuilder<Block> builder)
         {
-            builder.HasKey(entity => entity.Height);
+            builder.HasKey(entity => entity.Number);
         }
     }
 }
