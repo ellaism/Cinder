@@ -10,7 +10,7 @@ namespace EllaX.Indexer.Application.Features.Blockchain
 
         public class Model
         {
-            public string Height { get; set; }
+            public string Number { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Model>

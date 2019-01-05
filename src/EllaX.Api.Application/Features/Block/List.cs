@@ -16,6 +16,7 @@ namespace EllaX.Api.Application.Features.Block
             public Validator()
             {
                 RuleFor(m => m.Page).GreaterThanOrEqualTo(1);
+                RuleFor(m => m.Size).InclusiveBetween(1, 100);
             }
         }
 
@@ -27,7 +28,7 @@ namespace EllaX.Api.Application.Features.Block
 
         public class Model
         {
-            public string Height { get; set; }
+            public string Number { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, IPaginatedResult<Model>>

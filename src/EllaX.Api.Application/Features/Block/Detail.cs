@@ -15,18 +15,18 @@ namespace EllaX.Api.Application.Features.Block
         {
             public Validator()
             {
-                RuleFor(m => m.Height).NotEmpty();
+                RuleFor(m => m.Number).NotEmpty();
             }
         }
 
         public class Query : IRequest<Model>
         {
-            public string Height { get; set; }
+            public ulong Number { get; set; }
         }
 
         public class Model
         {
-            public string Height { get; set; }
+            public string Number { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Model>
@@ -42,7 +42,7 @@ namespace EllaX.Api.Application.Features.Block
 
             public async Task<Model> Handle(Query request, CancellationToken cancellationToken)
             {
-                Model model = await _db.Blocks.Where(block => block.Height == request.Height)
+                Model model = await _db.Blocks.Where(block => block.Number == request.Number)
                     .ProjectToSingleOrDefaultAsync<Model>(_mapper.ConfigurationProvider);
 
                 return model;

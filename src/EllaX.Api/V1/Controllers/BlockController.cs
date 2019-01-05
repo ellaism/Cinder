@@ -35,15 +35,15 @@ namespace EllaX.Api.V1.Controllers
         }
 
         /// <summary>
-        ///     Get a Block by Height.
+        ///     Get a Block by Number.
         /// </summary>
         /// <returns>A Block.</returns>
         /// <response code="200">A Block was successfully retrieved.</response>
-        [HttpGet("{height}", Name = nameof(GetByHeightAsync))]
+        [HttpGet("{number}", Name = nameof(GetByNumberAsync))]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<Detail.Model>> GetByHeightAsync([FromRoute] [Required] string height)
+        public async Task<ActionResult<Detail.Model>> GetByNumberAsync([FromRoute] [Required] ulong number)
         {
-            Detail.Model model = await _mediator.Send(new Detail.Query {Height = height});
+            Detail.Model model = await _mediator.Send(new Detail.Query {Number = number});
 
             return Ok(model);
         }
