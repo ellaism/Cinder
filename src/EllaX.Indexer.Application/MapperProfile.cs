@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using EllaX.Indexer.Application.Converters;
+using EllaX.Indexer.Application.Resolvers;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 using Block = EllaX.Core.Entities.Block;
