@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
 using EllaX.Clients.Blockchain;
@@ -33,7 +32,7 @@ namespace EllaX.Indexer.Application.Features.Blockchain
                 BlockWithTransactions response =
                     await _blockchainClient.Web3.Eth.Blocks.GetBlockWithTransactionsByNumber.SendRequestAsync(
                         new HexBigInteger(request.BlockNumber));
-                var block = _mapper.Map<Block>(response);
+                Block block = _mapper.Map<Block>(response);
 
                 cancellationToken.ThrowIfCancellationRequested();
             }

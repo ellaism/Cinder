@@ -7,7 +7,7 @@ using Nethereum.Hex.HexTypes;
 
 namespace EllaX.Indexer.Application.Features.Blockchain
 {
-    public class LatestBlock
+    public class GetLatestBlock
     {
         public class Query : IRequest<BigInteger> { }
 
