@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using EllaX.Core.Exceptions;
@@ -11,12 +10,10 @@ namespace EllaX.Indexer.Application
 {
     public class BlockchainIndexer : IIndexer
     {
-        private readonly List<GetBlockWithTransactions.Model> _blocks = new List<GetBlockWithTransactions.Model>();
         private readonly ILogger<BlockchainIndexer> _logger;
-        private readonly uint _maxBlock = 1000;
+        private readonly uint _maxBlock = 3023282;
         private readonly IMediator _mediator;
-        private readonly uint _startBlock = 1;
-        private uint _currentBlock = 1;
+        private uint _currentBlock = 3023282;
 
         public BlockchainIndexer(ILogger<BlockchainIndexer> logger, IMediator mediator)
         {
@@ -57,9 +54,7 @@ namespace EllaX.Indexer.Application
                 return;
             }
 
-            GetBlockWithTransactions.Model test =
-                await _mediator.Send(new GetBlockWithTransactions.Query {BlockNumber = _currentBlock}, cancellationToken);
-            _blocks.Add(test);
+            await _mediator.Send(new IndexBlockWithTransactions.Command {BlockNumber = _currentBlock}, cancellationToken);
 
             _currentBlock++;
         }
