@@ -5,7 +5,7 @@ using MediatR;
 
 namespace EllaX.Indexer.Application.Features.Blockchain
 {
-    public class GetLatestBlock
+    public class GetLatestBlockNumber
     {
         public class Query : IRequest<ulong> { }
 

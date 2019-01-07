@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EllaX.Clients\EllaX.Clients.csproj" />
     <ProjectReference Include="..\EllaX.Core\EllaX.Core.csproj" />
+    <ProjectReference Include="..\EllaX.Data\EllaX.Data.csproj" />
   </ItemGroup>
 
 </Project>
