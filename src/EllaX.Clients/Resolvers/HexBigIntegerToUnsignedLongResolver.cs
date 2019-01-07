@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Nethereum.Hex.HexTypes;
 
-namespace EllaX.Indexer.Application.Resolvers
+namespace EllaX.Clients.Resolvers
 {
     public class HexBigIntegerToUnsignedLongResolver : IMemberValueResolver<object, object, HexBigInteger, ulong>
     {

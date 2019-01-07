@@ -1,11 +1,9 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using AutoMapper;
-using EllaX.Clients.Blockchain;
+using EllaX.Clients;
+using EllaX.Core.Entities;
 using MediatR;
-using Nethereum.Hex.HexTypes;
-using Nethereum.RPC.Eth.DTOs;
-using Block = EllaX.Core.Entities.Block;
 
 namespace EllaX.Indexer.Application.Features.Blockchain
 {
@@ -13,7 +11,7 @@ namespace EllaX.Indexer.Application.Features.Blockchain
     {
         public class Command : IRequest
         {
-            public uint BlockNumber { get; set; }
+            public ulong BlockNumber { get; set; }
         }
 
         public class Handler : AsyncRequestHandler<Command>
@@ -29,12 +27,7 @@ namespace EllaX.Indexer.Application.Features.Blockchain
 
             protected override async Task Handle(Command request, CancellationToken cancellationToken)
             {
-                BlockWithTransactions response =
-                    await _blockchainClient.Web3.Eth.Blocks.GetBlockWithTransactionsByNumber.SendRequestAsync(
-                        new HexBigInteger(request.BlockNumber));
-                Block block = _mapper.Map<Block>(response);
-
-                cancellationToken.ThrowIfCancellationRequested();
+                Block block = await _blockchainClient.GetBlockWithTransactionsAsync(request.BlockNumber, cancellationToken);
             }
         }
     }

@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using EllaX.Indexer.Application.Resolvers;
+using EllaX.Clients.Resolvers;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 using Block = EllaX.Core.Entities.Block;
 
-namespace EllaX.Indexer.Application
+namespace EllaX.Clients
 {
     public class MapperProfile : Profile
     {

@@ -1,17 +1,16 @@
 ﻿using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
-using EllaX.Clients.Blockchain;
+using EllaX.Clients;
 using MediatR;
-using Nethereum.Hex.HexTypes;
 
 namespace EllaX.Indexer.Application.Features.Blockchain
 {
     public class GetLatestBlock
     {
-        public class Query : IRequest<BigInteger> { }
+        public class Query : IRequest<ulong> { }
 
-        public class Handler : IRequestHandler<Query, BigInteger>
+        public class Handler : IRequestHandler<Query, ulong>
         {
             private readonly IBlockchainClient _blockchainClient;
 
@@ -20,11 +19,11 @@ namespace EllaX.Indexer.Application.Features.Blockchain
                 _blockchainClient = blockchainClient;
             }
 
-            public async Task<BigInteger> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<ulong> Handle(Query request, CancellationToken cancellationToken)
             {
-                HexBigInteger response = await _blockchainClient.Web3.Eth.Blocks.GetBlockNumber.SendRequestAsync();
+                ulong response = await _blockchainClient.GetLatestBlockNumberAsync(cancellationToken);
 
-                return response.Value;
+                return response;
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿using EllaX.Clients.Blockchain;
+﻿using EllaX.Clients;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
