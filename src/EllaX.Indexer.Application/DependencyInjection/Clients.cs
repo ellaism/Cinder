@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using EllaX.Clients.Blockchain;
+using EllaX.Clients;
 
 // ReSharper disable once CheckNamespace
 namespace EllaX.DependencyInjection

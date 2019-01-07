@@ -21,7 +21,7 @@ namespace EllaX.Clients
 
         public Web3 Web3 { get; }
 
-        public async Task<Block> GetBlockWithTransactionsAsync(uint blockNumber, CancellationToken cancellationToken = default)
+        public async Task<Block> GetBlockWithTransactionsAsync(ulong blockNumber, CancellationToken cancellationToken = default)
         {
             BlockWithTransactions response =
                 await Web3.Eth.Blocks.GetBlockWithTransactionsByNumber.SendRequestAsync(new HexBigInteger(blockNumber));
@@ -31,11 +31,11 @@ namespace EllaX.Clients
             return block;
         }
 
-        public async Task<uint> GetLatestBlockNumberAsync(CancellationToken cancellationToken = default)
+        public async Task<ulong> GetLatestBlockNumberAsync(CancellationToken cancellationToken = default)
         {
             HexBigInteger response = await Web3.Eth.Blocks.GetBlockNumber.SendRequestAsync();
 
-            return (uint) response.Value;
+            return (ulong) response.Value;
         }
     }
 }

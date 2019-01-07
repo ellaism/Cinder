@@ -11,9 +11,9 @@ namespace EllaX.Indexer.Application
     public class BlockchainIndexer : IIndexer
     {
         private readonly ILogger<BlockchainIndexer> _logger;
-        private readonly uint _maxBlock = 3023282;
+        private readonly ulong _maxBlock = 3023282;
         private readonly IMediator _mediator;
-        private uint _currentBlock = 3023282;
+        private ulong _currentBlock = 3023282;
 
         public BlockchainIndexer(ILogger<BlockchainIndexer> logger, IMediator mediator)
         {
