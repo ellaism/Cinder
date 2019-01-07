@@ -4,6 +4,7 @@ namespace EllaX.Core.Entities
 {
     public class Transaction : IEntity
     {
+        public Block Block { get; set; }
         public string TransactionHash { get; set; }
         public ulong TransactionIndex { get; set; }
         public string BlockHash { get; set; }
@@ -12,7 +13,7 @@ namespace EllaX.Core.Entities
         public string To { get; set; }
         public ulong Gas { get; set; }
         public ulong GasPrice { get; set; }
-        public ulong Value { get; set; }
+        public decimal Value { get; set; }
         public string Input { get; set; }
         public ulong Nonce { get; set; }
     }

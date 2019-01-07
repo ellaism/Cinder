@@ -1,3 +1,4 @@
+﻿using System.Collections.Generic;
 using EllaX.Core.SharedKernel;
 
 namespace EllaX.Core.Entities
@@ -11,7 +12,7 @@ namespace EllaX.Core.Entities
         public string Sha3Uncles { get; set; }
         public string Miner { get; set; }
         public ulong Difficulty { get; set; }
-        public ulong TotalDifficulty { get; set; }
+        public string TotalDifficulty { get; set; }
         public string ExtraData { get; set; }
         public ulong Size { get; set; }
         public ulong GasLimit { get; set; }
@@ -19,5 +20,6 @@ namespace EllaX.Core.Entities
         public ulong Timestamp { get; set; }
         public ulong TransactionCount { get; set; }
         public ulong UncleCount { get; set; }
+        public ICollection<Transaction> Transactions { get; set; } = new List<Transaction>();
     }
 }
