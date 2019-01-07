@@ -1,10 +1,10 @@
-﻿using EllaX.Core.SharedKernel;
+using EllaX.Core.SharedKernel;
 
 namespace EllaX.Core.Entities
 {
     public class Block : IEntity
     {
-        public ulong Number { get; set; }
+        public ulong BlockNumber { get; set; }
         public string BlockHash { get; set; }
         public string ParentHash { get; set; }
         public string Nonce { get; set; }

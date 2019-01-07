@@ -28,7 +28,7 @@ namespace EllaX.Api.Application.Features.Block
 
         public class Model
         {
-            public string Number { get; set; }
+            public ulong BlockNumber { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, IPaginatedResult<Model>>

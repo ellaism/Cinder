@@ -35,15 +35,15 @@ namespace EllaX.Api.V1.Controllers
         }
 
         /// <summary>
-        ///     Get a Block by Number.
+        ///     Get a Block by Block Number.
         /// </summary>
         /// <returns>A Block.</returns>
         /// <response code="200">A Block was successfully retrieved.</response>
-        [HttpGet("{number}", Name = nameof(GetByNumberAsync))]
+        [HttpGet("{blockNumber}", Name = nameof(GetByNumberAsync))]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<Detail.Model>> GetByNumberAsync([FromRoute] [Required] ulong number)
+        public async Task<ActionResult<Detail.Model>> GetByNumberAsync([FromRoute] [Required] ulong blockNumber)
         {
-            Detail.Model model = await _mediator.Send(new Detail.Query {Number = number});
+            Detail.Model model = await _mediator.Send(new Detail.Query {BlockNumber = blockNumber});
 
             return Ok(model);
         }

@@ -11,12 +11,12 @@ namespace EllaX.Clients
         public MapperProfile()
         {
             CreateMap<BlockWithTransactions, Block>()
-                .ForMember(dest => dest.Number,
+                .ForMember(dest => dest.BlockNumber,
                     opt => opt.MapFrom<HexBigIntegerToUnsignedLongResolver, HexBigInteger>(src => src.Number))
                 .ForMember(dest => dest.Difficulty,
                     opt => opt.MapFrom<HexBigIntegerToUnsignedLongResolver, HexBigInteger>(src => src.Difficulty))
                 .ForMember(dest => dest.TotalDifficulty,
-                    opt => opt.MapFrom<HexBigIntegerToUnsignedLongResolver, HexBigInteger>(src => src.TotalDifficulty))
+                    opt => opt.MapFrom<HexBigIntegerToStringResolver, HexBigInteger>(src => src.TotalDifficulty))
                 .ForMember(dest => dest.Size,
                     opt => opt.MapFrom<HexBigIntegerToUnsignedLongResolver, HexBigInteger>(src => src.Size))
                 .ForMember(dest => dest.GasLimit,
@@ -37,7 +37,7 @@ namespace EllaX.Clients
                 .ForMember(dest => dest.GasPrice,
                     opt => opt.MapFrom<HexBigIntegerToUnsignedLongResolver, HexBigInteger>(src => src.GasPrice))
                 .ForMember(dest => dest.Value,
-                    opt => opt.MapFrom<HexBigIntegerToUnsignedLongResolver, HexBigInteger>(src => src.Value))
+                    opt => opt.MapFrom<HexBigIntegerToDecimalResolver, HexBigInteger>(src => src.Value))
                 .ForMember(dest => dest.Nonce,
                     opt => opt.MapFrom<HexBigIntegerToUnsignedLongResolver, HexBigInteger>(src => src.Nonce));
         }
