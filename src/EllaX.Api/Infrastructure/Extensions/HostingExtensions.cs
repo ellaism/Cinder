@@ -1,11 +1,13 @@
 ﻿using System;
+using EllaX.Api.Infrastructure;
 using EllaX.Data;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
-namespace EllaX.Api.Infrastructure.Extensions
+// ReSharper disable once CheckNamespace
+namespace EllaX.Extensions
 {
     public static class HostingExtensions
     {

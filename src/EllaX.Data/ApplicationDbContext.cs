@@ -20,21 +20,21 @@ namespace EllaX.Data
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
 
-        public void BeginTransaction()
+        public async Task BeginTransactionAsync()
         {
             if (_currentTransaction != null)
             {
                 return;
             }
 
-            _currentTransaction = Database.BeginTransaction(IsolationLevel.ReadCommitted);
+            _currentTransaction = await Database.BeginTransactionAsync(IsolationLevel.ReadCommitted).ConfigureAwait(false);
         }
 
         public async Task CommitTransactionAsync()
         {
             try
             {
-                await SaveChangesAsync();
+                await SaveChangesAsync().ConfigureAwait(false);
 
                 _currentTransaction?.Commit();
             }

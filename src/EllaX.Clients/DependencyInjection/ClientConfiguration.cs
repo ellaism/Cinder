@@ -1,9 +1,8 @@
-﻿using EllaX.Clients;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable once CheckNamespace
-namespace EllaX.DependencyInjection
+namespace EllaX.Clients.DependencyInjection
 {
     public static class ClientConfiguration
     {
