@@ -24,7 +24,7 @@ namespace EllaX.IntegrationTests
                     return;
                 }
 
-                await SliceFixture.ResetCheckpoint();
+                // todo
 
                 _initialized = true;
             }

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -16,8 +16,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EllaX.Core\EllaX.Core.csproj" />
-    <ProjectReference Include="..\EllaX.Data\EllaX.Data.csproj" />
+    <Folder Include="Features\" />
+    <Folder Include="Profiles\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EllaX.Services\EllaX.Services.csproj" />
   </ItemGroup>
 
 </Project>

@@ -6,7 +6,6 @@ FROM mcr.microsoft.com/dotnet/core/sdk:2.2-stretch AS build
 WORKDIR /src
 COPY ["src/EllaX.Api/EllaX.Api.csproj", "src/EllaX.Api/"]
 COPY ["src/EllaX.Application/EllaX.Application.csproj", "src/EllaX.Application/"]
-COPY ["src/EllaX.Services/EllaX.Services.csproj", "src/EllaX.Services/"]
 COPY ["src/EllaX.Core/EllaX.Core.csproj", "src/EllaX.Core/"]
 RUN dotnet restore "src/EllaX.Api/EllaX.Api.csproj"
 COPY . .

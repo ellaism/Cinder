@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Raven.DependencyInjection;
 
 namespace EllaX.Api.Infrastructure
 {
@@ -19,12 +20,10 @@ namespace EllaX.Api.Infrastructure
 
         public void ConfigureServices(IServiceCollection services)
         {
-            // ellax
-            services.AddDatabase(Configuration);
             services.AddMapper();
             services.AddMediation();
-
-            // mvc
+            services.AddRavenDbDocStore();
+            services.AddRavenDbAsyncSession();
             services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

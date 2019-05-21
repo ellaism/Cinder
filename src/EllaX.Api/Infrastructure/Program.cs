@@ -26,8 +26,6 @@ namespace EllaX.Api.Infrastructure
             {
                 Log.Information("Starting EllaX API v{Version}", Constants.Version);
                 IWebHost host = BuildWebHost(args);
-                // TODO: 20181221 make this optional
-                host.ApplyDbMigrations();
                 await host.RunAsync();
 
                 return 0;
