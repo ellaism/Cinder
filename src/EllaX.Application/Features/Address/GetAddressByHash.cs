@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentValidation;
@@ -17,16 +16,16 @@ namespace EllaX.Application.Features.Address
             }
         }
 
-        public class Query : IRequest<IList<Model>>
+        public class Query : IRequest<Model>
         {
             public string Hash { get; set; }
         }
 
         public class Model { }
 
-        public class Handler : IRequestHandler<Query, IList<Model>>
+        public class Handler : IRequestHandler<Query, Model>
         {
-            public Task<IList<Model>> Handle(Query request, CancellationToken cancellationToken)
+            public Task<Model> Handle(Query request, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }
