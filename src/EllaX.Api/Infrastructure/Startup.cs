@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Raven.DependencyInjection;
+using IConfigurationProvider = AutoMapper.IConfigurationProvider;
 
 namespace EllaX.Api.Infrastructure
 {
@@ -20,20 +21,23 @@ namespace EllaX.Api.Infrastructure
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddErrorHandling();
             services.AddMapper();
             services.AddMediation();
             services.AddRavenDbDocStore();
             services.AddRavenDbAsyncSession();
-            services.AddCors();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddValidation();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IConfigurationProvider mapper)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            // validate mapper configuration
+            mapper.AssertConfigurationIsValid();
 
             app.UseErrorHandling();
             app.UseCors(options => options.AllowAnyOrigin());
