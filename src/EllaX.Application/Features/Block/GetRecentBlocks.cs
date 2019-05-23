@@ -8,13 +8,13 @@ namespace EllaX.Application.Features.Block
 {
     public class GetRecentBlocks
     {
-        public class Query : IRequest<IList<Model>> { }
+        public class Query : IRequest<IEnumerable<Model>> { }
 
         public class Model { }
 
-        public class Handler : IRequestHandler<Query, IList<Model>>
+        public class Handler : IRequestHandler<Query, IEnumerable<Model>>
         {
-            public Task<IList<Model>> Handle(Query request, CancellationToken cancellationToken)
+            public Task<IEnumerable<Model>> Handle(Query request, CancellationToken cancellationToken)
             {
                 throw new NotImplementedException();
             }

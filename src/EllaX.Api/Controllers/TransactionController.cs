@@ -10,7 +10,7 @@ namespace EllaX.Api.Controllers
     {
         [HttpGet("recent")]
         [ProducesResponseType(typeof(GetRecentTransactions.Model), StatusCodes.Status200OK)]
-        public async Task<IList<GetRecentTransactions.Model>> GetRecentAsync()
+        public async Task<IEnumerable<GetRecentTransactions.Model>> GetRecentAsync()
         {
             return await Mediator.Send(new GetRecentTransactions.Query());
         }
