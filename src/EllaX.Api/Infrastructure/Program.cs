@@ -2,7 +2,6 @@
 using System.IO;
 using System.Threading.Tasks;
 using EllaX.Core.Exceptions;
-using EllaX.Extensions;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -47,11 +46,7 @@ namespace EllaX.Api.Infrastructure
 
         public static IWebHost BuildWebHost(string[] args)
         {
-            return WebHost.CreateDefaultBuilder(args)
-                .UseConfiguration(Configuration)
-                .UseStartup<Startup>()
-                .UseSerilog()
-                .Build();
+            return WebHost.CreateDefaultBuilder(args).UseConfiguration(Configuration).UseStartup<Startup>().UseSerilog().Build();
         }
     }
 }

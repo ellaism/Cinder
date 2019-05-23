@@ -9,9 +9,9 @@ namespace EllaX.Api.Controllers
     {
         [HttpGet("{hash}")]
         [ProducesResponseType(typeof(GetAddressByHash.Model), StatusCodes.Status200OK)]
-        public async Task<GetAddressByHash.Model> GetAsync([FromQuery] GetAddressByHash.Query query)
+        public async Task<GetAddressByHash.Model> GetAsync([FromRoute] string hash)
         {
-            return await Mediator.Send(query);
+            return await Mediator.Send(new GetAddressByHash.Query {Hash = hash});
         }
     }
 }

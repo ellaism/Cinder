@@ -25,7 +25,7 @@ namespace EllaX.Api.Infrastructure
             services.AddRavenDbDocStore();
             services.AddRavenDbAsyncSession();
             services.AddCors();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddValidation();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
