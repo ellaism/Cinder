@@ -1,0 +1,65 @@
+﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Cinder.Data;
+using Cinder.Documents;
+using MongoDB.Driver;
+using Nethereum.BlockchainProcessing.BlockStorage.Entities;
+using Nethereum.BlockchainProcessing.BlockStorage.Entities.Mapping;
+using Nethereum.BlockchainProcessing.BlockStorage.Repositories;
+using Nethereum.RPC.Eth.DTOs;
+
+namespace Cinder.Indexer.Infrastructure.Repositories
+{
+    public class ContractRepository : IndexerRepositoryBase<CinderContract>, IContractRepository
+    {
+        private readonly ConcurrentDictionary<string, CinderContract> _cachedContracts =
+            new ConcurrentDictionary<string, CinderContract>();
+
+        public ContractRepository(IMongoClient client, string databaseName) :
+            base(client, databaseName, CollectionName.Contracts) { }
+
+        public async Task FillCache()
+        {
+            using (IAsyncCursor<CinderContract> cursor = await Collection.FindAsync(FilterDefinition<CinderContract>.Empty))
+            {
+                while (await cursor.MoveNextAsync())
+                {
+                    IEnumerable<CinderContract> batch = cursor.Current;
+                    foreach (CinderContract contract in batch)
+                    {
+                        _cachedContracts.AddOrUpdate(contract.Address, contract, (s, existingContract) => contract);
+                    }
+                }
+            }
+        }
+
+        public async Task UpsertAsync(ContractCreationVO contractCreation)
+        {
+            CinderContract contract = contractCreation.MapToStorageEntityForUpsert<CinderContract>();
+            await UpsertDocumentAsync(contract);
+
+            _cachedContracts.AddOrUpdate(contract.Address, contract, (s, existingContract) => contract);
+        }
+
+        public async Task<bool> ExistsAsync(string contractAddress)
+        {
+            IContractView existing = await FindByAddressAsync(contractAddress);
+
+            return existing != null;
+        }
+
+        public async Task<IContractView> FindByAddressAsync(string contractAddress)
+        {
+            FilterDefinition<CinderContract> filter = CreateDocumentFilter(contractAddress);
+            CinderContract response = await Collection.Find(filter).SingleOrDefaultAsync();
+
+            return response;
+        }
+
+        public bool IsCached(string contractAddress)
+        {
+            return _cachedContracts.ContainsKey(contractAddress);
+        }
+    }
+}

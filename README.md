@@ -1,12 +1,16 @@
-# EllaX
+# Cinder
 
-[![Build Status](https://travis-ci.org/Nodestry/EllaX.svg?branch=develop)](https://travis-ci.org/Nodestry/EllaX)
+[![Build Status](https://travis-ci.org/majordutch/cinder.svg?branch=develop)](https://travis-ci.org/majordutch/cinder)
 
-https://nodestry.com
+https://ellaism.io
 
-## What is EllaX?
+## What is Cinder?
 
-EllaX is an explorer and indexer for the Ellaism blockchain.
+Cinder is an explorer and indexer for the Ellaism blockchain.
+
+## Thanks and Credits
+
+* Many thanks to the [Nethereum](https://github.com/Nethereum/Nethereum) team for providing the tools and samples to build this.
 
 ## Contributing to this project
 
@@ -19,5 +23,5 @@ review the [guidelines for contributing](CONTRIBUTING.md).
 
 ## License
 
-EllaX is released under the terms of the MIT license. See [LICENSE](LICENSE) 
+Cinder is released under the terms of the MIT license. See [LICENSE](LICENSE) 
 for more information or see https://opensource.org/licenses/MIT.
