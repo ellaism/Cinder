@@ -16,7 +16,7 @@ The issue tracker is the preferred channel for [bug reports](#bugs),
 requests](#pull-requests), but please respect the following restrictions:
 
 * Please **do not** use the issue tracker for personal support requests, find
-  us on [Gitter](https://gitter.im/Nodestry/EllaX) instead.
+  us on [Discord](https://discordapp.com/invite/gz9tURY) instead.
 
 * Please **do not** derail or troll issues. Keep the discussion on topic and
   respect the opinions of others.
