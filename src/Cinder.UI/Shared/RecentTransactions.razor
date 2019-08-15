@@ -1,0 +1,29 @@
+﻿@using Cinder.UI.Infrastructure.Dtos
+@inherits RecentTransactionsModel
+
+@if (Transactions == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <table class="table table-responsive table-striped">
+        <tr>
+            <th>Hash</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Value</th>
+        </tr>
+        @foreach (RecentTransactionDto transaction in Transactions)
+        {
+            <tr>
+                <td>@transaction.Hash</td>
+                <td>@transaction.AddressFrom</td>
+                <td>@transaction.AddressTo</td>
+                <td>@transaction.Value</td>
+            </tr>
+        }
+    </table>
+}

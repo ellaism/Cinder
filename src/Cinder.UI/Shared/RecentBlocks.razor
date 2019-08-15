@@ -1,0 +1,31 @@
+﻿@using Cinder.UI.Infrastructure.Dtos
+@inherits RecentBlocksModel
+
+@if (Blocks == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <table class="table table-responsive table-striped">
+        <tr>
+            <th>Height</th>
+            <th>Hash</th>
+            <th>Mined</th>
+            <th>Miner</th>
+            <th>Size</th>
+        </tr>
+        @foreach (RecentBlockDto block in Blocks)
+        {
+            <tr>
+                <td>@block.BlockNumber</td>
+                <td>@block.Hash</td>
+                <td>@block.Timestamp</td>
+                <td>@block.Miner</td>
+                <td>@block.Size</td>
+            </tr>
+        }
+    </table>
+}
