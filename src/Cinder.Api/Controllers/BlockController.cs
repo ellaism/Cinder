@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Cinder.Api.Infrastructure.Features.Block;
+﻿using Cinder.Api.Infrastructure.Features.Block;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Cinder.Api.Controllers
 {
