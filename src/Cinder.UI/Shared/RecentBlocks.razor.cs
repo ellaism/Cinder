@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cinder.UI.Infrastructure.Dtos;
+using Cinder.UI.Infrastructure.Events;
 using Cinder.UI.Infrastructure.Services;
+using Foundatio.Messaging;
 using Microsoft.AspNetCore.Components;
 
 namespace Cinder.UI.Shared
@@ -11,16 +13,24 @@ namespace Cinder.UI.Shared
         public IEnumerable<RecentBlockDto> Blocks;
 
         [Inject]
-        protected ICinderApiService BlockchainService { get; set; }
+        public IMessageBus Bus { get; set; }
 
-        protected override async Task OnParametersSetAsync()
+        [Inject]
+        public IStatsService Stats { get; set; }
+
+        protected override async Task OnInitializedAsync()
         {
-            await LoadBlocks();
+            Blocks = await Stats.GetRecentBlocks().ConfigureAwait(false);
+            await Bus.SubscribeAsync<RecentBlocksUpdatedEvent>(RecentBlocksUpdatedEventHandler).ConfigureAwait(false);
         }
 
-        private async Task LoadBlocks()
+        private async Task RecentBlocksUpdatedEventHandler(RecentBlocksUpdatedEvent message)
         {
-            Blocks = await BlockchainService.GetRecentBlocks();
+            await InvokeAsync(() =>
+            {
+                Blocks = message.Blocks;
+                StateHasChanged();
+            }).ConfigureAwait(false);
         }
     }
 }

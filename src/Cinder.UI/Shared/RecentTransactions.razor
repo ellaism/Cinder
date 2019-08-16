@@ -9,21 +9,23 @@
 }
 else
 {
-    <table class="table table-responsive table-striped">
-        <tr>
-            <th>Hash</th>
-            <th>From</th>
-            <th>To</th>
-            <th>Value</th>
-        </tr>
-        @foreach (RecentTransactionDto transaction in Transactions)
-        {
+    <div class="table-responsive">
+        <table class="table table-light table-striped">
             <tr>
-                <td>@transaction.Hash</td>
-                <td>@transaction.AddressFrom</td>
-                <td>@transaction.AddressTo</td>
-                <td>@transaction.Value</td>
+                <th>Hash</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Value</th>
             </tr>
-        }
-    </table>
+            @foreach (RecentTransactionDto transaction in Transactions)
+            {
+                <tr>
+                    <td>@transaction.Hash</td>
+                    <td>@transaction.AddressFrom</td>
+                    <td>@transaction.AddressTo</td>
+                    <td>@transaction.Value</td>
+                </tr>
+            }
+        </table>
+    </div>
 }
