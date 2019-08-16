@@ -2,19 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
-    <LangVersion>7.3</LangVersion>
+    <LangVersion>8</LangVersion>
     <UserSecretsId>b4f785f4-2591-4652-b879-18230cfc4ef8</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Foundatio" Version="8.1.2058" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Infrastructure\Services\" />
   </ItemGroup>
 
 </Project>

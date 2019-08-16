@@ -1,4 +1,6 @@
+using Cinder.UI.Infrastructure.Hosting;
 using Cinder.UI.Infrastructure.Services;
+using Foundatio.Messaging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,7 +24,11 @@ namespace Cinder.UI.Infrastructure
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            services.AddSingleton<IMessageBus>(new InMemoryMessageBus());
+            services.AddHostedService<StatsBackgroundService>();
             services.AddHttpClient<ICinderApiService, CinderApiService>();
+            services.AddMemoryCache();
+            services.AddSingleton<IStatsService, StatsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

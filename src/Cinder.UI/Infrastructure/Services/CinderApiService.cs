@@ -19,20 +19,22 @@ namespace Cinder.UI.Infrastructure.Services
 
         public async Task<IEnumerable<RecentBlockDto>> GetRecentBlocks()
         {
-            HttpResponseMessage response = await _client.GetAsync("/v1/block/recent");
+            HttpResponseMessage response = await _client.GetAsync("/v1/block/recent").ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
 
-            IEnumerable<RecentBlockDto> result = await response.Content.ReadAsAsync<IEnumerable<RecentBlockDto>>();
+            IEnumerable<RecentBlockDto> result =
+                await response.Content.ReadAsAsync<IEnumerable<RecentBlockDto>>().ConfigureAwait(false);
 
             return result;
         }
 
         public async Task<IEnumerable<RecentTransactionDto>> GetRecentTransactions()
         {
-            HttpResponseMessage response = await _client.GetAsync("/v1/transaction/recent");
+            HttpResponseMessage response = await _client.GetAsync("/v1/transaction/recent").ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
 
-            IEnumerable<RecentTransactionDto> result = await response.Content.ReadAsAsync<IEnumerable<RecentTransactionDto>>();
+            IEnumerable<RecentTransactionDto> result =
+                await response.Content.ReadAsAsync<IEnumerable<RecentTransactionDto>>().ConfigureAwait(false);
 
             return result;
         }
