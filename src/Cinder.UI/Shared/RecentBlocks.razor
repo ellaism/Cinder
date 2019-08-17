@@ -9,8 +9,9 @@
 }
 else
 {
-    <div class="table-responsive">
-        <table class="table table-light table-striped">
+    <div class="table-container">
+        <table class="table is-striped is-hoverable is-fullwidth">
+            <thead>
             <tr>
                 <th>Height</th>
                 <th>Hash</th>
@@ -18,16 +19,23 @@ else
                 <th>Miner</th>
                 <th>Size</th>
             </tr>
+            </thead>
+            <tbody>
             @foreach (RecentBlockDto block in Blocks)
             {
                 <tr>
-                    <td>@block.BlockNumber</td>
-                    <td>@block.Hash</td>
-                    <td>@block.Timestamp</td>
-                    <td>@block.Miner</td>
-                    <td>@block.Size</td>
+                    <td width="10%">
+                        <NavLink href="@("/block/" + block.Hash)">@block.BlockNumber</NavLink>
+                    </td>
+                    <td width="40%">
+                        <NavLink href="@("/block/" + block.Hash)">@block.Hash</NavLink>
+                    </td>
+                    <td width="15%">@block.Timestamp</td>
+                    <td width="15%"><NavLink href="@("/address/" + block.Miner)">@block.Miner</NavLink></td>
+                    <td width="20%">@block.Size</td>
                 </tr>
             }
+            </tbody>
         </table>
     </div>
 }

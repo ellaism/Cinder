@@ -16,7 +16,7 @@ namespace Cinder.UI.Shared
         public IMessageBus Bus { get; set; }
 
         [Inject]
-        public IStatsService Stats { get; set; }
+        public ITransactionService Stats { get; set; }
 
         protected override async Task OnInitializedAsync()
         {

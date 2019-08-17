@@ -9,23 +9,27 @@
 }
 else
 {
-    <div class="table-responsive">
-        <table class="table table-light table-striped">
+    <div class="table-container">
+        <table class="table is-striped is-hoverable is-fullwidth">
+            <thead>
             <tr>
                 <th>Hash</th>
                 <th>From</th>
                 <th>To</th>
                 <th>Value</th>
             </tr>
+            </thead>
+            <tbody>
             @foreach (RecentTransactionDto transaction in Transactions)
             {
                 <tr>
-                    <td>@transaction.Hash</td>
-                    <td>@transaction.AddressFrom</td>
-                    <td>@transaction.AddressTo</td>
-                    <td>@transaction.Value</td>
+                    <td width="40%">@transaction.Hash</td>
+                    <td width="25%">@transaction.AddressFrom</td>
+                    <td width="25%">@transaction.AddressTo</td>
+                    <td width="10%">@transaction.Value</td>
                 </tr>
             }
+            </tbody>
         </table>
     </div>
 }
