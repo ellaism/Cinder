@@ -4,10 +4,8 @@ using Cinder.UI.Infrastructure.Dtos;
 
 namespace Cinder.UI.Infrastructure.Services
 {
-    public interface IStatsService
+    public interface ITransactionService
     {
-        Task UpdateRecentBlocks(IEnumerable<RecentBlockDto> blocks);
-        Task<IEnumerable<RecentBlockDto>> GetRecentBlocks();
         Task UpdateRecentTransactions(IEnumerable<RecentTransactionDto> transactions);
         Task<IEnumerable<RecentTransactionDto>> GetRecentTransactions();
     }

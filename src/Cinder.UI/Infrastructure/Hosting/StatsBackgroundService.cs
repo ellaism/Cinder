@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Cinder.UI.Infrastructure.Clients;
 using Cinder.UI.Infrastructure.Dtos;
 using Cinder.UI.Infrastructure.Services;
 using Microsoft.Extensions.Hosting;
@@ -11,15 +12,18 @@ namespace Cinder.UI.Infrastructure.Hosting
 {
     public class StatsBackgroundService : BackgroundService
     {
-        private readonly ICinderApiService _apiService;
+        private readonly IApiClient _apiService;
+        private readonly IBlockService _blockService;
         private readonly ILogger<StatsBackgroundService> _logger;
-        private readonly IStatsService _stats;
+        private readonly ITransactionService _transactionService;
 
-        public StatsBackgroundService(ILogger<StatsBackgroundService> logger, ICinderApiService apiService, IStatsService stats)
+        public StatsBackgroundService(ILogger<StatsBackgroundService> logger, IApiClient apiService, IBlockService blockService,
+            ITransactionService transactionService)
         {
             _logger = logger;
             _apiService = apiService;
-            _stats = stats;
+            _blockService = blockService;
+            _transactionService = transactionService;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -30,11 +34,12 @@ namespace Cinder.UI.Infrastructure.Hosting
             {
                 try
                 {
-                    IEnumerable<RecentBlockDto> blocks = await _apiService.GetRecentBlocks().ConfigureAwait(false);
-                    await _stats.UpdateRecentBlocks(blocks).ConfigureAwait(false);
+                    IEnumerable<RecentBlockDto> blocks = await _apiService.GetRecentBlocks(20).ConfigureAwait(false);
+                    await _blockService.UpdateRecentBlocks(blocks).ConfigureAwait(false);
 
-                    IEnumerable<RecentTransactionDto> transactions = await _apiService.GetRecentTransactions().ConfigureAwait(false);
-                    await _stats.UpdateRecentTransactions(transactions).ConfigureAwait(false);
+                    IEnumerable<RecentTransactionDto> transactions =
+                        await _apiService.GetRecentTransactions(20).ConfigureAwait(false);
+                    await _transactionService.UpdateRecentTransactions(transactions).ConfigureAwait(false);
                 }
                 catch (Exception e)
                 {
