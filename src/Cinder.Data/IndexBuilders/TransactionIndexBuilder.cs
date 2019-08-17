@@ -13,6 +13,7 @@ namespace Cinder.Data.IndexBuilders
             Index(f => f.AddressFrom);
             Index(f => f.AddressTo);
             Index(f => f.NewContractAddress);
+            Index(f => f.TimeStamp);
         }
     }
 }
