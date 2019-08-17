@@ -12,11 +12,11 @@ namespace Cinder.Api.Infrastructure.Repositories
         public BlockReadOnlyRepository(IMongoClient client, string databaseName) : base(client, databaseName,
             CollectionName.Blocks) { }
 
-        public async Task<IReadOnlyCollection<CinderBlock>> GetRecentBlocks(int limit = 10,
+        public async Task<IReadOnlyCollection<CinderBlock>> GetRecentBlocks(int? limit = null,
             CancellationToken cancellationToken = default)
         {
             return await Collection.Find(FilterDefinition<CinderBlock>.Empty)
-                .Limit(limit)
+                .Limit(limit ?? 10)
                 .Sort(new SortDefinitionBuilder<CinderBlock>().Descending(block => block.BlockNumber))
                 .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);

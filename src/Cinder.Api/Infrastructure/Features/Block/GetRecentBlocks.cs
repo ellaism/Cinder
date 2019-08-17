@@ -4,13 +4,25 @@ using System.Threading;
 using System.Threading.Tasks;
 using Cinder.Api.Infrastructure.Repositories;
 using Cinder.Documents;
+using FluentValidation;
 using MediatR;
 
 namespace Cinder.Api.Infrastructure.Features.Block
 {
     public class GetRecentBlocks
     {
-        public class Query : IRequest<IEnumerable<Model>> { }
+        public class Validator : AbstractValidator<Query>
+        {
+            public Validator()
+            {
+                RuleFor(m => m.Limit).GreaterThanOrEqualTo(1);
+            }
+        }
+
+        public class Query : IRequest<IEnumerable<Model>>
+        {
+            public int? Limit { get; set; }
+        }
 
         public class Model
         {
@@ -34,7 +46,7 @@ namespace Cinder.Api.Infrastructure.Features.Block
             public async Task<IEnumerable<Model>> Handle(Query request, CancellationToken cancellationToken)
             {
                 IReadOnlyCollection<CinderBlock> blocks =
-                    await _blockRepository.GetRecentBlocks(cancellationToken: cancellationToken).ConfigureAwait(false);
+                    await _blockRepository.GetRecentBlocks(request.Limit, cancellationToken).ConfigureAwait(false);
 
                 return blocks.Select(block => new Model
                 {

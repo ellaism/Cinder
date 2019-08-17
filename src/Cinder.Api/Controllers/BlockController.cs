@@ -1,8 +1,8 @@
-﻿using Cinder.Api.Infrastructure.Features.Block;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Cinder.Api.Infrastructure.Features.Block;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Cinder.Api.Controllers
 {
@@ -10,9 +10,9 @@ namespace Cinder.Api.Controllers
     {
         [HttpGet("recent")]
         [ProducesResponseType(typeof(GetRecentBlocks.Model), StatusCodes.Status200OK)]
-        public async Task<IEnumerable<GetRecentBlocks.Model>> GetRecentAsync()
+        public async Task<IEnumerable<GetRecentBlocks.Model>> GetRecentAsync([FromQuery] int? limit = null)
         {
-            return await Mediator.Send(new GetRecentBlocks.Query());
+            return await Mediator.Send(new GetRecentBlocks.Query {Limit = limit});
         }
 
         [HttpGet("{hash}")]
