@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Cinder.UI.Infrastructure.Components;
 using Cinder.UI.Infrastructure.Dtos;
 using Cinder.UI.Infrastructure.Events;
 using Cinder.UI.Infrastructure.Services;
@@ -10,7 +11,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Cinder.UI.Shared
 {
-    public class RecentBlocksModel : ComponentBase, IDisposable
+    public class RecentBlocksModel : CinderComponentBase, IDisposable
     {
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         public IEnumerable<RecentBlockDto> Blocks;
@@ -28,9 +29,11 @@ namespace Cinder.UI.Shared
 
         protected override async Task OnParametersSetAsync()
         {
+            SetLoading(true);
             Blocks = await BlockService.GetRecentBlocks().ConfigureAwait(false);
             await Bus.SubscribeAsync<RecentBlocksUpdatedEvent>(RecentBlocksUpdatedEventHandler, _cancellationTokenSource.Token)
                 .ConfigureAwait(false);
+            SetLoading(false);
         }
 
         private async Task RecentBlocksUpdatedEventHandler(RecentBlocksUpdatedEvent message)

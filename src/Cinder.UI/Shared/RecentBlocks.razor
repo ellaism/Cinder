@@ -1,7 +1,7 @@
 ﻿@using Cinder.UI.Infrastructure.Dtos
 @inherits RecentBlocksModel
 
-@if (Blocks == null)
+@if (IsLoading)
 {
     <p>
         <em>Loading...</em>

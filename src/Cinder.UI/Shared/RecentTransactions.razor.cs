@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Cinder.UI.Infrastructure.Components;
 using Cinder.UI.Infrastructure.Dtos;
 using Cinder.UI.Infrastructure.Events;
 using Cinder.UI.Infrastructure.Services;
@@ -8,7 +9,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Cinder.UI.Shared
 {
-    public class RecentTransactionsModel : ComponentBase
+    public class RecentTransactionsModel : CinderComponentBase
     {
         public IEnumerable<RecentTransactionDto> Transactions;
 
@@ -20,8 +21,10 @@ namespace Cinder.UI.Shared
 
         protected override async Task OnParametersSetAsync()
         {
+            SetLoading(true);
             Transactions = await Stats.GetRecentTransactions().ConfigureAwait(false);
             await Bus.SubscribeAsync<RecentTransactionsUpdatedEvent>(RecentTransactionsUpdatedEventHandler).ConfigureAwait(false);
+            SetLoading(false);
         }
 
         private async Task RecentTransactionsUpdatedEventHandler(RecentTransactionsUpdatedEvent message)

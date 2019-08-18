@@ -1,11 +1,12 @@
 ﻿using System.Threading.Tasks;
+using Cinder.UI.Infrastructure.Components;
 using Cinder.UI.Infrastructure.Dtos;
 using Cinder.UI.Infrastructure.Services;
 using Microsoft.AspNetCore.Components;
 
 namespace Cinder.UI.Pages
 {
-    public class AddressModel : ComponentBase
+    public class AddressModel : CinderComponentBase
     {
         public AddressDto Address;
 
@@ -17,7 +18,9 @@ namespace Cinder.UI.Pages
 
         protected override async Task OnParametersSetAsync()
         {
+            SetLoading(true);
             Address = await AddressService.GetAddressByHash(Hash).ConfigureAwait(false);
+            SetLoading(false);
         }
     }
 }
