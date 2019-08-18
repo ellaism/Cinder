@@ -30,6 +30,7 @@ namespace Cinder.UI.Infrastructure
             services.AddSingleton<ICacheClient, InMemoryCacheClient>();
             services.AddHostedService<StatsBackgroundService>();
             services.AddHttpClient<IApiClient, ApiClient>();
+            services.AddSingleton<IAddressService, AddressService>();
             services.AddSingleton<IBlockService, BlockService>();
             services.AddSingleton<ITransactionService, TransactionService>();
         }

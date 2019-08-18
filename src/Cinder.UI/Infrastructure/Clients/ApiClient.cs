@@ -17,6 +17,18 @@ namespace Cinder.UI.Infrastructure.Clients
             _client = client;
         }
 
+        public async Task<AddressDto> GetAddressByHash(string hash)
+        {
+            string url = $"/v1/address/{hash}";
+
+            using HttpResponseMessage response = await _client.GetAsync(url).ConfigureAwait(false);
+            response.EnsureSuccessStatusCode();
+
+            AddressDto result = await response.Content.ReadAsAsync<AddressDto>().ConfigureAwait(false);
+
+            return result;
+        }
+
         public async Task<BlockDto> GetBlockByHash(string hash)
         {
             string url = $"/v1/block/{hash}";
