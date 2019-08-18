@@ -25,13 +25,13 @@ else
             {
                 <tr>
                     <td width="10%">
-                        <NavLink href="@("/block/" + block.Hash)">@block.BlockNumber</NavLink>
+                        <NavLink href="@($"/block/{block.Hash}")">@block.BlockNumber</NavLink>
                     </td>
                     <td width="40%">
-                        <NavLink href="@("/block/" + block.Hash)">@block.Hash</NavLink>
+                        <NavLink href="@($"/block/{block.Hash}")">@block.Hash</NavLink>
                     </td>
                     <td width="15%">@block.Timestamp</td>
-                    <td width="15%"><NavLink href="@("/address/" + block.Miner)">@block.Miner</NavLink></td>
+                    <td width="15%"><NavLink href="@($"/address/{block.Miner}")">@block.Miner</NavLink></td>
                     <td width="20%">@block.Size</td>
                 </tr>
             }

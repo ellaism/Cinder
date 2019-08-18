@@ -1,2 +1,80 @@
 ﻿@page "/block/{hash}"
 @inherits BlockModel
+
+
+@if (Block == null)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <h1 class="title is-4 is-spaced">Block <small class="has-text-grey">#@Block.BlockNumber</small></h1>
+    <div class="table-container">
+        <table class="table is-striped is-hoverable is-fullwidth">
+            <tbody>
+            <tr>
+                <th>Block Height</th>
+                <td>@Block.BlockNumber</td>
+            </tr>
+            <tr>
+                <th>Timestamp</th>
+                <td>@Block.Timestamp</td>
+            </tr>
+            <tr>
+                <th>Transactions</th>
+                <td>@Block.TransactionCount</td>
+            </tr>
+            <tr>
+                <th>Mined by</th>
+                <td>
+                    <NavLink href="@($"/address/{Block.Miner}")">@Block.Miner</NavLink>
+                </td>
+            </tr>
+            <tr>
+                <th>Difficulty</th>
+                <td>@Block.Difficulty</td>
+            </tr>
+            <tr>
+                <th>Total Difficulty</th>
+                <td>@Block.TotalDifficulty</td>
+            </tr>
+            <tr>
+                <th>Size</th>
+                <td>@Block.Size</td>
+            </tr>
+            <tr>
+                <th>Gas Used</th>
+                <td>@Block.GasUsed</td>
+            </tr>
+            <tr>
+                <th>Gas Limit</th>
+                <td>@Block.GasLimit</td>
+            </tr>
+            <tr>
+                <th>Extra Data</th>
+                <td>@Block.ExtraData</td>
+            </tr>
+            <tr>
+                <th>Hash</th>
+                <td>@Block.Hash</td>
+            </tr>
+            <tr>
+                <th>Parent Hash</th>
+                <td>
+                    <NavLink href="@($"/block/{Block.ParentHash}")">@Block.ParentHash</NavLink>
+                </td>
+            </tr>
+            <tr>
+                <th>Sha3Uncles</th>
+                <td>@Block.Sha3Uncles</td>
+            </tr>
+            <tr>
+                <th>Nonce</th>
+                <td>@Block.Nonce</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+}

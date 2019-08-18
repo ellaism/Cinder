@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Foundatio.Caching;
 
@@ -11,6 +11,11 @@ namespace Cinder.UI.Infrastructure.Services
         protected ServiceBase(ICacheClient client, string prefix)
         {
             _cache = new ScopedCacheClient(client, prefix);
+        }
+
+        protected virtual async Task<bool> Exists(string key)
+        {
+            return await _cache.ExistsAsync(key).ConfigureAwait(false);
         }
 
         protected virtual async Task Save<T>(string key, T obj, TimeSpan? expiresIn = null)

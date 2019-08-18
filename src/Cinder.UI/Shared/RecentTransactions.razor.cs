@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cinder.UI.Infrastructure.Dtos;
 using Cinder.UI.Infrastructure.Events;
@@ -18,7 +18,7 @@ namespace Cinder.UI.Shared
         [Inject]
         public ITransactionService Stats { get; set; }
 
-        protected override async Task OnInitializedAsync()
+        protected override async Task OnParametersSetAsync()
         {
             Transactions = await Stats.GetRecentTransactions().ConfigureAwait(false);
             await Bus.SubscribeAsync<RecentTransactionsUpdatedEvent>(RecentTransactionsUpdatedEventHandler).ConfigureAwait(false);

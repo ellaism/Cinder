@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,7 +26,7 @@ namespace Cinder.UI.Shared
             _cancellationTokenSource.Cancel();
         }
 
-        protected override async Task OnInitializedAsync()
+        protected override async Task OnParametersSetAsync()
         {
             Blocks = await BlockService.GetRecentBlocks().ConfigureAwait(false);
             await Bus.SubscribeAsync<RecentBlocksUpdatedEvent>(RecentBlocksUpdatedEventHandler, _cancellationTokenSource.Token)
