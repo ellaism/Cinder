@@ -13,7 +13,7 @@ namespace Cinder.Api.Infrastructure.Features.Block
         {
             public Validator()
             {
-                RuleFor(m => m.Hash).NotEmpty();
+                RuleFor(m => m.Hash).NotEmpty().Length(66);
             }
         }
 
