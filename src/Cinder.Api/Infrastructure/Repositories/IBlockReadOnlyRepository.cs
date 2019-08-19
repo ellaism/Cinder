@@ -9,5 +9,6 @@ namespace Cinder.Api.Infrastructure.Repositories
     {
         Task<IReadOnlyCollection<CinderBlock>> GetRecentBlocks(int? limit = null, CancellationToken cancellationToken = default);
         Task<CinderBlock> GetBlockByHash(string hash, CancellationToken cancellationToken = default);
+        Task<CinderBlock> GetBlockByNumber(ulong number, CancellationToken cancellationToken = default);
     }
 }

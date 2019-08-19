@@ -8,6 +8,7 @@ namespace Cinder.UI.Infrastructure.Clients
     {
         Task<AddressDto> GetAddressByHash(string hash);
         Task<BlockDto> GetBlockByHash(string hash);
+        Task<BlockDto> GetBlockByNumber(ulong number);
         Task<IEnumerable<RecentBlockDto>> GetRecentBlocks(int? limit = null);
         Task<IEnumerable<RecentTransactionDto>> GetRecentTransactions(int? limit = null);
     }

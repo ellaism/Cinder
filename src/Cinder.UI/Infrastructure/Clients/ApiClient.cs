@@ -41,6 +41,18 @@ namespace Cinder.UI.Infrastructure.Clients
             return result;
         }
 
+        public async Task<BlockDto> GetBlockByNumber(ulong number)
+        {
+            string url = $"/v1/block/height/{number}";
+
+            using HttpResponseMessage response = await _client.GetAsync(url).ConfigureAwait(false);
+            response.EnsureSuccessStatusCode();
+
+            BlockDto result = await response.Content.ReadAsAsync<BlockDto>().ConfigureAwait(false);
+
+            return result;
+        }
+
         public async Task<IEnumerable<RecentBlockDto>> GetRecentBlocks(int? limit = null)
         {
             string url = "/v1/block/recent";

@@ -28,5 +28,12 @@ namespace Cinder.Api.Infrastructure.Repositories
                 .SingleAsync(cancellationToken)
                 .ConfigureAwait(false);
         }
+
+        public async Task<CinderBlock> GetBlockByNumber(ulong number, CancellationToken cancellationToken = default)
+        {
+            return await Collection.Find(Builders<CinderBlock>.Filter.Eq(document => document.BlockNumber, number.ToString()))
+                .SingleAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
     }
 }

@@ -9,5 +9,6 @@ namespace Cinder.UI.Infrastructure.Services
         Task UpdateRecentBlocks(IEnumerable<RecentBlockDto> blocks);
         Task<IEnumerable<RecentBlockDto>> GetRecentBlocks();
         Task<BlockDto> GetBlockByHash(string hash);
+        Task<BlockDto> GetBlockByNumber(ulong number);
     }
 }

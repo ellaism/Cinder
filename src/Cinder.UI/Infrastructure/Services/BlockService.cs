@@ -59,6 +59,24 @@ namespace Cinder.UI.Infrastructure.Services
             return block;
         }
 
+        public async Task<BlockDto> GetBlockByNumber(ulong number)
+        {
+            string key = $"{CacheKey.Block}{number}";
+
+            BlockDto block;
+            if (await Exists(key).ConfigureAwait(false))
+            {
+                block = await Get<BlockDto>(key).ConfigureAwait(false);
+            }
+            else
+            {
+                block = await _api.GetBlockByNumber(number).ConfigureAwait(false);
+                await Save(key, block, TimeSpan.FromMinutes(10)).ConfigureAwait(false);
+            }
+
+            return block;
+        }
+
         internal static class CacheKey
         {
             public const string RecentBlocks = "RecentBlocks";
