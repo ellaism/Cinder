@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Cinder.Api.Infrastructure.Repositories;
+using Cinder.Api.Infrastructure.Services;
 using Cinder.Documents;
 using FluentValidation;
 using MediatR;
@@ -30,6 +31,7 @@ namespace Cinder.Api.Infrastructure.Features.Block
             public string Hash { get; set; }
             public ulong Size { get; set; }
             public string Miner { get; set; }
+            public string MinerDisplay { get; set; }
             public ulong Timestamp { get; set; }
             public ulong TransactionCount { get; set; }
         }
@@ -37,10 +39,12 @@ namespace Cinder.Api.Infrastructure.Features.Block
         public class Handler : IRequestHandler<Query, IEnumerable<Model>>
         {
             private readonly IBlockReadOnlyRepository _blockRepository;
+            private readonly IMinerLookupService _minerLookupService;
 
-            public Handler(IBlockReadOnlyRepository blockRepository)
+            public Handler(IBlockReadOnlyRepository blockRepository, IMinerLookupService minerLookupService)
             {
                 _blockRepository = blockRepository;
+                _minerLookupService = minerLookupService;
             }
 
             public async Task<IEnumerable<Model>> Handle(Query request, CancellationToken cancellationToken)
@@ -54,6 +58,7 @@ namespace Cinder.Api.Infrastructure.Features.Block
                     Hash = block.Hash,
                     Size = ulong.Parse(block.Size),
                     Miner = block.Miner,
+                    MinerDisplay = _minerLookupService.GetByAddressOrDefault(block.Miner),
                     Timestamp = ulong.Parse(block.Timestamp),
                     TransactionCount = (ulong) block.TransactionCount
                 });

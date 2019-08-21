@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using Cinder.Api.Infrastructure.Repositories;
+using Cinder.Api.Infrastructure.Services;
 using Cinder.Documents;
 using FluentValidation;
 using MediatR;
@@ -33,6 +34,7 @@ namespace Cinder.Api.Infrastructure.Features.Block
             public string TotalDifficulty { get; set; }
             public ulong Size { get; set; }
             public string Miner { get; set; }
+            public string MinerDisplay { get; set; }
             public ulong GasLimit { get; set; }
             public ulong GasUsed { get; set; }
             public ulong Timestamp { get; set; }
@@ -45,10 +47,12 @@ namespace Cinder.Api.Infrastructure.Features.Block
         public class Handler : IRequestHandler<Query, Model>
         {
             private readonly IBlockReadOnlyRepository _blockRepository;
+            private readonly IMinerLookupService _minerLookupService;
 
-            public Handler(IBlockReadOnlyRepository blockRepository)
+            public Handler(IBlockReadOnlyRepository blockRepository, IMinerLookupService minerLookupService)
             {
                 _blockRepository = blockRepository;
+                _minerLookupService = minerLookupService;
             }
 
             public async Task<Model> Handle(Query request, CancellationToken cancellationToken)
@@ -64,6 +68,7 @@ namespace Cinder.Api.Infrastructure.Features.Block
                     GasUsed = ulong.Parse(block.GasUsed),
                     Hash = block.Hash,
                     Miner = block.Miner,
+                    MinerDisplay = _minerLookupService.GetByAddressOrDefault(block.Miner),
                     Nonce = block.Nonce,
                     ParentHash = block.ParentHash,
                     Size = ulong.Parse(block.Size),
