@@ -30,6 +30,7 @@ namespace Cinder.Api.Infrastructure
             services.AddHosting();
             //services.AddMessaging();
             services.AddMediator();
+            services.AddServices();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddValidation();
         }
 
