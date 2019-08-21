@@ -12,13 +12,14 @@ else
     <div class="table-container">
         <table class="table is-striped is-hoverable is-fullwidth">
             <thead>
-            <tr>
-                <th>Height</th>
-                <th>Hash</th>
-                <th>Mined</th>
-                <th>Miner</th>
-                <th>Size</th>
-            </tr>
+                <tr>
+                    <th>Height</th>
+                    <th>Relayed By</th>
+                    <th>Age</th>
+                    <th class="has-text-right">Transactions</th>
+                    <th class="has-text-right">Size (B)</th>
+                    <th>Block Hash</th>
+                </tr>
             </thead>
             <tbody>
             @foreach (RecentBlockDto block in Blocks)
@@ -27,12 +28,15 @@ else
                     <td width="10%">
                         <NavLink href="@($"/block/{block.Hash}")">@block.BlockNumber</NavLink>
                     </td>
-                    <td width="40%">
+                    <td width="10%">
+                        <NavLink href="@($"/address/{block.Miner}")">@block.MinerDisplay</NavLink>
+                    </td>
+                    <td width="15%">@block.TimestampAsHumanString</td>
+                    <td width="10%" class="has-text-right">@block.TransactionCountAsString</td>
+                    <td width="10%" class="has-text-right">@block.SizeAsString</td>
+                    <td width="45%">
                         <NavLink href="@($"/block/{block.Hash}")">@block.Hash</NavLink>
                     </td>
-                    <td width="15%">@block.Timestamp</td>
-                    <td width="15%"><NavLink href="@($"/address/{block.Miner}")">@block.Miner</NavLink></td>
-                    <td width="20%">@block.Size</td>
                 </tr>
             }
             </tbody>

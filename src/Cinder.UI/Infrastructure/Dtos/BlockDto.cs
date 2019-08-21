@@ -1,4 +1,7 @@
-﻿namespace Cinder.UI.Infrastructure.Dtos
+﻿using System;
+using Humanizer;
+
+namespace Cinder.UI.Infrastructure.Dtos
 {
     public class BlockDto
     {
@@ -11,9 +14,12 @@
         public string TotalDifficulty { get; set; }
         public ulong Size { get; set; }
         public string Miner { get; set; }
+        public string MinerDisplay { get; set; }
         public ulong GasLimit { get; set; }
         public ulong GasUsed { get; set; }
         public ulong Timestamp { get; set; }
+        public DateTimeOffset TimestampAsDate => DateTimeOffset.FromUnixTimeSeconds((long)Timestamp);
+        public string TimestampAsHumanString => TimestampAsDate.Humanize();
         public ulong TransactionCount { get; set; }
         public string[] Uncles { get; set; }
         public ulong UncleCount { get; set; }
