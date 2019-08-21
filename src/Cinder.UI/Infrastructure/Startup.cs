@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace Cinder.UI.Infrastructure
 {
@@ -49,6 +50,7 @@ namespace Cinder.UI.Infrastructure
 
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseSerilogRequestLogging();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapBlazorHub<App>("app");
