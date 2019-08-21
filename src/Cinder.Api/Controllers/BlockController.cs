@@ -22,7 +22,7 @@ namespace Cinder.Api.Controllers
             return await Mediator.Send(new GetBlockByHash.Query {Hash = hash});
         }
 
-        [HttpGet("{number}")]
+        [HttpGet("height/{number}")]
         [ProducesResponseType(typeof(GetBlockByNumber.Model), StatusCodes.Status200OK)]
         public async Task<GetBlockByNumber.Model> GetBlockByNumberAsync([FromRoute] ulong number)
         {
