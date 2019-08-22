@@ -15,7 +15,7 @@ namespace Cinder.UI.Infrastructure.Services
         private readonly IApiClient _api;
         private readonly IMessageBus _bus;
 
-        public TransactionService(ICacheClient cache, IMessageBus bus, IApiClient api) : base(cache, nameof(BlockService))
+        public TransactionService(ICacheClient cache, IMessageBus bus, IApiClient api) : base(cache, nameof(TransactionService))
         {
             _bus = bus;
             _api = api;
