@@ -24,14 +24,14 @@ namespace Cinder.UI.Infrastructure.Services
         public async Task UpdateRecentBlocks(IEnumerable<RecentBlockDto> blocks)
         {
             IEnumerable<RecentBlockDto> enumerable = blocks as RecentBlockDto[] ?? blocks.ToArray();
-            await Save(CacheKey.RecentBlocks, enumerable).ConfigureAwait(false);
+            await Save(CacheKey.Recent, enumerable).ConfigureAwait(false);
             await _bus.PublishAsync(new RecentBlocksUpdatedEvent {Blocks = enumerable}).ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<RecentBlockDto>> GetRecentBlocks()
         {
             IEnumerable<RecentBlockDto> blocks =
-                await Get<IEnumerable<RecentBlockDto>>(CacheKey.RecentBlocks).ConfigureAwait(false);
+                await Get<IEnumerable<RecentBlockDto>>(CacheKey.Recent).ConfigureAwait(false);
 
             return blocks ?? new List<RecentBlockDto>();
         }
@@ -59,7 +59,7 @@ namespace Cinder.UI.Infrastructure.Services
             return block;
         }
 
-        public async Task<BlockDto> GetBlockByNumber(ulong number)
+        public async Task<BlockDto> GetBlockByNumber(string number)
         {
             string key = $"{CacheKey.Block}{number}";
 
@@ -79,7 +79,7 @@ namespace Cinder.UI.Infrastructure.Services
 
         internal static class CacheKey
         {
-            public const string RecentBlocks = "RecentBlocks";
+            public const string Recent = "Recent";
             public const string Block = "Block";
         }
     }
