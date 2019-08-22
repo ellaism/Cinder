@@ -9,6 +9,7 @@ namespace Cinder.Data.IndexBuilders
 
         public override void EnsureIndexes()
         {
+            Index(f => f.BlockHash);
             Index(f => f.Hash);
             Index(f => f.AddressFrom);
             Index(f => f.AddressTo);

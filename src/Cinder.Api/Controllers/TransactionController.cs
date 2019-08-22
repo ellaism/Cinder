@@ -17,9 +17,16 @@ namespace Cinder.Api.Controllers
 
         [HttpGet("{hash}")]
         [ProducesResponseType(typeof(GetTransactionByHash.Model), StatusCodes.Status200OK)]
-        public async Task<GetTransactionByHash.Model> GetBlockByHashAsync(string hash)
+        public async Task<GetTransactionByHash.Model> GetTransactionByHashAsync(string hash)
         {
             return await Mediator.Send(new GetTransactionByHash.Query {Hash = hash});
+        }
+
+        [HttpGet("block/{blockHash}")]
+        [ProducesResponseType(typeof(GetTransactionByBlockHash.Model), StatusCodes.Status200OK)]
+        public async Task<IEnumerable<GetTransactionByBlockHash.Model>> GetTransactionByBlockHash(string blockHash)
+        {
+            return await Mediator.Send(new GetTransactionByBlockHash.Query {BlockHash = blockHash});
         }
     }
 }

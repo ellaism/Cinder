@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -41,7 +41,7 @@ namespace Cinder.UI.Infrastructure.Clients
             return result;
         }
 
-        public async Task<BlockDto> GetBlockByNumber(ulong number)
+        public async Task<BlockDto> GetBlockByNumber(string number)
         {
             string url = $"/v1/block/height/{number}";
 
@@ -85,6 +85,19 @@ namespace Cinder.UI.Infrastructure.Clients
 
             IEnumerable<RecentTransactionDto> result =
                 await response.Content.ReadAsAsync<IEnumerable<RecentTransactionDto>>().ConfigureAwait(false);
+
+            return result;
+        }
+
+        public async Task<IEnumerable<TransactionDto>> GetTransactionsByBlockHash(string blockHash)
+        {
+            string url = $"/v1/transaction/block/{blockHash}";
+
+            using HttpResponseMessage response = await _client.GetAsync(url).ConfigureAwait(false);
+            response.EnsureSuccessStatusCode();
+
+            IEnumerable<TransactionDto> result =
+                await response.Content.ReadAsAsync<IEnumerable<TransactionDto>>().ConfigureAwait(false);
 
             return result;
         }

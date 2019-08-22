@@ -11,5 +11,8 @@ namespace Cinder.Api.Infrastructure.Repositories
             CancellationToken cancellationToken = default);
 
         Task<CinderTransaction> GetTransactionByHash(string hash, CancellationToken cancellationToken = default);
+
+        Task<IEnumerable<CinderTransaction>> GetTransactionByBlockHash(string blockHash,
+            CancellationToken cancellationToken = default);
     }
 }

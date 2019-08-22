@@ -8,5 +8,6 @@ namespace Cinder.UI.Infrastructure.Services
     {
         Task UpdateRecentTransactions(IEnumerable<RecentTransactionDto> transactions);
         Task<IEnumerable<RecentTransactionDto>> GetRecentTransactions();
+        Task<IEnumerable<TransactionDto>> GetTransactionsByBlockHash(string blockHash);
     }
 }
