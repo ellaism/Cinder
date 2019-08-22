@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using Cinder.Api.Infrastructure.Repositories;
 using Cinder.Documents;
 using FluentValidation;
 using MediatR;
+using Nethereum.Util;
 
 namespace Cinder.Api.Infrastructure.Features.Transaction
 {
@@ -32,7 +34,7 @@ namespace Cinder.Api.Infrastructure.Features.Transaction
             public string AddressFrom { get; set; }
             public ulong Timestamp { get; set; }
             public ulong TransactionIndex { get; set; }
-            public string Value { get; set; }
+            public decimal Value { get; set; }
             public string AddressTo { get; set; }
             public string Gas { get; set; }
             public string GasPrice { get; set; }
@@ -68,8 +70,8 @@ namespace Cinder.Api.Infrastructure.Features.Transaction
                     AddressFrom = transaction.AddressFrom,
                     Timestamp = ulong.Parse(transaction.TimeStamp),
                     TransactionIndex = ulong.Parse(transaction.TransactionIndex),
-                    Value = transaction.Value,
-                    AddressTo = transaction.AddressFrom,
+                    Value = UnitConversion.Convert.FromWei(BigInteger.Parse(transaction.Value)),
+                    AddressTo = transaction.AddressTo,
                     Gas = transaction.Gas,
                     GasPrice = transaction.GasPrice,
                     Input = transaction.Input,

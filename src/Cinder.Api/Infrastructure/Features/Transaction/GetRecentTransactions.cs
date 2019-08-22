@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using Cinder.Api.Infrastructure.Repositories;
 using Cinder.Documents;
 using MediatR;
+using Nethereum.Util;
 
 namespace Cinder.Api.Infrastructure.Features.Transaction
 {
@@ -19,7 +21,7 @@ namespace Cinder.Api.Infrastructure.Features.Transaction
             public string Hash { get; set; }
             public string AddressFrom { get; set; }
             public ulong Timestamp { get; set; }
-            public string Value { get; set; }
+            public decimal Value { get; set; }
             public string AddressTo { get; set; }
         }
 
@@ -45,7 +47,7 @@ namespace Cinder.Api.Infrastructure.Features.Transaction
                     Hash = transaction.Hash,
                     AddressFrom = transaction.AddressFrom,
                     Timestamp = ulong.Parse(transaction.TimeStamp),
-                    Value = transaction.Value,
+                    Value = UnitConversion.Convert.FromWei(BigInteger.Parse(transaction.Value)),
                     AddressTo = transaction.AddressTo
                 });
             }

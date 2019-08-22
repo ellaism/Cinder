@@ -7,7 +7,7 @@
         public string Hash { get; set; }
         public string AddressFrom { get; set; }
         public ulong Timestamp { get; set; }
-        public string Value { get; set; }
+        public decimal Value { get; set; }
         public string AddressTo { get; set; }
     }
 }
