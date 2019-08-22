@@ -1,0 +1,20 @@
+.text-truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.is-medium-hash {
+    display: inline-block;
+    max-width: 132px;
+}
+
+.is-large-hash {
+    display: inline-block;
+    max-width: 320px;
+}
+
+.is-extra-large-hash {
+    display: inline-block;
+    max-width: 420px;
+}

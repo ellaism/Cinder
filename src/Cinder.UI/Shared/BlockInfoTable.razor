@@ -6,11 +6,11 @@
         <table class="table is-fullwidth">
             <tbody>
             <tr>
-                <th>Block Height</th>
+                <th>Height</th>
                 <td>@Block.BlockNumber</td>
             </tr>
             <tr>
-                <th>Timestamp</th>
+                <th>Age</th>
                 <td>@Block.TimestampAsHumanString (@Block.TimestampAsDate.ToString("R"))</td>
             </tr>
             <tr>
@@ -18,7 +18,7 @@
                 <td>@Block.TransactionCount</td>
             </tr>
             <tr>
-                <th>Mined by</th>
+                <th>Relayed By</th>
                 <td>
                     <NavLink href="@($"/address/{Block.Miner}")">@Block.MinerDisplay</NavLink>
                 </td>

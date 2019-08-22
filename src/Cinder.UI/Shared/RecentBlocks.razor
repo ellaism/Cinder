@@ -31,11 +31,11 @@ else
                     <td width="15%">
                         <NavLink href="@($"/address/{block.Miner}")">@block.MinerDisplay</NavLink>
                     </td>
-                    <td width="10%">@block.TimestampAsHumanString</td>
+                    <td width="15%">@block.TimestampAsHumanString</td>
                     <td width="10%" class="has-text-right">@block.TransactionCountAsString</td>
-                    <td width="10%" class="has-text-right">@block.SizeAsString</td>
-                    <td width="45%">
-                        <NavLink href="@($"/block/{block.Hash}")">@block.Hash</NavLink>
+                    <td width="15%" class="has-text-right">@block.SizeAsString</td>
+                    <td width="35%">
+                        <NavLink href="@($"/block/{block.Hash}")" class="is-extra-large-hash text-truncate">@block.Hash</NavLink>
                     </td>
                 </tr>
             }
