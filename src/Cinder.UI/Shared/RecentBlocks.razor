@@ -28,10 +28,10 @@ else
                     <td width="10%">
                         <NavLink href="@($"/block/{block.Hash}")">@block.BlockNumber</NavLink>
                     </td>
-                    <td width="10%">
+                    <td width="15%">
                         <NavLink href="@($"/address/{block.Miner}")">@block.MinerDisplay</NavLink>
                     </td>
-                    <td width="15%">@block.TimestampAsHumanString</td>
+                    <td width="10%">@block.TimestampAsHumanString</td>
                     <td width="10%" class="has-text-right">@block.TransactionCountAsString</td>
                     <td width="10%" class="has-text-right">@block.SizeAsString</td>
                     <td width="45%">
