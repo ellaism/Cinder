@@ -8,10 +8,10 @@ namespace Cinder.UI.Pages
 {
     public class BlockHeightModel : CinderComponentBase
     {
-        public BlockDto Block;
+        public BlockDto Block { get; set; }
 
         [Parameter]
-        public ulong Number { get; set; }
+        public string Number { get; set; }
 
         [Inject]
         public IBlockService BlockService { get; set; }

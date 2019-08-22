@@ -8,7 +8,7 @@ namespace Cinder.UI.Pages
 {
     public class BlockModel : CinderComponentBase
     {
-        public BlockDto Block;
+        public BlockDto Block { get; set; }
 
         [Parameter]
         public string Hash { get; set; }

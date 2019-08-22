@@ -8,7 +8,7 @@ namespace Cinder.UI.Pages
 {
     public class AddressModel : CinderComponentBase
     {
-        public AddressDto Address;
+        public AddressDto Address { get; set; }
 
         [Parameter]
         public string Hash { get; set; }

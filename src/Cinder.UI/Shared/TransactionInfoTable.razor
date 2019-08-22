@@ -1,0 +1,16 @@
+﻿@using Cinder.UI.Infrastructure.Dtos
+@inherits TransactionInfoTableModel
+
+@if (Transactions != null && Transactions.Any())
+{
+    <div class="table-container">
+        <table class="table is-fullwidth">
+            <tbody>
+            @foreach (TransactionDto transaction in Transactions)
+            {
+                <td>@transaction.AddressFrom</td>
+            }
+            </tbody>
+        </table>
+    </div>
+}
