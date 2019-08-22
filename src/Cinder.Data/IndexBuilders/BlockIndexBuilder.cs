@@ -10,6 +10,7 @@ namespace Cinder.Data.IndexBuilders
         public override void EnsureIndexes()
         {
             Compound(true, f => f.BlockNumber, f => f.Hash);
+            Compound(false, f => f.Hash);
         }
     }
 }
