@@ -13,7 +13,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.2" />
-    <PackageReference Include="MongoDB.Driver" Version="2.9.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.9.1" />
     <PackageReference Include="Nethereum.Parity" Version="3.4.0" />
     <PackageReference Include="Rebus.RabbitMq" Version="5.1.2" />
     <PackageReference Include="Rebus.Serilog" Version="5.0.0" />
