@@ -13,9 +13,9 @@ namespace Cinder.Extensions
             int size, CancellationToken cancellationToken = default)
         {
             long total = await source.CountDocumentsAsync(cancellationToken);
-            List<TDocument> records = await source.Skip(page - 1 * size).Limit(size).ToListAsync(cancellationToken);
+            List<TDocument> documents = await source.Skip((page - 1) * size).Limit(size).ToListAsync(cancellationToken);
 
-            return new PagedEnumerable<TDocument>(records, (int) total, page, size);
+            return new PagedEnumerable<TDocument>(documents, (int) total, page, size);
         }
     }
 }
