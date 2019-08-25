@@ -9,9 +9,16 @@ namespace Cinder.Api.Controllers
     {
         [HttpGet("{hash}")]
         [ProducesResponseType(typeof(GetAddressByHash.Model), StatusCodes.Status200OK)]
-        public async Task<GetAddressByHash.Model> GetAddressByHashAsync(string hash)
+        public async Task<GetAddressByHash.Model> GetAddressByHash(string hash)
         {
             return await Mediator.Send(new GetAddressByHash.Query {Hash = hash});
+        }
+
+        [HttpGet("{hash}/transaction")]
+        [ProducesResponseType(typeof(GetAddressByHash.Model), StatusCodes.Status200OK)]
+        public async Task<GetAddressByHash.Model> GetTransactionsByAddressHash(string hash, int? page, int? size)
+        {
+            return await Mediator.Send(new GetAddressByHash.Query {Hash = hash, Page = page, Size = size});
         }
     }
 }

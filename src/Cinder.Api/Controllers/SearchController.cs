@@ -8,10 +8,10 @@ namespace Cinder.Api.Controllers
     public class SearchController : BaseController
     {
         [HttpGet]
-        [ProducesResponseType(typeof(SearchAll.Model), StatusCodes.Status200OK)]
-        public async Task<SearchAll.Model> GetAddressByHashAsync(string query)
+        [ProducesResponseType(typeof(GetResultsByQuery.Model), StatusCodes.Status200OK)]
+        public async Task<GetResultsByQuery.Model> GetResultsByQuery(string query)
         {
-            return await Mediator.Send(new SearchAll.Query {Q = query});
+            return await Mediator.Send(new GetResultsByQuery.Query {Q = query});
         }
     }
 }
