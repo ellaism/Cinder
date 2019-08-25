@@ -17,7 +17,7 @@ namespace Cinder.Api.Infrastructure.Features.Block
         {
             public Validator()
             {
-                RuleFor(m => m.Page).GreaterThanOrEqualTo(1);
+                RuleFor(m => m.Page).GreaterThanOrEqualTo(1).LessThanOrEqualTo(1000);
                 RuleFor(m => m.Size).GreaterThanOrEqualTo(1).LessThanOrEqualTo(100);
             }
         }
@@ -26,6 +26,7 @@ namespace Cinder.Api.Infrastructure.Features.Block
         {
             public int? Page { get; set; }
             public int? Size { get; set; }
+            public SortOrder Sort { get; set; }
         }
 
         public class Model
@@ -62,7 +63,7 @@ namespace Cinder.Api.Infrastructure.Features.Block
 
             public async Task<IPage<Model>> Handle(Query request, CancellationToken cancellationToken)
             {
-                IPage<CinderBlock> blocks = await _blockRepository.GetBlocks(request.Page, request.Size, cancellationToken)
+                IPage<CinderBlock> blocks = await _blockRepository.GetBlocks(request.Page, request.Size, request.Sort, cancellationToken)
                     .ConfigureAwait(false);
 
                 return blocks.ToModelPage(_minerLookupService);

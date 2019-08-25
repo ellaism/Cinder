@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Cinder.Core.Paging;
 using Cinder.Data;
 using Cinder.Documents;
-using Cinder.Extensions;
 using MongoDB.Driver;
 
 namespace Cinder.Api.Infrastructure.Repositories
@@ -15,12 +14,26 @@ namespace Cinder.Api.Infrastructure.Repositories
             CollectionName.Transactions) { }
 
         public async Task<IPage<CinderTransaction>> GetTransactions(int? page = null, int? size = null,
-            CancellationToken cancellationToken = default)
+            SortOrder sort = SortOrder.Ascending, CancellationToken cancellationToken = default)
         {
-            return await Collection.Find(FilterDefinition<CinderTransaction>.Empty)
-                .Sort(new SortDefinitionBuilder<CinderTransaction>().Descending(block => block.TimeStamp))
-                .ToPageAsync(page ?? 1, size ?? 10, cancellationToken)
-                .ConfigureAwait(false);
+            long total = await Collection.EstimatedDocumentCountAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
+            IFindFluent<CinderTransaction, CinderTransaction> query = Collection.Find(FilterDefinition<CinderTransaction>.Empty)
+                .Skip(((page ?? 1) - 1) * (size ?? 10))
+                .Limit(size ?? 10);
+
+            switch (sort)
+            {
+                case SortOrder.Ascending:
+                    query = query.SortBy(transaction => transaction.TimeStamp);
+                    break;
+                case SortOrder.Descending:
+                    query = query.SortByDescending(transaction => transaction.TimeStamp);
+                    break;
+            }
+
+            List<CinderTransaction> transactions = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
+
+            return new PagedEnumerable<CinderTransaction>(transactions, (int) total, page ?? 1, size ?? 10);
         }
 
         public async Task<CinderTransaction> GetTransactionByHash(string hash, CancellationToken cancellationToken = default)

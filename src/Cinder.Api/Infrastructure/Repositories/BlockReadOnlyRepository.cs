@@ -1,9 +1,9 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Cinder.Core.Paging;
 using Cinder.Data;
 using Cinder.Documents;
-using Cinder.Extensions;
 using MongoDB.Driver;
 
 namespace Cinder.Api.Infrastructure.Repositories
@@ -13,13 +13,27 @@ namespace Cinder.Api.Infrastructure.Repositories
         public BlockReadOnlyRepository(IMongoClient client, string databaseName) : base(client, databaseName,
             CollectionName.Blocks) { }
 
-        public async Task<IPage<CinderBlock>> GetBlocks(int? page = null, int? size = null,
+        public async Task<IPage<CinderBlock>> GetBlocks(int? page = null, int? size = null, SortOrder sort = SortOrder.Ascending,
             CancellationToken cancellationToken = default)
         {
-            return await Collection.Find(FilterDefinition<CinderBlock>.Empty)
-                .Sort(new SortDefinitionBuilder<CinderBlock>().Descending(block => block.BlockNumber))
-                .ToPageAsync(page ?? 1, size ?? 10, cancellationToken)
-                .ConfigureAwait(false);
+            long total = await Collection.EstimatedDocumentCountAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
+            IFindFluent<CinderBlock, CinderBlock> query = Collection.Find(FilterDefinition<CinderBlock>.Empty)
+                .Skip(((page ?? 1) - 1) * (size ?? 10))
+                .Limit(size ?? 10);
+
+            switch (sort)
+            {
+                case SortOrder.Ascending:
+                    query = query.SortBy(block => block.Id);
+                    break;
+                case SortOrder.Descending:
+                    query = query.SortByDescending(block => block.Id);
+                    break;
+            }
+
+            List<CinderBlock> blocks = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
+
+            return new PagedEnumerable<CinderBlock>(blocks, (int) total, page ?? 1, size ?? 10);
         }
 
         public async Task<CinderBlock> GetBlockByHash(string hash, CancellationToken cancellationToken = default)

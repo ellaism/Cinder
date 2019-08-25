@@ -8,7 +8,7 @@ namespace Cinder.Api.Infrastructure.Repositories
 {
     public interface ITransactionReadOnlyRepository
     {
-        Task<IPage<CinderTransaction>> GetTransactions(int? page = null, int? size = null,
+        Task<IPage<CinderTransaction>> GetTransactions(int? page = null, int? size = null, SortOrder sort = SortOrder.Ascending,
             CancellationToken cancellationToken = default);
 
         Task<CinderTransaction> GetTransactionByHash(string hash, CancellationToken cancellationToken = default);

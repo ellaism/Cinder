@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cinder.Api.Infrastructure.Features.Transaction;
+using Cinder.Api.Infrastructure.Repositories;
 using Cinder.Core.Paging;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +12,10 @@ namespace Cinder.Api.Controllers
     {
         [HttpGet]
         [ProducesResponseType(typeof(GetTransactions.Model), StatusCodes.Status200OK)]
-        public async Task<IPage<GetTransactions.Model>> GetTransactions(int? page, int? size)
+        public async Task<IPage<GetTransactions.Model>> GetTransactions(int? page, int? size,
+            SortOrder sort = SortOrder.Ascending)
         {
-            return await Mediator.Send(new GetTransactions.Query {Page = page, Size = size});
+            return await Mediator.Send(new GetTransactions.Query {Page = page, Size = size, Sort = sort});
         }
 
         [HttpGet("{hash}")]
