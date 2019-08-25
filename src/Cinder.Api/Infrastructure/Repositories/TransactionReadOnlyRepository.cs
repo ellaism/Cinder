@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Cinder.Core.Paging;
 using Cinder.Data;
 using Cinder.Documents;
+using Cinder.Extensions;
 using MongoDB.Driver;
 
 namespace Cinder.Api.Infrastructure.Repositories
@@ -12,13 +14,12 @@ namespace Cinder.Api.Infrastructure.Repositories
         public TransactionReadOnlyRepository(IMongoClient client, string databaseName) : base(client, databaseName,
             CollectionName.Transactions) { }
 
-        public async Task<IReadOnlyCollection<CinderTransaction>> GetRecentTransactions(int limit = 10,
+        public async Task<IPage<CinderTransaction>> GetTransactions(int? page = null, int? size = null,
             CancellationToken cancellationToken = default)
         {
             return await Collection.Find(FilterDefinition<CinderTransaction>.Empty)
-                .Limit(limit)
                 .Sort(new SortDefinitionBuilder<CinderTransaction>().Descending(block => block.TimeStamp))
-                .ToListAsync(cancellationToken)
+                .ToPageAsync(page ?? 1, size ?? 10, cancellationToken)
                 .ConfigureAwait(false);
         }
 
