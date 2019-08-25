@@ -5,6 +5,6 @@ namespace Cinder.UI.Infrastructure.Events
 {
     public class RecentTransactionsUpdatedEvent
     {
-        public IEnumerable<RecentTransactionDto> Transactions { get; set; }
+        public IEnumerable<TransactionDto> Transactions { get; set; }
     }
 }

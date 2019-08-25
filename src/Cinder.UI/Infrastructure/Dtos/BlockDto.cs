@@ -13,6 +13,7 @@ namespace Cinder.UI.Infrastructure.Dtos
         public string Difficulty { get; set; }
         public string TotalDifficulty { get; set; }
         public ulong Size { get; set; }
+        public string SizeAsString => $"{Size:N0}";
         public string Miner { get; set; }
         public string MinerDisplay { get; set; }
         public ulong GasLimit { get; set; }
@@ -21,6 +22,7 @@ namespace Cinder.UI.Infrastructure.Dtos
         public DateTimeOffset TimestampAsDate => DateTimeOffset.FromUnixTimeSeconds((long)Timestamp);
         public string TimestampAsHumanString => TimestampAsDate.Humanize();
         public ulong TransactionCount { get; set; }
+        public string TransactionCountAsString => TransactionCount.ToString("N0");
         public string[] Uncles { get; set; }
         public ulong UncleCount { get; set; }
         public string Sha3Uncles { get; set; }

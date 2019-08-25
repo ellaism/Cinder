@@ -5,6 +5,6 @@ namespace Cinder.UI.Infrastructure.Events
 {
     public class RecentBlocksUpdatedEvent
     {
-        public IEnumerable<RecentBlockDto> Blocks { get; set; }
+        public IEnumerable<BlockDto> Blocks { get; set; }
     }
 }
