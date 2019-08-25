@@ -34,10 +34,10 @@ namespace Cinder.UI.Infrastructure.Hosting
             {
                 try
                 {
-                    IPage<BlockDto> blocks = await _apiService.GetBlocks(1, 20).ConfigureAwait(false);
+                    IPage<BlockDto> blocks = await _apiService.GetBlocks(1, 20, SortOrder.Descending).ConfigureAwait(false);
                     await _blockService.UpdateRecentBlocks(blocks.Items).ConfigureAwait(false);
 
-                    IPage<TransactionDto> transactions = await _apiService.GetTransactions(1, 20).ConfigureAwait(false);
+                    IPage<TransactionDto> transactions = await _apiService.GetTransactions(1, 20, SortOrder.Descending).ConfigureAwait(false);
                     await _transactionService.UpdateRecentTransactions(transactions.Items).ConfigureAwait(false);
                 }
                 catch (Exception e)

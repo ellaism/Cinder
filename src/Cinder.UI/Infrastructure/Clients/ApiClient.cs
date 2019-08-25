@@ -54,9 +54,9 @@ namespace Cinder.UI.Infrastructure.Clients
             return result;
         }
 
-        public async Task<IPage<BlockDto>> GetBlocks(int? page, int? size)
+        public async Task<IPage<BlockDto>> GetBlocks(int? page, int? size, SortOrder sort = SortOrder.Ascending)
         {
-            string url = $"/v1/block?page={page}&size={size}";
+            string url = $"/v1/block?page={page}&size={size}&sort={sort}";
 
             using HttpResponseMessage response = await _client.GetAsync(url).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
@@ -67,9 +67,9 @@ namespace Cinder.UI.Infrastructure.Clients
             return result;
         }
 
-        public async Task<IPage<TransactionDto>> GetTransactions(int? page, int? size)
+        public async Task<IPage<TransactionDto>> GetTransactions(int? page, int? size, SortOrder sort = SortOrder.Ascending)
         {
-            string url = $"/v1/transaction?page={page}&size={size}";
+            string url = $"/v1/transaction?page={page}&size={size}&sort={sort}";
 
             using HttpResponseMessage response = await _client.GetAsync(url).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();

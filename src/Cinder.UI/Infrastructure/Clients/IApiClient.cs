@@ -10,9 +10,9 @@ namespace Cinder.UI.Infrastructure.Clients
         Task<AddressDto> GetAddressByHash(string hash);
         Task<BlockDto> GetBlockByHash(string hash);
         Task<BlockDto> GetBlockByNumber(string number);
-        Task<IPage<BlockDto>> GetBlocks(int? page, int? size);
+        Task<IPage<BlockDto>> GetBlocks(int? page, int? size, SortOrder sort = SortOrder.Ascending);
         Task<TransactionDto> GetTransactionByHash(string hash);
-        Task<IPage<TransactionDto>> GetTransactions(int? page, int? size);
+        Task<IPage<TransactionDto>> GetTransactions(int? page, int? size, SortOrder sort = SortOrder.Ascending);
         Task<IEnumerable<TransactionDto>> GetTransactionsByBlockHash(string blockHash);
     }
 }
