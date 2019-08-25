@@ -1,4 +1,4 @@
-﻿@inherits BlockInfoTableModel
+﻿@inherits BlockDetailModel
 
 @if (Block != null)
 {
@@ -6,7 +6,7 @@
         <table class="table is-fullwidth">
             <tbody>
             <tr>
-                <th>Height</th>
+                <th width="15%">Height</th>
                 <td>@Block.BlockNumber</td>
             </tr>
             <tr>
@@ -33,7 +33,7 @@
             </tr>
             <tr>
                 <th>Size</th>
-                <td>@Block.Size</td>
+                <td>@Block.SizeAsString bytes</td>
             </tr>
             <tr>
                 <th>Gas Used</th>

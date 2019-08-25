@@ -1,0 +1,15 @@
+﻿@page "/transaction/{hash}"
+@inherits TransactionModel
+
+
+@if (IsLoading)
+{
+    <p>
+        <em>Loading...</em>
+    </p>
+}
+else
+{
+    <h1 class="title is-4 is-spaced">Transaction <small class="has-text-grey">@Transaction.Hash</small></h1>
+    <TransactionDetail Transaction="@Transaction" />
+}

@@ -1,5 +1,5 @@
 ﻿@using Cinder.UI.Infrastructure.Dtos
-@inherits TransactionInfoTableModel
+@inherits TransactionSummaryModel
 
 @if (Transactions != null && Transactions.Any())
 {
@@ -29,7 +29,7 @@
                     <td width="15%">
                         <NavLink href="@($"/address/{transaction.AddressTo}")" class="is-medium-hash text-truncate">@transaction.AddressTo</NavLink>
                     </td>
-                    <td width="25">@transaction.Value.ToString("N18")</td>
+                    <td width="25">@transaction.Value.ToString("G15") ELLA</td>
                 </tr>
             }
             </tbody>

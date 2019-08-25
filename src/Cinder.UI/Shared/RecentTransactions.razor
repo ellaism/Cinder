@@ -20,7 +20,7 @@ else
             </tr>
             </thead>
             <tbody>
-            @foreach (RecentTransactionDto transaction in Transactions)
+            @foreach (TransactionDto transaction in Transactions)
             {
                 <tr>
                     <td width="40%">@transaction.Hash</td>

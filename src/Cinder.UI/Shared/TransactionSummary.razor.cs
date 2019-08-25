@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Cinder.UI.Shared
 {
-    public class TransactionInfoTableModel : CinderComponentBase
+    public class TransactionSummaryModel : CinderComponentBase
     {
         [Parameter]
         public string BlockHash { get; set; }

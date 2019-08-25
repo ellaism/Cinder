@@ -15,7 +15,7 @@ namespace Cinder.UI.Shared
     {
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
-        public IEnumerable<RecentBlockDto> Blocks { get; set; }
+        public IEnumerable<BlockDto> Blocks { get; set; }
 
         [Inject]
         public IMessageBus Bus { get; set; }

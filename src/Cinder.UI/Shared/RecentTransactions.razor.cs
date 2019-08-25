@@ -11,7 +11,7 @@ namespace Cinder.UI.Shared
 {
     public class RecentTransactionsModel : CinderComponentBase
     {
-        public IEnumerable<RecentTransactionDto> Transactions { get; set; }
+        public IEnumerable<TransactionDto> Transactions { get; set; }
 
         [Inject]
         public IMessageBus Bus { get; set; }

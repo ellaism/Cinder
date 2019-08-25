@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Cinder.UI.Shared
 {
-    public class BlockInfoTableModel : CinderComponentBase
+    public class BlockDetailModel : CinderComponentBase
     {
         [Parameter]
         public BlockDto Block { get; set; }
