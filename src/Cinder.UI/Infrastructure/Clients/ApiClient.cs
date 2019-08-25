@@ -61,7 +61,8 @@ namespace Cinder.UI.Infrastructure.Clients
             using HttpResponseMessage response = await _client.GetAsync(url).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
 
-            IPage<BlockDto> result = await response.Content.ReadAsAsync<IPage<BlockDto>>().ConfigureAwait(false);
+            PagedEnumerable<BlockDto> result =
+                await response.Content.ReadAsAsync<PagedEnumerable<BlockDto>>().ConfigureAwait(false);
 
             return result;
         }
@@ -73,7 +74,8 @@ namespace Cinder.UI.Infrastructure.Clients
             using HttpResponseMessage response = await _client.GetAsync(url).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
 
-            IPage<TransactionDto> result = await response.Content.ReadAsAsync<IPage<TransactionDto>>().ConfigureAwait(false);
+            PagedEnumerable<TransactionDto> result =
+                await response.Content.ReadAsAsync<PagedEnumerable<TransactionDto>>().ConfigureAwait(false);
 
             return result;
         }

@@ -2,11 +2,11 @@
 
 namespace Cinder.UI.Infrastructure.Paging
 {
-    public interface IPage<out T>
+    public interface IPage<T>
     {
-        int Page { get; }
-        int Size { get; }
-        int Total { get; }
-        IEnumerable<T> Items { get; }
+        int Page { get; set; }
+        int Size { get; set; }
+        int Total { get; set; }
+        IEnumerable<T> Items { get; set; }
     }
 }
