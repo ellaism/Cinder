@@ -5,13 +5,13 @@ using MediatR;
 
 namespace Cinder.Api.Infrastructure.Features.Address
 {
-    public class GetAddressByHash
+    public class GetTransactionsByAddressHash
     {
         public class Validator : AbstractValidator<Query>
         {
             public Validator()
             {
-                RuleFor(m => m.Hash).NotEmpty().Length(42);
+                RuleFor(m => m.AddressHash).NotEmpty().Length(42);
                 RuleFor(m => m.Page).GreaterThanOrEqualTo(1);
                 RuleFor(m => m.Size).LessThanOrEqualTo(100);
             }
@@ -19,7 +19,7 @@ namespace Cinder.Api.Infrastructure.Features.Address
 
         public class Query : IRequest<Model>
         {
-            public string Hash { get; set; }
+            public string AddressHash { get; set; }
             public int? Page { get; set; }
             public int? Size { get; set; }
         }
@@ -34,7 +34,7 @@ namespace Cinder.Api.Infrastructure.Features.Address
             public Task<Model> Handle(Query request, CancellationToken cancellationToken)
             {
                 // TODO
-                return Task.FromResult(new Model {Hash = request.Hash});
+                return Task.FromResult(new Model {Hash = request.AddressHash});
             }
         }
     }

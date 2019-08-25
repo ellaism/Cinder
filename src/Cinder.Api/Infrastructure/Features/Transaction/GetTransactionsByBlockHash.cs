@@ -11,7 +11,7 @@ using Nethereum.Util;
 
 namespace Cinder.Api.Infrastructure.Features.Transaction
 {
-    public class GetTransactionByBlockHash
+    public class GetTransactionsByBlockHash
     {
         public class Validator : AbstractValidator<Query>
         {

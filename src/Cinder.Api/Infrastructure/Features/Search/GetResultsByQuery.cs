@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Cinder.Api.Infrastructure.Features.Search
 {
-    public class SearchAll
+    public class GetResultsByQuery
     {
         public class Validator : AbstractValidator<Query>
         {

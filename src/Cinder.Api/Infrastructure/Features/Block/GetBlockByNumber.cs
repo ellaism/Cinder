@@ -65,10 +65,10 @@ namespace Cinder.Api.Infrastructure.Features.Block
                     ParentHash = block.ParentHash,
                     Size = ulong.Parse(block.Size),
                     Timestamp = ulong.Parse(block.Timestamp),
-                    TransactionCount = (ulong) block.TransactionCount,
+                    TransactionCount = (ulong)block.TransactionCount,
                     TotalDifficulty = block.TotalDifficulty,
                     Uncles = block.Uncles,
-                    UncleCount = (ulong) block.UncleCount,
+                    UncleCount = (ulong)block.UncleCount,
                     Sha3Uncles = block.Sha3Uncles
                 };
             }
