@@ -21,19 +21,19 @@ namespace Cinder.UI.Infrastructure.Services
             _bus = bus;
         }
 
-        public async Task UpdateRecentBlocks(IEnumerable<RecentBlockDto> blocks)
+        public async Task UpdateRecentBlocks(IEnumerable<BlockDto> blocks)
         {
-            IEnumerable<RecentBlockDto> enumerable = blocks as RecentBlockDto[] ?? blocks.ToArray();
+            IEnumerable<BlockDto> enumerable = blocks as BlockDto[] ?? blocks.ToArray();
             await Save(CacheKey.Recent, enumerable).ConfigureAwait(false);
             await _bus.PublishAsync(new RecentBlocksUpdatedEvent {Blocks = enumerable}).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<RecentBlockDto>> GetRecentBlocks()
+        public async Task<IEnumerable<BlockDto>> GetRecentBlocks()
         {
-            IEnumerable<RecentBlockDto> blocks =
-                await Get<IEnumerable<RecentBlockDto>>(CacheKey.Recent).ConfigureAwait(false);
+            IEnumerable<BlockDto> blocks =
+                await Get<IEnumerable<BlockDto>>(CacheKey.Recent).ConfigureAwait(false);
 
-            return blocks ?? new List<RecentBlockDto>();
+            return blocks ?? new List<BlockDto>();
         }
 
         public async Task<BlockDto> GetBlockByHash(string hash)

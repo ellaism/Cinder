@@ -21,19 +21,42 @@ namespace Cinder.UI.Infrastructure.Services
             _api = api;
         }
 
-        public async Task UpdateRecentTransactions(IEnumerable<RecentTransactionDto> transactions)
+        public async Task UpdateRecentTransactions(IEnumerable<TransactionDto> transactions)
         {
-            List<RecentTransactionDto> enumerable = transactions.ToList();
+            List<TransactionDto> enumerable = transactions.ToList();
             await Save(CacheKey.Recent, enumerable).ConfigureAwait(false);
             await _bus.PublishAsync(new RecentTransactionsUpdatedEvent {Transactions = enumerable}).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<RecentTransactionDto>> GetRecentTransactions()
+        public async Task<IEnumerable<TransactionDto>> GetRecentTransactions()
         {
-            IEnumerable<RecentTransactionDto> transactions =
-                await Get<IEnumerable<RecentTransactionDto>>(CacheKey.Recent).ConfigureAwait(false);
+            IEnumerable<TransactionDto> transactions =
+                await Get<IEnumerable<TransactionDto>>(CacheKey.Recent).ConfigureAwait(false);
 
-            return transactions ?? new List<RecentTransactionDto>();
+            return transactions ?? new List<TransactionDto>();
+        }
+
+        public async Task<TransactionDto> GetTransactionByHash(string hash)
+        {
+            if (string.IsNullOrEmpty(hash) || hash.Length != 66)
+            {
+                throw new ArgumentOutOfRangeException(nameof(hash));
+            }
+
+            string key = $"{CacheKey.Transaction}{hash}";
+
+            TransactionDto transaction;
+            if (await Exists(key).ConfigureAwait(false))
+            {
+                transaction = await Get<TransactionDto>(key).ConfigureAwait(false);
+            }
+            else
+            {
+                transaction = await _api.GetTransactionByHash(hash).ConfigureAwait(false);
+                await Save(key, transaction, TimeSpan.FromMinutes(10)).ConfigureAwait(false);
+            }
+
+            return transaction;
         }
 
         public async Task<IEnumerable<TransactionDto>> GetTransactionsByBlockHash(string blockHash)
@@ -62,6 +85,7 @@ namespace Cinder.UI.Infrastructure.Services
         internal static class CacheKey
         {
             public const string Recent = "Recent";
+            public const string Transaction = "Transaction";
             public const string Transactions = "Transactions";
         }
     }

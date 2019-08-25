@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using Cinder.UI.Infrastructure.Clients;
 using Cinder.UI.Infrastructure.Dtos;
+using Cinder.UI.Infrastructure.Paging;
 using Cinder.UI.Infrastructure.Services;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -34,12 +34,11 @@ namespace Cinder.UI.Infrastructure.Hosting
             {
                 try
                 {
-                    IEnumerable<RecentBlockDto> blocks = await _apiService.GetRecentBlocks(20).ConfigureAwait(false);
-                    await _blockService.UpdateRecentBlocks(blocks).ConfigureAwait(false);
+                    IPage<BlockDto> blocks = await _apiService.GetBlocks(1, 20).ConfigureAwait(false);
+                    await _blockService.UpdateRecentBlocks(blocks.Items).ConfigureAwait(false);
 
-                    IEnumerable<RecentTransactionDto> transactions =
-                        await _apiService.GetRecentTransactions(20).ConfigureAwait(false);
-                    await _transactionService.UpdateRecentTransactions(transactions).ConfigureAwait(false);
+                    IPage<TransactionDto> transactions = await _apiService.GetTransactions(1, 20).ConfigureAwait(false);
+                    await _transactionService.UpdateRecentTransactions(transactions.Items).ConfigureAwait(false);
                 }
                 catch (Exception e)
                 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Cinder.UI.Infrastructure.Dtos;
+using Cinder.UI.Infrastructure.Paging;
 
 namespace Cinder.UI.Infrastructure.Clients
 {
@@ -53,38 +54,38 @@ namespace Cinder.UI.Infrastructure.Clients
             return result;
         }
 
-        public async Task<IEnumerable<RecentBlockDto>> GetRecentBlocks(int? limit = null)
+        public async Task<IPage<BlockDto>> GetBlocks(int? page, int? size)
         {
-            string url = "/v1/block/recent";
-
-            if (limit.HasValue)
-            {
-                url += $"?limit={limit.Value}";
-            }
+            string url = $"/v1/block?page={page}&size={size}";
 
             using HttpResponseMessage response = await _client.GetAsync(url).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
 
-            IEnumerable<RecentBlockDto> result =
-                await response.Content.ReadAsAsync<IEnumerable<RecentBlockDto>>().ConfigureAwait(false);
+            IPage<BlockDto> result = await response.Content.ReadAsAsync<IPage<BlockDto>>().ConfigureAwait(false);
 
             return result;
         }
 
-        public async Task<IEnumerable<RecentTransactionDto>> GetRecentTransactions(int? limit = null)
+        public async Task<IPage<TransactionDto>> GetTransactions(int? page, int? size)
         {
-            string url = "/v1/transaction/recent";
-
-            if (limit.HasValue)
-            {
-                url += $"?limit={limit.Value}";
-            }
+            string url = $"/v1/transaction?page={page}&size={size}";
 
             using HttpResponseMessage response = await _client.GetAsync(url).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
 
-            IEnumerable<RecentTransactionDto> result =
-                await response.Content.ReadAsAsync<IEnumerable<RecentTransactionDto>>().ConfigureAwait(false);
+            IPage<TransactionDto> result = await response.Content.ReadAsAsync<IPage<TransactionDto>>().ConfigureAwait(false);
+
+            return result;
+        }
+
+        public async Task<TransactionDto> GetTransactionByHash(string hash)
+        {
+            string url = $"/v1/transaction/{hash}";
+
+            using HttpResponseMessage response = await _client.GetAsync(url).ConfigureAwait(false);
+            response.EnsureSuccessStatusCode();
+
+            TransactionDto result = await response.Content.ReadAsAsync<TransactionDto>().ConfigureAwait(false);
 
             return result;
         }
