@@ -4,6 +4,7 @@
     {
         Blocks,
         Transactions,
+        Addresses,
         AddressTransactions,
         TransactionLogs,
         Contracts,

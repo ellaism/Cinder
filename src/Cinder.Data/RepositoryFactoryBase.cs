@@ -30,6 +30,7 @@ namespace Cinder.Data
                 map.UnmapMember(m => m.RowUpdated);
                 map.SetIsRootClass(true);
             });
+            BsonClassMap.RegisterClassMap<CinderAddress>();
             BsonClassMap.RegisterClassMap<CinderAddressTransaction>();
             BsonClassMap.RegisterClassMap<CinderBlock>();
             BsonClassMap.RegisterClassMap<CinderContract>();

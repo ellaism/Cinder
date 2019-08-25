@@ -41,6 +41,9 @@ namespace Cinder.Indexer.Infrastructure.Repositories
                 IIndexBuilder builder;
                 switch (collectionName)
                 {
+                    case CollectionName.Addresses:
+                        builder = new AddressIndexBuilder(db);
+                        break;
                     case CollectionName.AddressTransactions:
                         builder = new AddressTransactionIndexBuilder(db);
                         break;
