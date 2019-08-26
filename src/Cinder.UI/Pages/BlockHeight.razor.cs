@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Cinder.UI.Pages
 {
-    public class BlockHeightModel : CinderComponentBase
+    public class BlockHeightModel : PageComponent
     {
         public BlockDto Block { get; set; }
 
@@ -18,6 +18,7 @@ namespace Cinder.UI.Pages
 
         protected override async Task OnParametersSetAsync()
         {
+            await base.OnParametersSetAsync();
             SetLoading(true);
             Block = await BlockService.GetBlockByNumber(Number).ConfigureAwait(false);
             SetLoading(false);

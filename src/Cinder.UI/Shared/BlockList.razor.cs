@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Components;
 
 namespace Cinder.UI.Shared
 {
-    public class TransactionSummaryModel : EventBusComponent
+    public class BlockListModel : EventBusComponent
     {
         [Parameter]
-        public IEnumerable<TransactionDto> Transactions { get; set; }
+        public IEnumerable<BlockDto> Blocks { get; set; }
     }
 }

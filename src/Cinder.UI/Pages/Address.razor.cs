@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Cinder.UI.Pages
 {
-    public class AddressModel : CinderComponentBase
+    public class AddressModel : PageComponent
     {
         public AddressDto Address { get; set; }
 
@@ -18,6 +18,7 @@ namespace Cinder.UI.Pages
 
         protected override async Task OnParametersSetAsync()
         {
+            await base.OnParametersSetAsync();
             SetLoading(true);
             Address = await AddressService.GetAddressByHash(Hash).ConfigureAwait(false);
             SetLoading(false);

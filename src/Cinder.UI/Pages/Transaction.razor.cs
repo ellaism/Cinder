@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Cinder.UI.Pages
 {
-    public class TransactionModel : CinderComponentBase
+    public class TransactionModel : PageComponent
     {
         public TransactionDto Transaction { get; set; }
 
@@ -18,6 +18,7 @@ namespace Cinder.UI.Pages
 
         protected override async Task OnParametersSetAsync()
         {
+            await base.OnParametersSetAsync();
             SetLoading(true);
             Transaction = await TransactionService.GetTransactionByHash(Hash).ConfigureAwait(false);
             SetLoading(false);

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components;
 
 namespace Cinder.UI.Shared
 {
-    public class TransactionDetailModel : CinderComponentBase
+    public class TransactionDetailModel : EventBusComponent
     {
         [Parameter]
         public TransactionDto Transaction { get; set; }

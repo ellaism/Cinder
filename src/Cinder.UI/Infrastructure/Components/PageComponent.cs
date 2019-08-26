@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
-
-namespace Cinder.UI.Infrastructure.Components
+﻿namespace Cinder.UI.Infrastructure.Components
 {
-    public abstract class CinderComponentBase : ComponentBase
+    public abstract class PageComponent : EventBusComponent
     {
         public bool IsLoading { get; private set; }
 
