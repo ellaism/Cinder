@@ -23,6 +23,9 @@ namespace Cinder.Api.Infrastructure.Repositories
             IRepository repository;
             switch (typeof(TRepository))
             {
+                case var t when t == typeof(AddressReadOnlyRepository):
+                    repository = new AddressReadOnlyRepository(Client, DatabaseName);
+                    break;
                 case var t when t == typeof(BlockReadOnlyRepository):
                     repository = new BlockReadOnlyRepository(Client, DatabaseName);
                     break;

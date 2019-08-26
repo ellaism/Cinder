@@ -9,6 +9,7 @@ namespace Cinder.Extensions.DependencyInjection
         public static void AddServices(this IServiceCollection services)
         {
             services.AddSingleton<IMinerLookupService, MinerLookupService>();
+            services.AddSingleton<ISearchService, SearchService>();
         }
     }
 }

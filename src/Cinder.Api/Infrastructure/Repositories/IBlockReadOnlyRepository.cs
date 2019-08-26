@@ -11,6 +11,8 @@ namespace Cinder.Api.Infrastructure.Repositories
             CancellationToken cancellationToken = default);
 
         Task<CinderBlock> GetBlockByHash(string hash, CancellationToken cancellationToken = default);
+        Task<string> GetBlockHashIfExists(string hash, CancellationToken cancellationToken = default);
         Task<CinderBlock> GetBlockByNumber(ulong number, CancellationToken cancellationToken = default);
+        Task<string> GetBlockNumberIfExists(ulong number, CancellationToken cancellationToken = default);
     }
 }

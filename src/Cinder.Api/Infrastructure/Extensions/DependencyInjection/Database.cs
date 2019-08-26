@@ -17,6 +17,8 @@ namespace Cinder.Extensions.DependencyInjection
 
                 return RepositoryFactory.Create(options.Value.Database);
             });
+            services.AddSingleton<IAddressReadOnlyRepository>(sp =>
+                sp.GetService<IRepositoryFactory>().CreateRepository<AddressReadOnlyRepository>());
             services.AddSingleton<IBlockReadOnlyRepository>(sp =>
                 sp.GetService<IRepositoryFactory>().CreateRepository<BlockReadOnlyRepository>());
             services.AddSingleton<ITransactionReadOnlyRepository>(sp =>

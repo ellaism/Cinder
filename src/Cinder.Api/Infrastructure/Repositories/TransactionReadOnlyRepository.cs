@@ -50,5 +50,15 @@ namespace Cinder.Api.Infrastructure.Repositories
                 .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
         }
+
+        public async Task<string> GetTransactionHashIfExists(string hash, CancellationToken cancellationToken = default)
+        {
+            var result = await Collection.Find(Builders<CinderTransaction>.Filter.Eq(document => document.Hash, hash))
+                .Project(transaction => new {transaction.Hash})
+                .SingleAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            return result.Hash;
+        }
     }
 }

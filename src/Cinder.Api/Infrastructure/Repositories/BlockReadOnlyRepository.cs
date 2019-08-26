@@ -43,11 +43,32 @@ namespace Cinder.Api.Infrastructure.Repositories
                 .ConfigureAwait(false);
         }
 
+        public async Task<string> GetBlockHashIfExists(string hash, CancellationToken cancellationToken = default)
+        {
+            var result = await Collection.Find(Builders<CinderBlock>.Filter.Eq(document => document.Hash, hash))
+                .Project(block => new {block.Hash})
+                .SingleAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            return result.Hash;
+        }
+
         public async Task<CinderBlock> GetBlockByNumber(ulong number, CancellationToken cancellationToken = default)
         {
             return await Collection.Find(Builders<CinderBlock>.Filter.Eq(document => document.BlockNumber, number.ToString()))
                 .SingleAsync(cancellationToken)
                 .ConfigureAwait(false);
+        }
+
+        public async Task<string> GetBlockNumberIfExists(ulong number, CancellationToken cancellationToken = default)
+        {
+            var result = await Collection
+                .Find(Builders<CinderBlock>.Filter.Eq(document => document.BlockNumber, number.ToString()))
+                .Project(block => new {block.BlockNumber})
+                .SingleAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            return result.BlockNumber;
         }
     }
 }

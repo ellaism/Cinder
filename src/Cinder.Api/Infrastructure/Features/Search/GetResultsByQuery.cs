@@ -1,6 +1,7 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
+using Cinder.Api.Infrastructure.Models;
+using Cinder.Api.Infrastructure.Services;
 using FluentValidation;
 using MediatR;
 
@@ -23,15 +24,33 @@ namespace Cinder.Api.Infrastructure.Features.Search
 
         public class Model
         {
-            public string Type { get; set; }
+            public string Id { get; set; }
+            public SearchResultType Type { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Model>
         {
-            Task<Model> IRequestHandler<Query, Model>.Handle(Query request, CancellationToken cancellationToken)
+            private readonly ISearchService _searchService;
+
+            public Handler(ISearchService searchService)
             {
-                throw new NotImplementedException();
+                _searchService = searchService;
             }
+
+            public async Task<Model> Handle(Query request, CancellationToken cancellationToken)
+            {
+                SearchResult result = await _searchService.ExecuteSearch(request.Q).ConfigureAwait(false);
+
+                return result.ToModel();
+            }
+        }
+    }
+
+    internal static class Extensions
+    {
+        public static GetResultsByQuery.Model ToModel(this SearchResult result)
+        {
+            return new GetResultsByQuery.Model {Id = result.Id, Type = result.Type};
         }
     }
 }
