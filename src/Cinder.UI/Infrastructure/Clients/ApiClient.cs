@@ -107,7 +107,7 @@ namespace Cinder.UI.Infrastructure.Clients
 
         public async Task<SearchResultDto> Search(string query)
         {
-            string url = $"/v1/search?q={query}";
+            string url = $"/v1/search?query={query}";
 
             using HttpResponseMessage response = await _client.GetAsync(url).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
