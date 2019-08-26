@@ -1,4 +1,5 @@
-﻿@inherits Microsoft.AspNetCore.Components.LayoutComponentBase
+﻿@using Cinder.UI.Infrastructure
+@inherits Microsoft.AspNetCore.Components.LayoutComponentBase
 
 <header>
     <MainNav/>
@@ -12,6 +13,6 @@
 
 <footer class="footer">
     <div class="content has-text-centered">
-        <p>&copy; 2019 Ellaism Community Developers.</p>
+        <p>&copy; 2019 Ellaism Community Developers.<br/><small class="has-text-grey">@($"v{VersionInfo.Version}")</small></p>
     </div>
 </footer>
