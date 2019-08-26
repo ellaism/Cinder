@@ -104,5 +104,17 @@ namespace Cinder.UI.Infrastructure.Clients
 
             return result;
         }
+
+        public async Task<SearchResultDto> Search(string query)
+        {
+            string url = $"/v1/search?q={query}";
+
+            using HttpResponseMessage response = await _client.GetAsync(url).ConfigureAwait(false);
+            response.EnsureSuccessStatusCode();
+
+            SearchResultDto result = await response.Content.ReadAsAsync<SearchResultDto>().ConfigureAwait(false);
+
+            return result;
+        }
     }
 }
