@@ -1,7 +1,6 @@
 ﻿using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Cinder.Data;
 using Cinder.Documents;
 using MongoDB.Driver;
 using Nethereum.BlockchainProcessing.BlockStorage.Entities;
@@ -9,9 +8,9 @@ using Nethereum.BlockchainProcessing.BlockStorage.Entities.Mapping;
 using Nethereum.BlockchainProcessing.BlockStorage.Repositories;
 using Nethereum.RPC.Eth.DTOs;
 
-namespace Cinder.Indexer.Infrastructure.Repositories
+namespace Cinder.Data.Repositories
 {
-    public class ContractRepository : IndexerRepositoryBase<CinderContract>, IContractRepository
+    public class ContractRepository : RepositoryBase<CinderContract>, IContractRepository
     {
         private readonly ConcurrentDictionary<string, CinderContract> _cachedContracts =
             new ConcurrentDictionary<string, CinderContract>();

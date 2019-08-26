@@ -9,9 +9,9 @@ using MongoDB.Driver;
 
 namespace Cinder.Indexer.Infrastructure.Repositories
 {
-    public class RepositoryFactory : RepositoryFactoryBase, IIndexerRepositoryFactory
+    public class IndexerRepositoryFactory : RepositoryFactoryBase, IIndexerRepositoryFactory
     {
-        public RepositoryFactory(string connectionString, string dbTag) : base(connectionString, dbTag) { }
+        public IndexerRepositoryFactory(string connectionString, string dbTag) : base(connectionString, dbTag) { }
 
         public IMongoDatabase CreateDbIfNotExists()
         {
@@ -75,43 +75,13 @@ namespace Cinder.Indexer.Infrastructure.Repositories
             }
         }
 
-        public override TRepository CreateRepository<TRepository>()
-        {
-            IRepository repository;
-            switch (typeof(TRepository))
-            {
-                case var t when t == typeof(AddressTransactionRepository):
-                    repository = new AddressTransactionRepository(Client, DatabaseName);
-                    break;
-                case var t when t == typeof(BlockProgressRepository):
-                    repository = new BlockProgressRepository(Client, DatabaseName);
-                    break;
-                case var t when t == typeof(BlockRepository):
-                    repository = new BlockRepository(Client, DatabaseName);
-                    break;
-                case var t when t == typeof(ContractRepository):
-                    repository = new ContractRepository(Client, DatabaseName);
-                    break;
-                case var t when t == typeof(TransactionLogRepository):
-                    repository = new TransactionLogRepository(Client, DatabaseName);
-                    break;
-                case var t when t == typeof(TransactionRepository):
-                    repository = new TransactionRepository(Client, DatabaseName);
-                    break;
-                default:
-                    throw new NotImplementedException($"Repository not implemented for type {typeof(TRepository).Name}");
-            }
-
-            return (TRepository) repository;
-        }
-
-        public static RepositoryFactory Create(IDatabaseSettings settings, bool deleteAllExistingCollections = false)
+        public static IIndexerRepositoryFactory Create(IDatabaseSettings settings, bool deleteAllExistingCollections = false)
         {
             string connectionString = settings.ConnectionString;
             string tag = settings.Tag;
             string locale = settings.Locale;
 
-            RepositoryFactory factoryBase = new RepositoryFactory(connectionString, tag);
+            IndexerRepositoryFactory factoryBase = new IndexerRepositoryFactory(connectionString, tag);
             IMongoDatabase db = factoryBase.CreateDbIfNotExists();
 
             if (deleteAllExistingCollections)

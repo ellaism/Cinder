@@ -1,4 +1,6 @@
-﻿using Cinder.Documents;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Cinder.Documents;
 using Cinder.Extensions;
 using MongoDB.Driver;
 
@@ -25,6 +27,12 @@ namespace Cinder.Data
         protected virtual FilterDefinition<TDocument> CreateDocumentFilter(TDocument entity)
         {
             return Builders<TDocument>.Filter.Eq(document => document.Id, entity.Id);
+        }
+
+        protected async Task UpsertDocumentAsync(TDocument updatedDocument, CancellationToken cancellationToken = default)
+        {
+            await Collection.ReplaceOneAsync(CreateDocumentFilter(updatedDocument), updatedDocument,
+                new UpdateOptions {IsUpsert = true}, cancellationToken);
         }
     }
 }

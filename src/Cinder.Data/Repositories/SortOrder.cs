@@ -1,4 +1,4 @@
-﻿namespace Cinder.Api.Infrastructure.Repositories
+﻿namespace Cinder.Data.Repositories
 {
     public enum SortOrder
     {

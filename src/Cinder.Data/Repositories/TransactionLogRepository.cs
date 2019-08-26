@@ -1,6 +1,5 @@
 ﻿using System.Numerics;
 using System.Threading.Tasks;
-using Cinder.Data;
 using Cinder.Documents;
 using MongoDB.Driver;
 using Nethereum.BlockchainProcessing.BlockStorage.Entities;
@@ -8,9 +7,9 @@ using Nethereum.BlockchainProcessing.BlockStorage.Entities.Mapping;
 using Nethereum.BlockchainProcessing.BlockStorage.Repositories;
 using Nethereum.RPC.Eth.DTOs;
 
-namespace Cinder.Indexer.Infrastructure.Repositories
+namespace Cinder.Data.Repositories
 {
-    public class TransactionLogRepository : IndexerRepositoryBase<CinderTransactionLog>, ITransactionLogRepository
+    public class TransactionLogRepository : RepositoryBase<CinderTransactionLog>, ITransactionLogRepository
     {
         public TransactionLogRepository(IMongoClient client, string databaseName) : base(client, databaseName,
             CollectionName.TransactionLogs) { }

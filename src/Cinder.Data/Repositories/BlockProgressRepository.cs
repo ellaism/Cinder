@@ -1,13 +1,12 @@
 ﻿using System.Numerics;
 using System.Threading.Tasks;
-using Cinder.Data;
 using Cinder.Documents;
 using MongoDB.Driver;
 using Nethereum.BlockchainProcessing.ProgressRepositories;
 
-namespace Cinder.Indexer.Infrastructure.Repositories
+namespace Cinder.Data.Repositories
 {
-    public class BlockProgressRepository : IndexerRepositoryBase<CinderBlockProgress>, IBlockProgressRepository
+    public class BlockProgressRepository : RepositoryBase<CinderBlockProgress>, IBlockProgressRepository
     {
         public BlockProgressRepository(IMongoClient client, string databaseName) : base(client, databaseName,
             CollectionName.BlockProgress) { }

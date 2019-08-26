@@ -2,16 +2,36 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Cinder.Core.Paging;
-using Cinder.Data;
 using Cinder.Documents;
 using MongoDB.Driver;
+using Nethereum.BlockchainProcessing.BlockStorage.Entities;
+using Nethereum.BlockchainProcessing.BlockStorage.Entities.Mapping;
+using Nethereum.Hex.HexTypes;
+using Block = Nethereum.RPC.Eth.DTOs.Block;
 
-namespace Cinder.Api.Infrastructure.Repositories
+namespace Cinder.Data.Repositories
 {
-    public class BlockReadOnlyRepository : ReadOnlyRepository<CinderBlock>, IBlockReadOnlyRepository
+    public class BlockRepository : RepositoryBase<CinderBlock>, IBlockRepository
     {
-        public BlockReadOnlyRepository(IMongoClient client, string databaseName) : base(client, databaseName,
-            CollectionName.Blocks) { }
+        public BlockRepository(IMongoClient client, string databaseName) : base(client, databaseName, CollectionName.Blocks) { }
+
+        public async Task UpsertBlockAsync(Block source)
+        {
+            CinderBlock document = source.MapToStorageEntityForUpsert<CinderBlock>();
+            document.Sha3Uncles = source.Sha3Uncles;
+            document.Uncles = source.Uncles;
+            document.UncleCount = source.Uncles.Length;
+            await UpsertDocumentAsync(document).ConfigureAwait(false);
+        }
+
+        public async Task<IBlockView> FindByBlockNumberAsync(HexBigInteger blockNumber)
+        {
+            FilterDefinition<CinderBlock> filter =
+                CreateDocumentFilter(new CinderBlock {BlockNumber = blockNumber.Value.ToString()});
+            CinderBlock response = await Collection.Find(filter).SingleOrDefaultAsync().ConfigureAwait(false);
+
+            return response;
+        }
 
         public async Task<IPage<CinderBlock>> GetBlocks(int? page = null, int? size = null, SortOrder sort = SortOrder.Ascending,
             CancellationToken cancellationToken = default)

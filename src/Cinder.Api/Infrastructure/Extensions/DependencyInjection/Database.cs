@@ -1,6 +1,6 @@
 ﻿using Cinder.Api.Infrastructure;
 using Cinder.Api.Infrastructure.Repositories;
-using Cinder.Data;
+using Cinder.Data.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
@@ -11,18 +11,18 @@ namespace Cinder.Extensions.DependencyInjection
     {
         public static void AddDatabase(this IServiceCollection services)
         {
-            services.AddSingleton<IRepositoryFactory>(sp =>
+            services.AddSingleton(sp =>
             {
                 IOptions<Settings> options = sp.GetService<IOptions<Settings>>();
 
-                return RepositoryFactory.Create(options.Value.Database);
+                return ApiRepositoryFactory.Create(options.Value.Database);
             });
-            services.AddSingleton<IAddressReadOnlyRepository>(sp =>
-                sp.GetService<IRepositoryFactory>().CreateRepository<AddressReadOnlyRepository>());
-            services.AddSingleton<IBlockReadOnlyRepository>(sp =>
-                sp.GetService<IRepositoryFactory>().CreateRepository<BlockReadOnlyRepository>());
-            services.AddSingleton<ITransactionReadOnlyRepository>(sp =>
-                sp.GetService<IRepositoryFactory>().CreateRepository<TransactionReadOnlyRepository>());
+            services.AddSingleton<IAddressRepository>(sp =>
+                sp.GetService<IApiRepositoryFactory>().CreateRepository<AddressRepository>());
+            services.AddSingleton<IBlockRepository>(sp =>
+                sp.GetService<IApiRepositoryFactory>().CreateRepository<BlockRepository>());
+            services.AddSingleton<ITransactionRepository>(sp =>
+                sp.GetService<IApiRepositoryFactory>().CreateRepository<TransactionRepository>());
         }
     }
 }

@@ -1,18 +1,18 @@
 ﻿using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Cinder.Api.Infrastructure.Models;
-using Cinder.Api.Infrastructure.Repositories;
+using Cinder.Data.Repositories;
 
 namespace Cinder.Api.Infrastructure.Services
 {
     public class SearchService : ISearchService
     {
-        private readonly IAddressReadOnlyRepository _addressRepository;
-        private readonly IBlockReadOnlyRepository _blockRepository;
-        private readonly ITransactionReadOnlyRepository _transactionRepository;
+        private readonly IAddressRepository _addressRepository;
+        private readonly IBlockRepository _blockRepository;
+        private readonly ITransactionRepository _transactionRepository;
 
-        public SearchService(IAddressReadOnlyRepository addressRepository, IBlockReadOnlyRepository blockRepository,
-            ITransactionReadOnlyRepository transactionRepository)
+        public SearchService(IAddressRepository addressRepository, IBlockRepository blockRepository,
+            ITransactionRepository transactionRepository)
         {
             _addressRepository = addressRepository;
             _blockRepository = blockRepository;

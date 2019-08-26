@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using Cinder.Core.Paging;
 using Cinder.Documents;
 
-namespace Cinder.Api.Infrastructure.Repositories
+namespace Cinder.Data.Repositories
 {
-    public interface ITransactionReadOnlyRepository
+    public interface ITransactionRepository : Nethereum.BlockchainProcessing.BlockStorage.Repositories.ITransactionRepository
     {
         Task<IPage<CinderTransaction>> GetTransactions(int? page = null, int? size = null, SortOrder sort = SortOrder.Ascending,
             CancellationToken cancellationToken = default);

@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Cinder.Api.Infrastructure.Repositories;
 using Cinder.Api.Infrastructure.Services;
 using Cinder.Core.Paging;
+using Cinder.Data.Repositories;
 using Cinder.Documents;
 using FluentValidation;
 using MediatR;
@@ -52,10 +52,10 @@ namespace Cinder.Api.Infrastructure.Features.Block
 
         public class Handler : IRequestHandler<Query, IPage<Model>>
         {
-            private readonly IBlockReadOnlyRepository _blockRepository;
+            private readonly IBlockRepository _blockRepository;
             private readonly IMinerLookupService _minerLookupService;
 
-            public Handler(IBlockReadOnlyRepository blockRepository, IMinerLookupService minerLookupService)
+            public Handler(IBlockRepository blockRepository, IMinerLookupService minerLookupService)
             {
                 _blockRepository = blockRepository;
                 _minerLookupService = minerLookupService;
@@ -63,7 +63,8 @@ namespace Cinder.Api.Infrastructure.Features.Block
 
             public async Task<IPage<Model>> Handle(Query request, CancellationToken cancellationToken)
             {
-                IPage<CinderBlock> blocks = await _blockRepository.GetBlocks(request.Page, request.Size, request.Sort, cancellationToken)
+                IPage<CinderBlock> blocks = await _blockRepository
+                    .GetBlocks(request.Page, request.Size, request.Sort, cancellationToken)
                     .ConfigureAwait(false);
 
                 return blocks.ToModelPage(_minerLookupService);

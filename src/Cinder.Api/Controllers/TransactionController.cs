@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cinder.Api.Infrastructure.Features.Transaction;
-using Cinder.Api.Infrastructure.Repositories;
 using Cinder.Core.Paging;
+using Cinder.Data.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

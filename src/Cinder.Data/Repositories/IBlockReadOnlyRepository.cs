@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 using Cinder.Core.Paging;
 using Cinder.Documents;
 
-namespace Cinder.Api.Infrastructure.Repositories
+namespace Cinder.Data.Repositories
 {
-    public interface IBlockReadOnlyRepository
+    public interface IBlockRepository : Nethereum.BlockchainProcessing.BlockStorage.Repositories.IBlockRepository
     {
         Task<IPage<CinderBlock>> GetBlocks(int? page = null, int? size = null, SortOrder sort = SortOrder.Ascending,
             CancellationToken cancellationToken = default);

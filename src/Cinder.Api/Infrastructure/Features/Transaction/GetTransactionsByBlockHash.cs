@@ -3,7 +3,7 @@ using System.Linq;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
-using Cinder.Api.Infrastructure.Repositories;
+using Cinder.Data.Repositories;
 using Cinder.Documents;
 using FluentValidation;
 using MediatR;
@@ -49,9 +49,9 @@ namespace Cinder.Api.Infrastructure.Features.Transaction
 
         public class Handler : IRequestHandler<Query, IEnumerable<Model>>
         {
-            private readonly ITransactionReadOnlyRepository _transactionRepository;
+            private readonly ITransactionRepository _transactionRepository;
 
-            public Handler(ITransactionReadOnlyRepository transactionRepository)
+            public Handler(ITransactionRepository transactionRepository)
             {
                 _transactionRepository = transactionRepository;
             }

@@ -2,16 +2,41 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Cinder.Core.Paging;
-using Cinder.Data;
 using Cinder.Documents;
 using MongoDB.Driver;
+using Nethereum.BlockchainProcessing.BlockStorage.Entities;
+using Nethereum.BlockchainProcessing.BlockStorage.Entities.Mapping;
+using Nethereum.Hex.HexTypes;
+using Nethereum.RPC.Eth.DTOs;
 
-namespace Cinder.Api.Infrastructure.Repositories
+namespace Cinder.Data.Repositories
 {
-    public class TransactionReadOnlyRepository : ReadOnlyRepository<CinderTransaction>, ITransactionReadOnlyRepository
+    public class TransactionRepository : RepositoryBase<CinderTransaction>, ITransactionRepository
     {
-        public TransactionReadOnlyRepository(IMongoClient client, string databaseName) : base(client, databaseName,
+        public TransactionRepository(IMongoClient client, string databaseName) : base(client, databaseName,
             CollectionName.Transactions) { }
+
+        public async Task<ITransactionView> FindByBlockNumberAndHashAsync(HexBigInteger blockNumber, string hash)
+        {
+            FilterDefinition<CinderTransaction> filter = CreateDocumentFilter(new CinderTransaction
+            {
+                BlockNumber = blockNumber.Value.ToString(), Hash = hash
+            });
+            CinderTransaction response = await Collection.Find(filter).SingleOrDefaultAsync();
+
+            return response;
+        }
+
+        public async Task UpsertAsync(TransactionReceiptVO transactionReceiptVO, string code, bool failedCreatingContract)
+        {
+            await UpsertDocumentAsync(
+                transactionReceiptVO.MapToStorageEntityForUpsert<CinderTransaction>(code, failedCreatingContract));
+        }
+
+        public async Task UpsertAsync(TransactionReceiptVO transactionReceiptVO)
+        {
+            await UpsertDocumentAsync(transactionReceiptVO.MapToStorageEntityForUpsert<CinderTransaction>());
+        }
 
         public async Task<IPage<CinderTransaction>> GetTransactions(int? page = null, int? size = null,
             SortOrder sort = SortOrder.Ascending, CancellationToken cancellationToken = default)

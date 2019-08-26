@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Cinder.Data;
 using Cinder.Documents;
 using MongoDB.Driver;
 using Nethereum.BlockchainProcessing.BlockStorage.Entities;
@@ -8,9 +7,9 @@ using Nethereum.BlockchainProcessing.BlockStorage.Repositories;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 
-namespace Cinder.Indexer.Infrastructure.Repositories
+namespace Cinder.Data.Repositories
 {
-    public class AddressTransactionRepository : IndexerRepositoryBase<CinderAddressTransaction>, IAddressTransactionRepository
+    public class AddressTransactionRepository : RepositoryBase<CinderAddressTransaction>, IAddressTransactionRepository
     {
         public AddressTransactionRepository(IMongoClient client, string databaseName) : base(client, databaseName,
             CollectionName.AddressTransactions) { }
