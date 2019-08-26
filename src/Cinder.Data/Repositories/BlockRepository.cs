@@ -67,7 +67,7 @@ namespace Cinder.Data.Repositories
         {
             var result = await Collection.Find(Builders<CinderBlock>.Filter.Eq(document => document.Hash, hash))
                 .Project(block => new {block.Hash})
-                .SingleAsync(cancellationToken)
+                .SingleOrDefaultAsync(cancellationToken)
                 .ConfigureAwait(false);
 
             return result.Hash;
@@ -85,7 +85,7 @@ namespace Cinder.Data.Repositories
             var result = await Collection
                 .Find(Builders<CinderBlock>.Filter.Eq(document => document.BlockNumber, number.ToString()))
                 .Project(block => new {block.BlockNumber})
-                .SingleAsync(cancellationToken)
+                .SingleOrDefaultAsync(cancellationToken)
                 .ConfigureAwait(false);
 
             return result.BlockNumber;

@@ -80,7 +80,7 @@ namespace Cinder.Data.Repositories
         {
             var result = await Collection.Find(Builders<CinderTransaction>.Filter.Eq(document => document.Hash, hash))
                 .Project(transaction => new {transaction.Hash})
-                .SingleAsync(cancellationToken)
+                .SingleOrDefaultAsync(cancellationToken)
                 .ConfigureAwait(false);
 
             return result.Hash;
