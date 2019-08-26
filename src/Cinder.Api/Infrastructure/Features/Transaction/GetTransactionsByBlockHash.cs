@@ -17,7 +17,7 @@ namespace Cinder.Api.Infrastructure.Features.Transaction
         {
             public Validator()
             {
-                RuleFor(m => m.BlockHash).NotEmpty();
+                RuleFor(m => m.BlockHash).NotEmpty().Length(66);
             }
         }
 

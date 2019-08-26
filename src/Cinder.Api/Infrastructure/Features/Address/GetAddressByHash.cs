@@ -12,16 +12,12 @@ namespace Cinder.Api.Infrastructure.Features.Address
             public Validator()
             {
                 RuleFor(m => m.Hash).NotEmpty().Length(42);
-                RuleFor(m => m.Page).GreaterThanOrEqualTo(1);
-                RuleFor(m => m.Size).LessThanOrEqualTo(100);
             }
         }
 
         public class Query : IRequest<Model>
         {
             public string Hash { get; set; }
-            public int? Page { get; set; }
-            public int? Size { get; set; }
         }
 
         public class Model

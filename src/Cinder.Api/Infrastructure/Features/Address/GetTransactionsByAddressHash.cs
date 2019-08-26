@@ -12,8 +12,8 @@ namespace Cinder.Api.Infrastructure.Features.Address
             public Validator()
             {
                 RuleFor(m => m.AddressHash).NotEmpty().Length(42);
-                RuleFor(m => m.Page).GreaterThanOrEqualTo(1);
-                RuleFor(m => m.Size).LessThanOrEqualTo(100);
+                RuleFor(m => m.Page).GreaterThanOrEqualTo(1).LessThanOrEqualTo(1000);
+                RuleFor(m => m.Size).GreaterThanOrEqualTo(1).LessThanOrEqualTo(100);
             }
         }
 
