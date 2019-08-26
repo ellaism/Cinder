@@ -3,8 +3,9 @@
     public enum SearchResultType
     {
         Error,
-        TransactionHash,
+        AddressHash,
         BlockHash,
-        BlockNumber
+        BlockNumber,
+        TransactionHash
     }
 }

@@ -59,6 +59,9 @@ namespace Cinder.UI.Shared
             string url = "/search/error?";
             switch (result.Type)
             {
+                case SearchResultType.AddressHash:
+                    url = $"/address/{result.Id}";
+                    break;
                 case SearchResultType.BlockHash:
                     url = $"/block/{result.Id}";
                     break;
