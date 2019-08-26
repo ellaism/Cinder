@@ -4,12 +4,10 @@
 
 @if (IsLoading)
 {
-    <p>
-        <em>Loading...</em>
-    </p>
+    <Loader />
 }
 else
 {
     <h1 class="title is-4 is-spaced">Block Height <small class="has-text-grey">#@Block.BlockNumber</small></h1>
-    <BlockDetail Block="@Block"/>
+    <BlockDetail Block="@Block" />
 }

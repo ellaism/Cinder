@@ -1,0 +1,10 @@
+﻿@inherits MainNavSearchModel
+
+<div class="field has-addons">
+    <div class="control">
+        <input class="input" type="text" placeholder="Lookup blocks, transactions, hash..." @bind="@Query"/>
+    </div>
+    <div class="control">
+        <button class="button is-light @(IsSearching ? "is-loading" : "")" @onclick="@(async () => await OnSearchClicked())">Search</button>
+    </div>
+</div>
