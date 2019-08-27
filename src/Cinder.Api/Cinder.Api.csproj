@@ -14,6 +14,7 @@
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.9.2" />
+    <PackageReference Include="Nethereum.Parity" Version="3.4.0" />
     <PackageReference Include="Rebus.RabbitMq" Version="5.1.2" />
     <PackageReference Include="Rebus.Serilog" Version="5.0.0" />
     <PackageReference Include="Rebus.ServiceProvider" Version="4.0.2" />

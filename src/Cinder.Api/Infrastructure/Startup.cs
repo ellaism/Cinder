@@ -26,6 +26,7 @@ namespace Cinder.Api.Infrastructure
             services.Configure<ConsoleLifetimeOptions>(options => options.SuppressStatusMessages = true);
             services.AddErrorHandling();
             services.AddOptions(Configuration);
+            services.AddBlockchain();
             services.AddDatabase();
             services.AddHosting();
             //services.AddMessaging();
