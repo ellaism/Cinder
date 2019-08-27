@@ -59,7 +59,7 @@ namespace Cinder.Api.Infrastructure.Features.Transaction
             public async Task<IEnumerable<Model>> Handle(Query request, CancellationToken cancellationToken)
             {
                 IEnumerable<CinderTransaction> transactions = await _transactionRepository
-                    .GetTransactionByBlockHash(request.BlockHash, cancellationToken)
+                    .GetTransactionsByBlockHash(request.BlockHash, cancellationToken)
                     .ConfigureAwait(false);
 
                 return transactions.Select(transaction => new Model

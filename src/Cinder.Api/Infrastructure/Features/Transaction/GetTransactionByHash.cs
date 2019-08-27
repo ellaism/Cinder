@@ -59,6 +59,11 @@ namespace Cinder.Api.Infrastructure.Features.Transaction
                 CinderTransaction transaction = await _transactionRepository.GetTransactionByHash(request.Hash, cancellationToken)
                     .ConfigureAwait(false);
 
+                if (transaction == null)
+                {
+                    return null;
+                }
+
                 return new Model
                 {
                     BlockHash = transaction.BlockHash,

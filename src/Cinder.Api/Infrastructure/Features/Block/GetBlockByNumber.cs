@@ -51,6 +51,11 @@ namespace Cinder.Api.Infrastructure.Features.Block
                 CinderBlock block = await _blockRepository.GetBlockByNumber(request.Number, cancellationToken)
                     .ConfigureAwait(false);
 
+                if (block == null)
+                {
+                    return null;
+                }
+
                 return new Model
                 {
                     BlockNumber = block.BlockNumber,
