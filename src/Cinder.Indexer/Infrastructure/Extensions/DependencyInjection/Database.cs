@@ -3,10 +3,6 @@ using Cinder.Indexer.Infrastructure;
 using Cinder.Indexer.Infrastructure.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
-using Nethereum.BlockchainProcessing.BlockStorage.Repositories;
-using Nethereum.BlockchainProcessing.ProgressRepositories;
-using IBlockRepository = Cinder.Data.Repositories.IBlockRepository;
-using ITransactionRepository = Cinder.Data.Repositories.ITransactionRepository;
 
 // ReSharper disable once CheckNamespace
 namespace Cinder.Extensions.DependencyInjection
@@ -21,6 +17,8 @@ namespace Cinder.Extensions.DependencyInjection
 
                 return IndexerRepositoryFactory.Create(options.Value.Database);
             });
+            services.AddSingleton<IAddressRepository>(sp =>
+                sp.GetService<IIndexerRepositoryFactory>().CreateRepository<AddressRepository>());
             services.AddSingleton<IAddressTransactionRepository>(sp =>
                 sp.GetService<IIndexerRepositoryFactory>().CreateRepository<AddressTransactionRepository>());
             services.AddSingleton<IBlockRepository>(sp =>

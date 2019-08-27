@@ -59,7 +59,7 @@ namespace Cinder.Data.Repositories
         public async Task<CinderBlock> GetBlockByHash(string hash, CancellationToken cancellationToken = default)
         {
             return await Collection.Find(Builders<CinderBlock>.Filter.Eq(document => document.Hash, hash))
-                .SingleAsync(cancellationToken)
+                .SingleOrDefaultAsync(cancellationToken)
                 .ConfigureAwait(false);
         }
 
@@ -76,7 +76,7 @@ namespace Cinder.Data.Repositories
         public async Task<CinderBlock> GetBlockByNumber(ulong number, CancellationToken cancellationToken = default)
         {
             return await Collection.Find(Builders<CinderBlock>.Filter.Eq(document => document.BlockNumber, number.ToString()))
-                .SingleAsync(cancellationToken)
+                .SingleOrDefaultAsync(cancellationToken)
                 .ConfigureAwait(false);
         }
 

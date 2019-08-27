@@ -13,7 +13,7 @@ namespace Cinder.Data.Repositories
 
         Task<CinderTransaction> GetTransactionByHash(string hash, CancellationToken cancellationToken = default);
 
-        Task<IEnumerable<CinderTransaction>> GetTransactionByBlockHash(string blockHash,
+        Task<IEnumerable<CinderTransaction>> GetTransactionsByBlockHash(string blockHash,
             CancellationToken cancellationToken = default);
 
         Task<string> GetTransactionHashIfExists(string hash, CancellationToken cancellationToken = default);

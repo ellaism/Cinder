@@ -1,9 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using Cinder.Core.Paging;
 using Cinder.Documents;
 using MongoDB.Driver;
 using Nethereum.BlockchainProcessing.BlockStorage.Entities;
 using Nethereum.BlockchainProcessing.BlockStorage.Entities.Mapping;
-using Nethereum.BlockchainProcessing.BlockStorage.Repositories;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 
@@ -30,6 +32,29 @@ namespace Cinder.Data.Repositories
             CinderAddressTransaction response = await Collection.Find(filter).SingleOrDefaultAsync().ConfigureAwait(false);
 
             return response;
+        }
+
+        public async Task<IPage<CinderAddressTransaction>> GetTransactionsByAddressHash(string addressHash, int? page = null,
+            int? size = null, SortOrder sort = SortOrder.Ascending, CancellationToken cancellationToken = default)
+        {
+            IFindFluent<CinderAddressTransaction, CinderAddressTransaction> query =
+                Collection.Find(CreateDocumentFilter(new CinderAddressTransaction {Address = addressHash}));
+            long total = await query.CountDocumentsAsync(cancellationToken).ConfigureAwait(false);
+            query = query.Skip(((page ?? 1) - 1) * (size ?? 10)).Limit(size ?? 10);
+
+            switch (sort)
+            {
+                case SortOrder.Ascending:
+                    query = query.SortBy(addressTransaction => addressTransaction.BlockNumber);
+                    break;
+                case SortOrder.Descending:
+                    query = query.SortByDescending(addressTransaction => addressTransaction.BlockNumber);
+                    break;
+            }
+
+            List<CinderAddressTransaction> transactions = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
+
+            return new PagedEnumerable<CinderAddressTransaction>(transactions, (int) total, page ?? 1, size ?? 10);
         }
     }
 }

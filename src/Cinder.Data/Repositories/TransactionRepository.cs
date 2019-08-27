@@ -64,11 +64,11 @@ namespace Cinder.Data.Repositories
         public async Task<CinderTransaction> GetTransactionByHash(string hash, CancellationToken cancellationToken = default)
         {
             return await Collection.Find(Builders<CinderTransaction>.Filter.Eq(document => document.Hash, hash))
-                .SingleAsync(cancellationToken)
+                .SingleOrDefaultAsync(cancellationToken)
                 .ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<CinderTransaction>> GetTransactionByBlockHash(string blockHash,
+        public async Task<IEnumerable<CinderTransaction>> GetTransactionsByBlockHash(string blockHash,
             CancellationToken cancellationToken = default)
         {
             return await Collection.Find(Builders<CinderTransaction>.Filter.Eq(document => document.BlockHash, blockHash))
