@@ -90,5 +90,15 @@ namespace Cinder.Data.Repositories
 
             return result.BlockNumber;
         }
+
+        public async Task<ulong> GetBlocksMinedCountByAddressHash(string addressHash,
+            CancellationToken cancellationToken = default)
+        {
+            long total = await Collection.Find(Builders<CinderBlock>.Filter.Eq(document => document.Miner, addressHash))
+                .CountDocumentsAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            return (ulong) total;
+        }
     }
 }

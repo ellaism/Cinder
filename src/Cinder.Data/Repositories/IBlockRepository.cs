@@ -14,5 +14,6 @@ namespace Cinder.Data.Repositories
         Task<string> GetBlockHashIfExists(string hash, CancellationToken cancellationToken = default);
         Task<CinderBlock> GetBlockByNumber(ulong number, CancellationToken cancellationToken = default);
         Task<string> GetBlockNumberIfExists(ulong number, CancellationToken cancellationToken = default);
+        Task<ulong> GetBlocksMinedCountByAddressHash(string addressHash, CancellationToken cancellationToken = default);
     }
 }

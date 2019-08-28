@@ -85,5 +85,43 @@ namespace Cinder.Data.Repositories
 
             return result.Hash;
         }
+
+        public async Task<IPage<CinderTransaction>> GetTransactionsByAddressHash(string addressHash, int? page = null,
+            int? size = null, SortOrder sort = SortOrder.Ascending, CancellationToken cancellationToken = default)
+        {
+            IFindFluent<CinderTransaction, CinderTransaction> query = AddressHashBaseQuery(addressHash);
+            long total = await query.CountDocumentsAsync(cancellationToken).ConfigureAwait(false);
+            query = query.Skip(((page ?? 1) - 1) * (size ?? 10)).Limit(size ?? 10);
+
+            switch (sort)
+            {
+                case SortOrder.Ascending:
+                    query = query.SortBy(transaction => transaction.BlockNumber);
+                    break;
+                case SortOrder.Descending:
+                    query = query.SortByDescending(transaction => transaction.BlockNumber);
+                    break;
+            }
+
+            List<CinderTransaction> transactions = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
+
+            return new PagedEnumerable<CinderTransaction>(transactions, (int) total, page ?? 1, size ?? 10);
+        }
+
+        public async Task<ulong> GetTransactionCountByAddressHash(string addressHash,
+            CancellationToken cancellationToken = default)
+        {
+            IFindFluent<CinderTransaction, CinderTransaction> query = AddressHashBaseQuery(addressHash);
+            long total = await query.CountDocumentsAsync(cancellationToken).ConfigureAwait(false);
+
+            return (ulong) total;
+        }
+
+        private IFindFluent<CinderTransaction, CinderTransaction> AddressHashBaseQuery(string addressHash)
+        {
+            return Collection.Find(Builders<CinderTransaction>.Filter.Or(
+                Builders<CinderTransaction>.Filter.Eq(transaction => transaction.AddressTo, addressHash),
+                Builders<CinderTransaction>.Filter.Eq(transaction => transaction.AddressFrom, addressHash)));
+        }
     }
 }
