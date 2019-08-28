@@ -63,41 +63,33 @@ namespace Cinder.Api.Infrastructure.Features.Block
 
             public async Task<IPage<Model>> Handle(Query request, CancellationToken cancellationToken)
             {
-                IPage<CinderBlock> blocks = await _blockRepository
+                IPage<CinderBlock> page = await _blockRepository
                     .GetBlocks(request.Page, request.Size, request.Sort, cancellationToken)
                     .ConfigureAwait(false);
 
-                return blocks.ToModelPage(_minerLookupService);
+                IEnumerable<Model> models = page.Items.Select(block => new Model
+                {
+                    BlockNumber = block.BlockNumber,
+                    Difficulty = block.Difficulty,
+                    ExtraData = block.ExtraData,
+                    GasLimit = ulong.Parse(block.GasLimit),
+                    GasUsed = ulong.Parse(block.GasUsed),
+                    Hash = block.Hash,
+                    Miner = block.Miner,
+                    MinerDisplay = _minerLookupService.GetByAddressOrDefault(block.Miner),
+                    Nonce = block.Nonce,
+                    ParentHash = block.ParentHash,
+                    Size = ulong.Parse(block.Size),
+                    Timestamp = ulong.Parse(block.Timestamp),
+                    TransactionCount = (ulong) block.TransactionCount,
+                    TotalDifficulty = block.TotalDifficulty,
+                    Uncles = block.Uncles,
+                    UncleCount = (ulong) block.UncleCount,
+                    Sha3Uncles = block.Sha3Uncles
+                });
+
+                return new PagedEnumerable<Model>(models, page.Total, page.Page, page.Size);
             }
-        }
-    }
-
-    internal static class Extensions
-    {
-        public static IPage<GetBlocks.Model> ToModelPage(this IPage<CinderBlock> page, IMinerLookupService minerLookupService)
-        {
-            IEnumerable<GetBlocks.Model> models = page.Items.Select(block => new GetBlocks.Model
-            {
-                BlockNumber = block.BlockNumber,
-                Difficulty = block.Difficulty,
-                ExtraData = block.ExtraData,
-                GasLimit = ulong.Parse(block.GasLimit),
-                GasUsed = ulong.Parse(block.GasUsed),
-                Hash = block.Hash,
-                Miner = block.Miner,
-                MinerDisplay = minerLookupService.GetByAddressOrDefault(block.Miner),
-                Nonce = block.Nonce,
-                ParentHash = block.ParentHash,
-                Size = ulong.Parse(block.Size),
-                Timestamp = ulong.Parse(block.Timestamp),
-                TransactionCount = (ulong) block.TransactionCount,
-                TotalDifficulty = block.TotalDifficulty,
-                Uncles = block.Uncles,
-                UncleCount = (ulong) block.UncleCount,
-                Sha3Uncles = block.Sha3Uncles
-            });
-
-            return new PagedEnumerable<GetBlocks.Model>(models, page.Total, page.Page, page.Size);
         }
     }
 }

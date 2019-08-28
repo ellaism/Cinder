@@ -41,16 +41,8 @@ namespace Cinder.Api.Infrastructure.Features.Search
             {
                 SearchResult result = await _searchService.ExecuteSearch(request.Q).ConfigureAwait(false);
 
-                return result.ToModel();
+                return new Model {Id = result.Id, Type = result.Type};
             }
-        }
-    }
-
-    internal static class Extensions
-    {
-        public static GetResultsByQuery.Model ToModel(this SearchResult result)
-        {
-            return new GetResultsByQuery.Model {Id = result.Id, Type = result.Type};
         }
     }
 }

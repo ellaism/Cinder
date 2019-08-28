@@ -25,11 +25,18 @@ namespace Cinder.Api.Controllers
             return await Mediator.Send(new GetTransactionByHash.Query {Hash = hash});
         }
 
-        [HttpGet("block/{blockHash}")]
+        [HttpGet("block/{hash}")]
         [ProducesResponseType(typeof(GetTransactionsByBlockHash.Model), StatusCodes.Status200OK)]
-        public async Task<IEnumerable<GetTransactionsByBlockHash.Model>> GetTransactionsByBlockHash(string blockHash)
+        public async Task<IEnumerable<GetTransactionsByBlockHash.Model>> GetTransactionsByBlockHash(string hash)
         {
-            return await Mediator.Send(new GetTransactionsByBlockHash.Query {BlockHash = blockHash});
+            return await Mediator.Send(new GetTransactionsByBlockHash.Query {BlockHash = hash});
+        }
+
+        [HttpGet("address/{hash}")]
+        [ProducesResponseType(typeof(GetTransactionsByAddressHash.Model), StatusCodes.Status200OK)]
+        public async Task<IPage<GetTransactionsByAddressHash.Model>> GetTransactionsByBlockHash(string hash, int? page, int? size)
+        {
+            return await Mediator.Send(new GetTransactionsByAddressHash.Query {AddressHash = hash, Page = page, Size = size});
         }
     }
 }
