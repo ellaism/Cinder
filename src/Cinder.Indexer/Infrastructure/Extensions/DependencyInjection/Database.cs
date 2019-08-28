@@ -23,6 +23,8 @@ namespace Cinder.Extensions.DependencyInjection
                 sp.GetService<IIndexerRepositoryFactory>().CreateRepository<AddressTransactionRepository>());
             services.AddSingleton<IBlockRepository>(sp =>
                 sp.GetService<IIndexerRepositoryFactory>().CreateRepository<BlockRepository>());
+            services.AddSingleton<IBlockProgressRepository>(sp =>
+                sp.GetService<IIndexerRepositoryFactory>().CreateRepository<BlockProgressRepository>());
             services.AddSingleton<IContractRepository>(sp =>
                 sp.GetService<IIndexerRepositoryFactory>().CreateRepository<ContractRepository>());
             services.AddSingleton<ITransactionLogRepository>(sp =>

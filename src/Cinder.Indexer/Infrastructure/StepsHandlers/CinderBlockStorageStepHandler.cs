@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
+using Cinder.Data.Repositories;
 using Microsoft.Extensions.Logging;
 using Nethereum.BlockchainProcessing.BlockStorage.BlockStorageStepsHandlers;
-using Nethereum.BlockchainProcessing.BlockStorage.Repositories;
 using Nethereum.Hex.HexTypes;
 using Nethereum.RPC.Eth.DTOs;
 

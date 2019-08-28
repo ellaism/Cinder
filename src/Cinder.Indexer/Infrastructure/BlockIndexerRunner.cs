@@ -2,10 +2,10 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Cinder.Core.Exceptions;
+using Cinder.Data.Repositories;
 using Cinder.Indexer.Infrastructure.StepsHandlers;
 using Microsoft.Extensions.Logging;
 using Nethereum.BlockchainProcessing;
-using Nethereum.BlockchainProcessing.ProgressRepositories;
 using Nethereum.Parity;
 
 namespace Cinder.Indexer.Infrastructure

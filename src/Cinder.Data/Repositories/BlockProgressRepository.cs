@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using Cinder.Documents;
 using MongoDB.Driver;
-using Nethereum.BlockchainProcessing.ProgressRepositories;
 
 namespace Cinder.Data.Repositories
 {
