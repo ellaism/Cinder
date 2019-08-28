@@ -9,9 +9,10 @@ namespace Cinder.Documents
 
         public string Hash { get; set; }
         public decimal Balance { get; set; }
-        public ulong BlocksMined { get; set; }
-        public ulong TransactionCount { get; set; }
+        public ulong? BlocksMined { get; set; }
+        public ulong? TransactionCount { get; set; }
         public DateTimeOffset CacheDate { get; set; }
+        public bool ForceRefresh { get; set; }
 
         public string Id
         {
