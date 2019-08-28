@@ -11,6 +11,7 @@ namespace Cinder.Data.IndexBuilders
         {
             Compound(true, f => f.BlockNumber, f => f.Hash);
             Index(f => f.Hash);
+            Index(f => f.Miner);
         }
     }
 }
