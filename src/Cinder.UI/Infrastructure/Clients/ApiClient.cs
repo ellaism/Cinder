@@ -92,15 +92,29 @@ namespace Cinder.UI.Infrastructure.Clients
             return result;
         }
 
-        public async Task<IEnumerable<TransactionDto>> GetTransactionsByBlockHash(string blockHash)
+        public async Task<IEnumerable<TransactionDto>> GetTransactionsByBlockHash(string hash)
         {
-            string url = $"/v1/transaction/block/{blockHash}";
+            string url = $"/v1/transaction/block/{hash}";
 
             using HttpResponseMessage response = await _client.GetAsync(url).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
 
             IEnumerable<TransactionDto> result =
                 await response.Content.ReadAsAsync<IEnumerable<TransactionDto>>().ConfigureAwait(false);
+
+            return result;
+        }
+
+        public async Task<IPage<TransactionDto>> GetTransactionsByAddressHash(string hash, int? page, int? size,
+            SortOrder sort = SortOrder.Ascending)
+        {
+            string url = $"/v1/transaction/address/{hash}?page={page}&size={size}&sort={sort}";
+
+            using HttpResponseMessage response = await _client.GetAsync(url).ConfigureAwait(false);
+            response.EnsureSuccessStatusCode();
+
+            IPage<TransactionDto> result =
+                await response.Content.ReadAsAsync<PagedEnumerable<TransactionDto>>().ConfigureAwait(false);
 
             return result;
         }

@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Cinder.UI.Infrastructure.Clients;
 using Cinder.UI.Infrastructure.Dtos;
+using Cinder.UI.Infrastructure.Paging;
 using Foundatio.Caching;
 
 namespace Cinder.UI.Infrastructure.Services
@@ -38,9 +39,33 @@ namespace Cinder.UI.Infrastructure.Services
             return address;
         }
 
+        public async Task<IPage<TransactionDto>> GetTransactionsAddressByHash(string hash, int? page, int? size)
+        {
+            if (string.IsNullOrEmpty(hash) || hash.Length != 42)
+            {
+                throw new ArgumentOutOfRangeException(nameof(hash));
+            }
+
+            string key = $"{CacheKey.AddressTransaction}{hash}";
+
+            IPage<TransactionDto> transactions;
+            if (await Exists(key).ConfigureAwait(false))
+            {
+                transactions = await Get<IPage<TransactionDto>>(key).ConfigureAwait(false);
+            }
+            else
+            {
+                transactions = await _api.GetTransactionsByAddressHash(hash, page, size).ConfigureAwait(false);
+                await Save(key, transactions, TimeSpan.FromMinutes(10)).ConfigureAwait(false);
+            }
+
+            return transactions;
+        }
+
         internal static class CacheKey
         {
             public const string Address = "Address";
+            public const string AddressTransaction = "AddressTransaction";
         }
     }
 }
