@@ -48,6 +48,7 @@ namespace Cinder.UI.Infrastructure
                 app.UseExceptionHandler("/Error");
             }
 
+            app.UseForwardedHeaders();
             app.UseStaticFiles();
             app.UseRouting();
             app.UseSerilogRequestLogging();
@@ -55,6 +56,12 @@ namespace Cinder.UI.Infrastructure
             {
                 endpoints.MapBlazorHub<App>("app");
                 endpoints.MapFallbackToPage("/_Host");
+            });
+            app.Use((ctx, next) =>
+            {
+                ctx.Request.Scheme = "https";
+
+                return next();
             });
         }
     }
