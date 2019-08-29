@@ -90,18 +90,20 @@ namespace Cinder.Data.Repositories
             int? size = null, SortOrder sort = SortOrder.Ascending, CancellationToken cancellationToken = default)
         {
             IFindFluent<CinderTransaction, CinderTransaction> query = AddressHashBaseQuery(addressHash);
-            long total = await query.CountDocumentsAsync(cancellationToken).ConfigureAwait(false);
-            query = query.Skip(((page ?? 1) - 1) * (size ?? 10)).Limit(size ?? 10);
+            // TODO 20190828 Setting a hard cap to the count here as it is very slow. Need to investigate options.
+            long total = await query.Limit(100000).CountDocumentsAsync(cancellationToken).ConfigureAwait(false);
 
             switch (sort)
             {
                 case SortOrder.Ascending:
-                    query = query.SortBy(transaction => transaction.BlockNumber);
+                    query = query.SortBy(transaction => transaction.Id);
                     break;
                 case SortOrder.Descending:
-                    query = query.SortByDescending(transaction => transaction.BlockNumber);
+                    query = query.SortByDescending(transaction => transaction.Id);
                     break;
             }
+
+            query = query.Skip(((page ?? 1) - 1) * (size ?? 10)).Limit(size ?? 10);
 
             List<CinderTransaction> transactions = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
 
