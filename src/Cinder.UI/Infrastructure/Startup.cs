@@ -5,6 +5,7 @@ using Foundatio.Caching;
 using Foundatio.Messaging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,6 +28,13 @@ namespace Cinder.UI.Infrastructure
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
+            // Potential workaround per: https://github.com/aspnet/AspNetCore/issues/9692#issuecomment-489365575
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = ForwardedHeaders.All;
+                options.KnownNetworks.Clear();
+                options.KnownProxies.Clear();
+            });
             services.AddSingleton<IMessageBus, InMemoryMessageBus>();
             services.AddSingleton<ICacheClient, InMemoryCacheClient>();
             services.AddHostedService<StatsBackgroundService>();
@@ -37,7 +45,7 @@ namespace Cinder.UI.Infrastructure
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        private void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -48,12 +56,6 @@ namespace Cinder.UI.Infrastructure
                 app.UseExceptionHandler("/Error");
             }
 
-            app.Use((ctx, next) =>
-            {
-                ctx.Request.Scheme = "https";
-
-                return next();
-            });
             app.UseForwardedHeaders();
             app.UseStaticFiles();
             app.UseRouting();
