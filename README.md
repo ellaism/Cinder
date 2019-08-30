@@ -1,12 +1,12 @@
 # Cinder
 
-[![Build Status](https://travis-ci.org/majordutch/cinder.svg?branch=develop)](https://travis-ci.org/majordutch/cinder)
-
 https://ellaism.io
 
 ## What is Cinder?
 
-Cinder is an explorer and indexer for the Ellaism blockchain.
+An indexer and API for the Ellaism blockchain.
+
+ - [UI prototype using Blazor](https://github.com/majordutch/Cinder.UI.Blazor)
 
 ## Thanks and Credits
 
