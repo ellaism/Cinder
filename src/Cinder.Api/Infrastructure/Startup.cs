@@ -24,6 +24,11 @@ namespace Cinder.Api.Infrastructure
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<ConsoleLifetimeOptions>(options => options.SuppressStatusMessages = true);
+            services.AddCors(options =>
+            {
+                string[] origins = Configuration.GetSection("Cors:Origins").Get<string[]>();
+                options.AddDefaultPolicy(builder => builder.WithOrigins(origins).WithMethods("GET"));
+            });
             services.AddErrorHandling();
             services.AddOptions(Configuration);
             services.AddBlockchain();
@@ -44,6 +49,7 @@ namespace Cinder.Api.Infrastructure
             }
 
             app.UseSerilogRequestLogging();
+            app.UseCors();
             app.UseErrorHandling();
             //app.UseMessaging();
             app.UseMvc();
