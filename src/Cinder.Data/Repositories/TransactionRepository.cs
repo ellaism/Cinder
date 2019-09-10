@@ -91,7 +91,7 @@ namespace Cinder.Data.Repositories
         {
             IFindFluent<CinderTransaction, CinderTransaction> query = AddressHashBaseQuery(addressHash);
             // TODO 20190828 Setting a hard cap to the count here as it is very slow. Need to investigate options.
-            long total = await query.Limit(100000).CountDocumentsAsync(cancellationToken).ConfigureAwait(false);
+            long total = await query.Limit(5000).CountDocumentsAsync(cancellationToken).ConfigureAwait(false);
 
             switch (sort)
             {
