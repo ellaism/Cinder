@@ -19,7 +19,7 @@ namespace Cinder.Data.Repositories
 
         public async Task<BigInteger?> GetLastBlockNumberProcessedAsync()
         {
-            long count = await Collection.CountDocumentsAsync(FilterDefinition<CinderBlockProgress>.Empty);
+            long count = await Collection.CountDocumentsAsync(FilterDefinition<CinderBlockProgress>.Empty).ConfigureAwait(false);
 
             if (count == 0)
             {

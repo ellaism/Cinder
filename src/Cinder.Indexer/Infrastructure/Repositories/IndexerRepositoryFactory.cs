@@ -20,7 +20,7 @@ namespace Cinder.Indexer.Infrastructure.Repositories
 
         public async Task DeleteDatabase()
         {
-            await Client.DropDatabaseAsync(DatabaseName);
+            await Client.DropDatabaseAsync(DatabaseName).ConfigureAwait(false);
         }
 
         public async Task CreateCollectionsIfNotExist(IMongoDatabase db, string locale)
@@ -28,14 +28,16 @@ namespace Cinder.Indexer.Infrastructure.Repositories
             foreach (CollectionName collectionName in (CollectionName[]) Enum.GetValues(typeof(CollectionName)))
             {
                 IAsyncCursor<BsonDocument> collections = await db.ListCollectionsAsync(new ListCollectionsOptions
-                {
-                    Filter = new BsonDocument("name", collectionName.ToCollectionName())
-                });
+                    {
+                        Filter = new BsonDocument("name", collectionName.ToCollectionName())
+                    })
+                    .ConfigureAwait(false);
 
-                if (!await collections.AnyAsync())
+                if (!await collections.AnyAsync().ConfigureAwait(false))
                 {
                     await db.CreateCollectionAsync(collectionName.ToCollectionName(),
-                        new CreateCollectionOptions {Collation = new Collation(locale, numericOrdering: true)});
+                            new CreateCollectionOptions {Collation = new Collation(locale, numericOrdering: true)})
+                        .ConfigureAwait(false);
                 }
 
                 IIndexBuilder builder;
@@ -71,7 +73,7 @@ namespace Cinder.Indexer.Infrastructure.Repositories
         {
             foreach (CollectionName collectionName in (CollectionName[]) Enum.GetValues(typeof(CollectionName)))
             {
-                await db.DropCollectionAsync(collectionName.ToCollectionName());
+                await db.DropCollectionAsync(collectionName.ToCollectionName()).ConfigureAwait(false);
             }
         }
 

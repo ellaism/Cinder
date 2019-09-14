@@ -22,7 +22,7 @@ namespace Cinder.Data.Repositories
             {
                 BlockNumber = blockNumber.Value.ToString(), Hash = hash
             });
-            CinderTransaction response = await Collection.Find(filter).SingleOrDefaultAsync();
+            CinderTransaction response = await Collection.Find(filter).SingleOrDefaultAsync().ConfigureAwait(false);
 
             return response;
         }
@@ -30,12 +30,12 @@ namespace Cinder.Data.Repositories
         public async Task UpsertAsync(TransactionReceiptVO transactionReceiptVO, string code, bool failedCreatingContract)
         {
             await UpsertDocumentAsync(
-                transactionReceiptVO.MapToStorageEntityForUpsert<CinderTransaction>(code, failedCreatingContract));
+                transactionReceiptVO.MapToStorageEntityForUpsert<CinderTransaction>(code, failedCreatingContract)).ConfigureAwait(false);
         }
 
         public async Task UpsertAsync(TransactionReceiptVO transactionReceiptVO)
         {
-            await UpsertDocumentAsync(transactionReceiptVO.MapToStorageEntityForUpsert<CinderTransaction>());
+            await UpsertDocumentAsync(transactionReceiptVO.MapToStorageEntityForUpsert<CinderTransaction>()).ConfigureAwait(false);
         }
 
         public async Task<IPage<CinderTransaction>> GetTransactions(int? page = null, int? size = null,

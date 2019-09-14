@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using Cinder.Core;
@@ -41,7 +41,7 @@ namespace Cinder.Indexer.Infrastructure
                     .UseSerilog()
                     .Build();
 
-                await host.RunAsync();
+                await host.RunAsync().ConfigureAwait(false);
 
                 return 0;
             }

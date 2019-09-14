@@ -30,13 +30,14 @@ namespace Cinder.Indexer.Infrastructure
         {
             try
             {
-                IEnumerable<CinderAddress> addresses =
-                    await _addressRepository.GetStaleAddresses(cancellationToken: cancellationToken);
+                IEnumerable<CinderAddress> addresses = await _addressRepository
+                    .GetStaleAddresses(cancellationToken: cancellationToken)
+                    .ConfigureAwait(false);
 
                 foreach (CinderAddress address in addresses)
                 {
                     _logger.LogDebug("Updating balance for {Hash}", address.Hash);
-                    HexBigInteger balance = await _web3.Eth.GetBalance.SendRequestAsync(address.Hash);
+                    HexBigInteger balance = await _web3.Eth.GetBalance.SendRequestAsync(address.Hash).ConfigureAwait(false);
                     address.Balance = UnitConversion.Convert.FromWei(balance);
                     address.CacheDate = DateTimeOffset.UtcNow;
                     address.ForceRefresh = false;

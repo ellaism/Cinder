@@ -4,7 +4,6 @@ using Cinder.Documents;
 using MongoDB.Driver;
 using Nethereum.BlockchainProcessing.BlockStorage.Entities;
 using Nethereum.BlockchainProcessing.BlockStorage.Entities.Mapping;
-using Nethereum.BlockchainProcessing.BlockStorage.Repositories;
 using Nethereum.RPC.Eth.DTOs;
 
 namespace Cinder.Data.Repositories
@@ -16,7 +15,7 @@ namespace Cinder.Data.Repositories
 
         public async Task UpsertAsync(FilterLogVO log)
         {
-            await UpsertDocumentAsync(log.MapToStorageEntityForUpsert<CinderTransactionLog>());
+            await UpsertDocumentAsync(log.MapToStorageEntityForUpsert<CinderTransactionLog>()).ConfigureAwait(false);
         }
 
         public async Task<ITransactionLogView> FindByTransactionHashAndLogIndexAsync(string hash, BigInteger logIndex)
@@ -25,7 +24,7 @@ namespace Cinder.Data.Repositories
             {
                 TransactionHash = hash, LogIndex = logIndex.ToString()
             });
-            CinderTransactionLog response = await Collection.Find(filter).SingleOrDefaultAsync();
+            CinderTransactionLog response = await Collection.Find(filter).SingleOrDefaultAsync().ConfigureAwait(false);
 
             return response;
         }

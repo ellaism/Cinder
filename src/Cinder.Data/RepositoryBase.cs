@@ -32,7 +32,8 @@ namespace Cinder.Data
         protected async Task UpsertDocumentAsync(TDocument updatedDocument, CancellationToken cancellationToken = default)
         {
             await Collection.ReplaceOneAsync(CreateDocumentFilter(updatedDocument), updatedDocument,
-                new UpdateOptions {IsUpsert = true}, cancellationToken);
+                    new UpdateOptions {IsUpsert = true}, cancellationToken)
+                .ConfigureAwait(false);
         }
     }
 }

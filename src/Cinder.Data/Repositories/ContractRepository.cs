@@ -5,7 +5,6 @@ using Cinder.Documents;
 using MongoDB.Driver;
 using Nethereum.BlockchainProcessing.BlockStorage.Entities;
 using Nethereum.BlockchainProcessing.BlockStorage.Entities.Mapping;
-using Nethereum.BlockchainProcessing.BlockStorage.Repositories;
 using Nethereum.RPC.Eth.DTOs;
 
 namespace Cinder.Data.Repositories
@@ -20,15 +19,14 @@ namespace Cinder.Data.Repositories
 
         public async Task FillCache()
         {
-            using (IAsyncCursor<CinderContract> cursor = await Collection.FindAsync(FilterDefinition<CinderContract>.Empty))
+            using IAsyncCursor<CinderContract> cursor =
+                await Collection.FindAsync(FilterDefinition<CinderContract>.Empty).ConfigureAwait(false);
+            while (await cursor.MoveNextAsync())
             {
-                while (await cursor.MoveNextAsync())
+                IEnumerable<CinderContract> batch = cursor.Current;
+                foreach (CinderContract contract in batch)
                 {
-                    IEnumerable<CinderContract> batch = cursor.Current;
-                    foreach (CinderContract contract in batch)
-                    {
-                        _cachedContracts.AddOrUpdate(contract.Address, contract, (s, existingContract) => contract);
-                    }
+                    _cachedContracts.AddOrUpdate(contract.Address, contract, (s, existingContract) => contract);
                 }
             }
         }
@@ -36,14 +34,14 @@ namespace Cinder.Data.Repositories
         public async Task UpsertAsync(ContractCreationVO contractCreation)
         {
             CinderContract contract = contractCreation.MapToStorageEntityForUpsert<CinderContract>();
-            await UpsertDocumentAsync(contract);
+            await UpsertDocumentAsync(contract).ConfigureAwait(false);
 
             _cachedContracts.AddOrUpdate(contract.Address, contract, (s, existingContract) => contract);
         }
 
         public async Task<bool> ExistsAsync(string contractAddress)
         {
-            IContractView existing = await FindByAddressAsync(contractAddress);
+            IContractView existing = await FindByAddressAsync(contractAddress).ConfigureAwait(false);
 
             return existing != null;
         }
@@ -51,7 +49,7 @@ namespace Cinder.Data.Repositories
         public async Task<IContractView> FindByAddressAsync(string contractAddress)
         {
             FilterDefinition<CinderContract> filter = CreateDocumentFilter(contractAddress);
-            CinderContract response = await Collection.Find(filter).SingleOrDefaultAsync();
+            CinderContract response = await Collection.Find(filter).SingleOrDefaultAsync().ConfigureAwait(false);
 
             return response;
         }

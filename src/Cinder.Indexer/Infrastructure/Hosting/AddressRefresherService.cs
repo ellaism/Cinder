@@ -24,7 +24,7 @@ namespace Cinder.Indexer.Infrastructure.Hosting
             {
                 try
                 {
-                    await _addressRefresherRunner.RunAsync(stoppingToken);
+                    await _addressRefresherRunner.RunAsync(stoppingToken).ConfigureAwait(false);
                 }
                 catch (LoggedException) { }
                 catch (Exception e)
@@ -32,7 +32,7 @@ namespace Cinder.Indexer.Infrastructure.Hosting
                     _logger.LogError(e, "Address refresher threw a non-logged exception");
                 }
 
-                await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
+                await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken).ConfigureAwait(false);
             }
         }
     }
