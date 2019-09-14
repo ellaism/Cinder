@@ -29,7 +29,7 @@ namespace Cinder.Indexer.Infrastructure.Hosting
                 catch (LoggedException) { }
                 catch (Exception e)
                 {
-                    _logger.LogError(e, "Block indexer threw a non-logged exception.");
+                    _logger.LogError(e, "Block indexer threw a non-logged exception");
                 }
 
                 await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
