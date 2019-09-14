@@ -34,9 +34,11 @@ namespace Cinder.Api.Controllers
 
         [HttpGet("address/{hash}")]
         [ProducesResponseType(typeof(GetTransactionsByAddressHash.Model), StatusCodes.Status200OK)]
-        public async Task<IPage<GetTransactionsByAddressHash.Model>> GetTransactionsByAddressHash(string hash, int? page, int? size)
+        public async Task<IPage<GetTransactionsByAddressHash.Model>> GetTransactionsByAddressHash(string hash, int? page,
+            int? size, SortOrder sort = SortOrder.Ascending)
         {
-            return await Mediator.Send(new GetTransactionsByAddressHash.Query {AddressHash = hash, Page = page, Size = size});
+            return await Mediator.Send(
+                new GetTransactionsByAddressHash.Query {AddressHash = hash, Page = page, Size = size, Sort = sort});
         }
     }
 }
