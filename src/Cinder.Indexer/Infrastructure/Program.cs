@@ -31,6 +31,7 @@ namespace Cinder.Indexer.Infrastructure
                 IHost host = new HostBuilder().ConfigureServices((hostContext, services) =>
                     {
                         services.Configure<ConsoleLifetimeOptions>(options => options.SuppressStatusMessages = true);
+                        services.AddHostedService<AddressRefresherService>();
                         services.AddHostedService<BlockIndexerService>();
                         services.Configure<Settings>(options => Configuration.Bind(options));
                         services.AddBlockchain();

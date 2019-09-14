@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using Cinder.Documents;
 using MongoDB.Driver;
@@ -19,6 +21,17 @@ namespace Cinder.Data.Repositories
         {
             return await Collection.Find(Builders<CinderAddress>.Filter.Eq(document => document.Hash, hash))
                 .SingleOrDefaultAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<CinderAddress>> GetStaleAddresses(int age = 5, int limit = 100,
+            CancellationToken cancellationToken = default)
+        {
+            return await Collection
+                .Find(Builders<CinderAddress>.Filter.Where(document =>
+                    document.CacheDate < DateTimeOffset.UtcNow.AddMinutes(-Math.Abs(age))))
+                .Limit(limit)
+                .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
         }
     }
