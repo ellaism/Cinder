@@ -29,7 +29,7 @@ namespace Cinder.Data.Repositories
         {
             return await Collection
                 .Find(Builders<CinderAddress>.Filter.Where(document =>
-                    document.CacheDate < DateTimeOffset.UtcNow.AddMinutes(-Math.Abs(age))))
+                    document.CacheDate < DateTimeOffset.UtcNow.AddMinutes(-Math.Abs(age)) || document.ForceRefresh))
                 .Limit(limit)
                 .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
