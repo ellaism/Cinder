@@ -15,21 +15,21 @@ namespace Cinder.Api.Controllers
         public async Task<IPage<GetTransactions.Model>> GetTransactions(int? page, int? size,
             SortOrder sort = SortOrder.Ascending)
         {
-            return await Mediator.Send(new GetTransactions.Query {Page = page, Size = size, Sort = sort});
+            return await Mediator.Send(new GetTransactions.Query {Page = page, Size = size, Sort = sort}).ConfigureAwait(false);
         }
 
         [HttpGet("{hash}")]
         [ProducesResponseType(typeof(GetTransactionByHash.Model), StatusCodes.Status200OK)]
         public async Task<GetTransactionByHash.Model> GetTransactionByHash(string hash)
         {
-            return await Mediator.Send(new GetTransactionByHash.Query {Hash = hash});
+            return await Mediator.Send(new GetTransactionByHash.Query {Hash = hash}).ConfigureAwait(false);
         }
 
         [HttpGet("block/{hash}")]
         [ProducesResponseType(typeof(GetTransactionsByBlockHash.Model), StatusCodes.Status200OK)]
         public async Task<IEnumerable<GetTransactionsByBlockHash.Model>> GetTransactionsByBlockHash(string hash)
         {
-            return await Mediator.Send(new GetTransactionsByBlockHash.Query {BlockHash = hash});
+            return await Mediator.Send(new GetTransactionsByBlockHash.Query {BlockHash = hash}).ConfigureAwait(false);
         }
 
         [HttpGet("address/{hash}")]
@@ -38,7 +38,8 @@ namespace Cinder.Api.Controllers
             int? size, SortOrder sort = SortOrder.Ascending)
         {
             return await Mediator.Send(
-                new GetTransactionsByAddressHash.Query {AddressHash = hash, Page = page, Size = size, Sort = sort});
+                    new GetTransactionsByAddressHash.Query {AddressHash = hash, Page = page, Size = size, Sort = sort})
+                .ConfigureAwait(false);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Cinder.Api.Controllers
         [ProducesResponseType(typeof(GetResultsByQuery.Model), StatusCodes.Status200OK)]
         public async Task<GetResultsByQuery.Model> GetResultsByQuery(string query)
         {
-            return await Mediator.Send(new GetResultsByQuery.Query {Q = query});
+            return await Mediator.Send(new GetResultsByQuery.Query {Q = query}).ConfigureAwait(false);
         }
     }
 }

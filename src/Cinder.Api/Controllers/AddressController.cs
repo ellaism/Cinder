@@ -11,7 +11,7 @@ namespace Cinder.Api.Controllers
         [ProducesResponseType(typeof(GetAddressByHash.Model), StatusCodes.Status200OK)]
         public async Task<GetAddressByHash.Model> GetAddressByHash(string hash)
         {
-            return await Mediator.Send(new GetAddressByHash.Query {Hash = hash});
+            return await Mediator.Send(new GetAddressByHash.Query {Hash = hash}).ConfigureAwait(false);
         }
     }
 }
