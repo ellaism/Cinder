@@ -32,7 +32,7 @@ namespace Cinder.Indexer.Infrastructure.Hosting
                     _logger.LogError(e, "Address refresher threw a non-logged exception");
                 }
 
-                await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken).ConfigureAwait(false);
+                await Task.Delay(TimeSpan.FromSeconds(60), stoppingToken).ConfigureAwait(false);
             }
         }
     }
