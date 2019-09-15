@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -37,15 +37,28 @@ namespace Cinder.Indexer.Infrastructure
                 IEnumerable<CinderAddress> enumerable = addresses as CinderAddress[] ?? addresses.ToArray();
                 _logger.LogDebug("Found {Count} addresses to update", enumerable.Count());
 
+                List<CinderAddress> updated = new List<CinderAddress>();
                 foreach (CinderAddress address in enumerable)
                 {
                     _logger.LogDebug("Updating balance for {Hash}", address.Hash);
-                    HexBigInteger balance = await _web3.Eth.GetBalance.SendRequestAsync(address.Hash).ConfigureAwait(false);
+                    HexBigInteger balance;
+
+                    try
+                    {
+                        balance = await _web3.Eth.GetBalance.SendRequestAsync(address.Hash).ConfigureAwait(false);
+                    }
+                    catch (Exception)
+                    {
+                        continue;
+                    }
+
                     address.Balance = UnitConversion.Convert.FromWei(balance);
-                    address.Timestamp = (ulong)DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+                    address.Timestamp = (ulong) DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                     address.ForceRefresh = false;
-                    await _addressRepository.UpsertAddress(address, cancellationToken).ConfigureAwait(false);
+                    updated.Add(address);
                 }
+
+                await _addressRepository.BulkUpsertAddresses(updated, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception e)
             {
