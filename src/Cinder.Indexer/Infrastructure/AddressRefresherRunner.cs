@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -32,7 +32,7 @@ namespace Cinder.Indexer.Infrastructure
             try
             {
                 IEnumerable<CinderAddress> addresses = await _addressRepository
-                    .GetStaleAddresses(cancellationToken: cancellationToken)
+                    .GetStaleAddresses(limit: 2500, cancellationToken: cancellationToken)
                     .ConfigureAwait(false);
                 IEnumerable<CinderAddress> enumerable = addresses as CinderAddress[] ?? addresses.ToArray();
                 _logger.LogDebug("Found {Count} addresses to update", enumerable.Count());
