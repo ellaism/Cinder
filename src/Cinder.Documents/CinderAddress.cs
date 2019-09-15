@@ -11,7 +11,7 @@ namespace Cinder.Documents
         public decimal Balance { get; set; }
         public ulong? BlocksMined { get; set; }
         public ulong? TransactionCount { get; set; }
-        public DateTimeOffset CacheDate { get; set; }
+        public ulong? Timestamp { get; set; }
         public bool ForceRefresh { get; set; }
 
         public string Id

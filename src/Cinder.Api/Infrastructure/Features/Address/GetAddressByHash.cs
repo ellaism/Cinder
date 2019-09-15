@@ -32,7 +32,7 @@ namespace Cinder.Api.Infrastructure.Features.Address
             public decimal Balance { get; set; }
             public ulong? BlocksMined { get; set; }
             public ulong? TransactionCount { get; set; }
-            public DateTimeOffset CacheDate { get; set; }
+            public ulong? Timestamp { get; set; }
         }
 
         public class Handler : IRequestHandler<Query, Model>
@@ -58,7 +58,7 @@ namespace Cinder.Api.Infrastructure.Features.Address
                         Balance = address.Balance,
                         BlocksMined = address.BlocksMined,
                         TransactionCount = address.TransactionCount,
-                        CacheDate = address.CacheDate
+                        Timestamp = address.Timestamp
                     };
                 }
 
@@ -67,7 +67,7 @@ namespace Cinder.Api.Infrastructure.Features.Address
                 {
                     Hash = request.Hash,
                     Balance = UnitConversion.Convert.FromWei(balance),
-                    CacheDate = DateTimeOffset.UtcNow,
+                    Timestamp = (ulong)DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
                     ForceRefresh = true
                 };
                 await _addressRepository.UpsertAddress(address, cancellationToken);
@@ -78,7 +78,7 @@ namespace Cinder.Api.Infrastructure.Features.Address
                     Balance = address.Balance,
                     BlocksMined = address.BlocksMined,
                     TransactionCount = address.TransactionCount,
-                    CacheDate = address.CacheDate
+                    Timestamp = address.Timestamp
                 };
             }
         }
