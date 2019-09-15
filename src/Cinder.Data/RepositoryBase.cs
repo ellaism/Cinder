@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Cinder.Documents;
 using Cinder.Extensions;
@@ -34,6 +36,24 @@ namespace Cinder.Data
             await Collection.ReplaceOneAsync(CreateDocumentFilter(updatedDocument), updatedDocument,
                     new UpdateOptions {IsUpsert = true}, cancellationToken)
                 .ConfigureAwait(false);
+        }
+
+        protected async Task<int> BulkUpsertDocumentAsync(IEnumerable<TDocument> updatedDocuments,
+            CancellationToken cancellationToken = default)
+        {
+            List<WriteModel<TDocument>> requests = updatedDocuments
+                .Select(document =>
+                    new ReplaceOneModel<TDocument>(Builders<TDocument>.Filter.Where(x => x.Id == document.Id), document)
+                    {
+                        IsUpsert = true
+                    })
+                .Cast<WriteModel<TDocument>>()
+                .ToList();
+
+            BulkWriteResult<TDocument> result = await Collection.BulkWriteAsync(requests, cancellationToken: cancellationToken)
+                .ConfigureAwait(false);
+
+            return result.ProcessedRequests.Count;
         }
     }
 }
