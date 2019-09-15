@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Cinder.Core.Paging;
 using Cinder.Documents;
 using MongoDB.Driver;
 
@@ -65,6 +66,17 @@ namespace Cinder.Data.Repositories
             staleAddresses.AddRange(needsRefresh);
 
             return staleAddresses;
+        }
+
+        public async Task<IPage<CinderAddress>> GetRichest(int? page, int? size, CancellationToken cancellationToken = default)
+        {
+            IFindFluent<CinderAddress, CinderAddress> query = Collection.Find(FilterDefinition<CinderAddress>.Empty)
+                .Skip(((page ?? 1) - 1) * (size ?? 10))
+                .Limit(size ?? 10)
+                .SortByDescending(document => document.Balance);
+            List<CinderAddress> addresses = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
+
+            return new PagedEnumerable<CinderAddress>(addresses, 1000, page ?? 1, size ?? 10);
         }
     }
 }
