@@ -10,6 +10,8 @@ namespace Cinder.Data.IndexBuilders
         public override void EnsureIndexes()
         {
             Index(f => f.Hash);
+            Index(f => f.Balance);
+            Index(f => f.Timestamp);
         }
     }
 }

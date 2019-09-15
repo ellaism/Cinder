@@ -1,7 +1,9 @@
 ﻿using System;
 using Cinder.Data.Repositories;
 using Cinder.Documents;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 using Nethereum.BlockchainProcessing.BlockStorage.Entities;
 
@@ -63,7 +65,11 @@ namespace Cinder.Data
                 map.UnmapMember(m => m.RowUpdated);
                 map.SetIsRootClass(true);
             });
-            BsonClassMap.RegisterClassMap<CinderAddress>();
+            BsonClassMap.RegisterClassMap<CinderAddress>(map =>
+            {
+                map.AutoMap();
+                map.MapProperty(prop => prop.Balance).SetSerializer(new DecimalSerializer(BsonType.Decimal128));
+            });
             BsonClassMap.RegisterClassMap<CinderAddressTransaction>();
             BsonClassMap.RegisterClassMap<CinderBlock>();
             BsonClassMap.RegisterClassMap<CinderContract>();
