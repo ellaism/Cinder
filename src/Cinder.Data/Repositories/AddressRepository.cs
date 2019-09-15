@@ -55,10 +55,10 @@ namespace Cinder.Data.Repositories
                 return staleAddresses;
             }
 
-            ulong ageLimit = (ulong) DateTimeOffset.UtcNow.AddMinutes(-Math.Abs(age)).Ticks;
+            ulong ageLimit = (ulong) DateTimeOffset.UtcNow.AddMinutes(-Math.Abs(age)).ToUnixTimeSeconds();
             List<CinderAddress> needsRefresh = await Collection
                 .Find(Builders<CinderAddress>.Filter.Where(
-                    document => document.Timestamp != null && document.Timestamp > ageLimit))
+                    document => document.Timestamp != null && document.Timestamp < ageLimit))
                 .Limit(limit - staleAddresses.Count)
                 .SortBy(document => document.Timestamp)
                 .ToListAsync(cancellationToken)
