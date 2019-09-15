@@ -20,7 +20,7 @@ namespace Cinder.Api.Controllers
         [ProducesResponseType(typeof(GetBlockByHash.Model), StatusCodes.Status200OK)]
         public async Task<GetBlockByHash.Model> GetBlockByHash([FromRoute] string hash)
         {
-            return await Mediator.Send(new GetBlockByHash.Query {Hash = hash});.ConfigureAwait(false)
+            return await Mediator.Send(new GetBlockByHash.Query {Hash = hash}).ConfigureAwait(false);
         }
 
         [HttpGet("height/{number}")]
