@@ -29,7 +29,7 @@ namespace Cinder.Api.Infrastructure.Services
                 query = query.StartsWith("0x") ? query : $"0x{query}";
 
                 // todo
-                searchResult.Id = query;
+                searchResult.Id = query.ToLowerInvariant();
                 searchResult.Type = SearchResultType.AddressHash;
             }
             else if (Regex.IsMatch(query, "^(0x)?[0-9a-f]{64}$", RegexOptions.IgnoreCase))

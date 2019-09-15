@@ -58,6 +58,8 @@ namespace Cinder.Data.Repositories
 
         public async Task<CinderBlock> GetBlockByHash(string hash, CancellationToken cancellationToken = default)
         {
+            hash = hash.ToLowerInvariant();
+
             return await Collection.Find(Builders<CinderBlock>.Filter.Eq(document => document.Hash, hash))
                 .SingleOrDefaultAsync(cancellationToken)
                 .ConfigureAwait(false);
@@ -65,6 +67,7 @@ namespace Cinder.Data.Repositories
 
         public async Task<string> GetBlockHashIfExists(string hash, CancellationToken cancellationToken = default)
         {
+            hash = hash.ToLowerInvariant();
             var result = await Collection.Find(Builders<CinderBlock>.Filter.Eq(document => document.Hash, hash))
                 .Project(block => new {block.Hash})
                 .SingleOrDefaultAsync(cancellationToken)
@@ -94,6 +97,7 @@ namespace Cinder.Data.Repositories
         public async Task<ulong> GetBlocksMinedCountByAddressHash(string addressHash,
             CancellationToken cancellationToken = default)
         {
+            addressHash = addressHash.ToLowerInvariant();
             long total = await Collection.Find(Builders<CinderBlock>.Filter.Eq(document => document.Miner, addressHash))
                 .CountDocumentsAsync(cancellationToken)
                 .ConfigureAwait(false);

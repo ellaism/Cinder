@@ -20,6 +20,7 @@ namespace Cinder.Data.Repositories
 
         public async Task<ITransactionLogView> FindByTransactionHashAndLogIndexAsync(string hash, BigInteger logIndex)
         {
+            hash = hash.ToLowerInvariant();
             FilterDefinition<CinderTransactionLog> filter = CreateDocumentFilter(new CinderTransactionLog
             {
                 TransactionHash = hash, LogIndex = logIndex.ToString()

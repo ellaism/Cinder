@@ -25,6 +25,7 @@ namespace Cinder.Data.Repositories
 
         public async Task<CinderAddress> GetAddressByHash(string hash, CancellationToken cancellationToken = default)
         {
+            hash = hash.ToLowerInvariant();
             return await Collection.Find(Builders<CinderAddress>.Filter.Eq(document => document.Hash, hash))
                 .SingleOrDefaultAsync(cancellationToken)
                 .ConfigureAwait(false);

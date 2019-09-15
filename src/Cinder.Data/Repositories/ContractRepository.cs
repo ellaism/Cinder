@@ -41,6 +41,7 @@ namespace Cinder.Data.Repositories
 
         public async Task<bool> ExistsAsync(string contractAddress)
         {
+            contractAddress = contractAddress.ToLowerInvariant();
             IContractView existing = await FindByAddressAsync(contractAddress).ConfigureAwait(false);
 
             return existing != null;

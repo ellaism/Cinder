@@ -23,6 +23,8 @@ namespace Cinder.Data
 
         protected virtual FilterDefinition<TDocument> CreateDocumentFilter(string id)
         {
+            id = id.ToLowerInvariant();
+
             return Builders<TDocument>.Filter.Eq(document => document.Id, id);
         }
 

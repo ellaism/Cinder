@@ -62,10 +62,11 @@ namespace Cinder.Api.Infrastructure.Features.Address
                     };
                 }
 
-                HexBigInteger balance = await _web3.Eth.GetBalance.SendRequestAsync(request.Hash);
+                string hash = request.Hash.ToLowerInvariant();
+                HexBigInteger balance = await _web3.Eth.GetBalance.SendRequestAsync(hash);
                 address = new CinderAddress
                 {
-                    Hash = request.Hash,
+                    Hash = hash,
                     Balance = UnitConversion.Convert.FromWei(balance),
                     Timestamp = (ulong)DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
                     ForceRefresh = true

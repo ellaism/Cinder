@@ -25,6 +25,8 @@ namespace Cinder.Data.Repositories
 
         public async Task<IAddressTransactionView> FindAsync(string address, HexBigInteger blockNumber, string transactionHash)
         {
+            address = address.ToLowerInvariant();
+            transactionHash = transactionHash.ToLowerInvariant();
             FilterDefinition<CinderAddressTransaction> filter = CreateDocumentFilter(new CinderAddressTransaction
             {
                 Address = address, Hash = transactionHash, BlockNumber = blockNumber.Value.ToString()

@@ -18,6 +18,7 @@ namespace Cinder.Data.Repositories
 
         public async Task<ITransactionView> FindByBlockNumberAndHashAsync(HexBigInteger blockNumber, string hash)
         {
+            hash = hash.ToLowerInvariant();
             FilterDefinition<CinderTransaction> filter = CreateDocumentFilter(new CinderTransaction
             {
                 BlockNumber = blockNumber.Value.ToString(), Hash = hash
@@ -30,12 +31,14 @@ namespace Cinder.Data.Repositories
         public async Task UpsertAsync(TransactionReceiptVO transactionReceiptVO, string code, bool failedCreatingContract)
         {
             await UpsertDocumentAsync(
-                transactionReceiptVO.MapToStorageEntityForUpsert<CinderTransaction>(code, failedCreatingContract)).ConfigureAwait(false);
+                    transactionReceiptVO.MapToStorageEntityForUpsert<CinderTransaction>(code, failedCreatingContract))
+                .ConfigureAwait(false);
         }
 
         public async Task UpsertAsync(TransactionReceiptVO transactionReceiptVO)
         {
-            await UpsertDocumentAsync(transactionReceiptVO.MapToStorageEntityForUpsert<CinderTransaction>()).ConfigureAwait(false);
+            await UpsertDocumentAsync(transactionReceiptVO.MapToStorageEntityForUpsert<CinderTransaction>())
+                .ConfigureAwait(false);
         }
 
         public async Task<IPage<CinderTransaction>> GetTransactions(int? page = null, int? size = null,
@@ -63,6 +66,8 @@ namespace Cinder.Data.Repositories
 
         public async Task<CinderTransaction> GetTransactionByHash(string hash, CancellationToken cancellationToken = default)
         {
+            hash = hash.ToLowerInvariant();
+
             return await Collection.Find(Builders<CinderTransaction>.Filter.Eq(document => document.Hash, hash))
                 .SingleOrDefaultAsync(cancellationToken)
                 .ConfigureAwait(false);
@@ -71,6 +76,8 @@ namespace Cinder.Data.Repositories
         public async Task<IEnumerable<CinderTransaction>> GetTransactionsByBlockHash(string blockHash,
             CancellationToken cancellationToken = default)
         {
+            blockHash = blockHash.ToLowerInvariant();
+
             return await Collection.Find(Builders<CinderTransaction>.Filter.Eq(document => document.BlockHash, blockHash))
                 .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
@@ -78,6 +85,7 @@ namespace Cinder.Data.Repositories
 
         public async Task<string> GetTransactionHashIfExists(string hash, CancellationToken cancellationToken = default)
         {
+            hash = hash.ToLowerInvariant();
             var result = await Collection.Find(Builders<CinderTransaction>.Filter.Eq(document => document.Hash, hash))
                 .Project(transaction => new {transaction.Hash})
                 .SingleOrDefaultAsync(cancellationToken)
@@ -121,6 +129,8 @@ namespace Cinder.Data.Repositories
 
         private IFindFluent<CinderTransaction, CinderTransaction> AddressHashBaseQuery(string addressHash)
         {
+            addressHash = addressHash.ToLowerInvariant();
+
             return Collection.Find(Builders<CinderTransaction>.Filter.Or(
                 Builders<CinderTransaction>.Filter.Eq(transaction => transaction.AddressTo, addressHash),
                 Builders<CinderTransaction>.Filter.Eq(transaction => transaction.AddressFrom, addressHash)));
