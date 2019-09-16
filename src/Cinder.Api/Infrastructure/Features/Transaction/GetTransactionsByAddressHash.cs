@@ -29,6 +29,7 @@ namespace Cinder.Api.Infrastructure.Features.Transaction
             public string AddressHash { get; set; }
             public int? Page { get; set; }
             public int? Size { get; set; }
+            public bool? Limited { get; set; }
             public SortOrder Sort { get; set; }
         }
 
@@ -65,7 +66,7 @@ namespace Cinder.Api.Infrastructure.Features.Transaction
             public async Task<IPage<Model>> Handle(Query request, CancellationToken cancellationToken)
             {
                 IPage<CinderTransaction> page = await _transactionRepository.GetTransactionsByAddressHash(request.AddressHash,
-                    request.Page, request.Size, request.Sort, cancellationToken);
+                    request.Page, request.Size, request.Limited, request.Sort, cancellationToken);
 
                 IEnumerable<Model> models = page.Items.Select(transaction => new Model
                 {

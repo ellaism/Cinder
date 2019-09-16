@@ -19,7 +19,7 @@ namespace Cinder.Data.Repositories
         Task<string> GetTransactionHashIfExists(string hash, CancellationToken cancellationToken = default);
 
         Task<IPage<CinderTransaction>> GetTransactionsByAddressHash(string addressHash, int? page = null, int? size = null,
-            SortOrder sort = SortOrder.Ascending, CancellationToken cancellationToken = default);
+            bool? limited = false, SortOrder sort = SortOrder.Ascending, CancellationToken cancellationToken = default);
 
         Task<ulong> GetTransactionCountByAddressHash(string addressHash, CancellationToken cancellationToken = default);
     }

@@ -95,11 +95,18 @@ namespace Cinder.Data.Repositories
         }
 
         public async Task<IPage<CinderTransaction>> GetTransactionsByAddressHash(string addressHash, int? page = null,
-            int? size = null, SortOrder sort = SortOrder.Ascending, CancellationToken cancellationToken = default)
+            int? size = null, bool? limited = false, SortOrder sort = SortOrder.Ascending,
+            CancellationToken cancellationToken = default)
         {
+            page ??= 1;
+            size ??= 10;
+            limited ??= false;
+
             IFindFluent<CinderTransaction, CinderTransaction> query = AddressHashBaseQuery(addressHash);
-            // TODO 20190828 Setting a hard cap to the count here as it is very slow. Need to investigate options.
-            long total = await query.Limit(5000).CountDocumentsAsync(cancellationToken).ConfigureAwait(false);
+            // TODO 20190915 Additional performance improvements are needed here
+            long total = await query.Limit(limited.Value ? page.Value * size.Value + 1 : 5000)
+                .CountDocumentsAsync(cancellationToken)
+                .ConfigureAwait(false);
 
             switch (sort)
             {
@@ -111,11 +118,10 @@ namespace Cinder.Data.Repositories
                     break;
             }
 
-            query = query.Skip(((page ?? 1) - 1) * (size ?? 10)).Limit(size ?? 10);
-
+            query = query.Skip((page.Value - 1) * size.Value).Limit(size.Value);
             List<CinderTransaction> transactions = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
 
-            return new PagedEnumerable<CinderTransaction>(transactions, (int) total, page ?? 1, size ?? 10);
+            return new PagedEnumerable<CinderTransaction>(transactions, (int) total, page.Value, size.Value);
         }
 
         public async Task<ulong> GetTransactionCountByAddressHash(string addressHash,
