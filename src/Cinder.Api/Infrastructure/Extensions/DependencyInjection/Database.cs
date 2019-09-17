@@ -19,6 +19,8 @@ namespace Cinder.Extensions.DependencyInjection
             });
             services.AddSingleton<IAddressRepository>(sp =>
                 sp.GetService<IApiRepositoryFactory>().CreateRepository<AddressRepository>());
+            services.AddSingleton<IAddressTransactionRepository>(sp =>
+                sp.GetService<IApiRepositoryFactory>().CreateRepository<AddressTransactionRepository>());
             services.AddSingleton<IBlockRepository>(sp =>
                 sp.GetService<IApiRepositoryFactory>().CreateRepository<BlockRepository>());
             services.AddSingleton<ITransactionRepository>(sp =>

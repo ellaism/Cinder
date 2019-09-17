@@ -48,5 +48,15 @@ namespace Cinder.Api.Controllers
                     })
                 .ConfigureAwait(false);
         }
+
+        [HttpGet("address/{hash}/recent")]
+        [ProducesResponseType(typeof(GetRecentTransactionsByAddressHash.Model), StatusCodes.Status200OK)]
+        public async Task<IPage<GetRecentTransactionsByAddressHash.Model>> GetRecentTransactionsByAddressHash(string hash,
+            int? page, int? size, SortOrder sort = SortOrder.Ascending)
+        {
+            return await Mediator.Send(
+                    new GetRecentTransactionsByAddressHash.Query {AddressHash = hash, Page = page, Size = size, Sort = sort})
+                .ConfigureAwait(false);
+        }
     }
 }

@@ -94,52 +94,13 @@ namespace Cinder.Data.Repositories
             return result.Hash;
         }
 
-        public async Task<IPage<CinderTransaction>> GetTransactionsByAddressHash(string addressHash, int? page = null,
-            int? size = null, bool? limited = false, SortOrder sort = SortOrder.Ascending,
+        public async Task<IEnumerable<CinderTransaction>> GetTransactionsByHashes(IEnumerable<string> transactionHashes,
             CancellationToken cancellationToken = default)
         {
-            page ??= 1;
-            size ??= 10;
-            limited ??= false;
-
-            IFindFluent<CinderTransaction, CinderTransaction> query = AddressHashBaseQuery(addressHash);
-            // TODO 20190915 Additional performance improvements are needed here
-            long total = await query.Limit(limited.Value ? page.Value * size.Value + 1 : 5000)
-                .CountDocumentsAsync(cancellationToken)
+            return await Collection.Find(Builders<CinderTransaction>.Filter.In(document => document.Hash, transactionHashes))
+                .SortByDescending(document => document.BlockNumber)
+                .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
-
-            switch (sort)
-            {
-                case SortOrder.Ascending:
-                    query = query.SortBy(transaction => transaction.Id);
-                    break;
-                case SortOrder.Descending:
-                    query = query.SortByDescending(transaction => transaction.Id);
-                    break;
-            }
-
-            query = query.Skip((page.Value - 1) * size.Value).Limit(size.Value);
-            List<CinderTransaction> transactions = await query.ToListAsync(cancellationToken).ConfigureAwait(false);
-
-            return new PagedEnumerable<CinderTransaction>(transactions, (int) total, page.Value, size.Value);
-        }
-
-        public async Task<ulong> GetTransactionCountByAddressHash(string addressHash,
-            CancellationToken cancellationToken = default)
-        {
-            IFindFluent<CinderTransaction, CinderTransaction> query = AddressHashBaseQuery(addressHash);
-            long total = await query.CountDocumentsAsync(cancellationToken).ConfigureAwait(false);
-
-            return (ulong) total;
-        }
-
-        private IFindFluent<CinderTransaction, CinderTransaction> AddressHashBaseQuery(string addressHash)
-        {
-            addressHash = addressHash.ToLowerInvariant();
-
-            return Collection.Find(Builders<CinderTransaction>.Filter.Or(
-                Builders<CinderTransaction>.Filter.Eq(transaction => transaction.AddressTo, addressHash),
-                Builders<CinderTransaction>.Filter.Eq(transaction => transaction.AddressFrom, addressHash)));
         }
     }
 }

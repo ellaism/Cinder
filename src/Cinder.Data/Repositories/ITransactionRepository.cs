@@ -18,9 +18,7 @@ namespace Cinder.Data.Repositories
 
         Task<string> GetTransactionHashIfExists(string hash, CancellationToken cancellationToken = default);
 
-        Task<IPage<CinderTransaction>> GetTransactionsByAddressHash(string addressHash, int? page = null, int? size = null,
-            bool? limited = false, SortOrder sort = SortOrder.Ascending, CancellationToken cancellationToken = default);
-
-        Task<ulong> GetTransactionCountByAddressHash(string addressHash, CancellationToken cancellationToken = default);
+        Task<IEnumerable<CinderTransaction>> GetTransactionsByHashes(IEnumerable<string> transactionHashes,
+            CancellationToken cancellationToken = default);
     }
 }
