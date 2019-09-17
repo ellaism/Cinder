@@ -73,7 +73,7 @@ namespace Cinder.Data.Repositories
                 .SingleOrDefaultAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-            return result.Hash;
+            return result?.Hash;
         }
 
         public async Task<CinderBlock> GetBlockByNumber(ulong number, CancellationToken cancellationToken = default)
@@ -91,7 +91,7 @@ namespace Cinder.Data.Repositories
                 .SingleOrDefaultAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-            return result.BlockNumber;
+            return result?.BlockNumber;
         }
 
         public async Task<ulong> GetBlocksMinedCountByAddressHash(string addressHash,
