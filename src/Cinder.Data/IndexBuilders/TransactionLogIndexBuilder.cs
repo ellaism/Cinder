@@ -9,12 +9,31 @@ namespace Cinder.Data.IndexBuilders
 
         public override void EnsureIndexes()
         {
-            Compound(true, f => f.TransactionHash, f => f.LogIndex);
-            Index(f => f.Address);
-            Index(f => f.EventHash);
-            Index(f => f.IndexVal1);
-            Index(f => f.IndexVal2);
-            Index(f => f.IndexVal3);
+            Collection.Indexes.CreateOneAsync(new CreateIndexModel<CinderTransactionLog>(
+                Builders<CinderTransactionLog>.IndexKeys.Combine(
+                    Builders<CinderTransactionLog>.IndexKeys.Ascending(f => f.TransactionHash),
+                    Builders<CinderTransactionLog>.IndexKeys.Ascending(f => f.LogIndex)),
+                new CreateIndexOptions {Unique = true, Background = true}));
+
+            Collection.Indexes.CreateOneAsync(new CreateIndexModel<CinderTransactionLog>(
+                Builders<CinderTransactionLog>.IndexKeys.Ascending(f => f.Address),
+                new CreateIndexOptions {Unique = false, Background = true}));
+
+            Collection.Indexes.CreateOneAsync(new CreateIndexModel<CinderTransactionLog>(
+                Builders<CinderTransactionLog>.IndexKeys.Ascending(f => f.EventHash),
+                new CreateIndexOptions {Unique = false, Background = true}));
+
+            Collection.Indexes.CreateOneAsync(new CreateIndexModel<CinderTransactionLog>(
+                Builders<CinderTransactionLog>.IndexKeys.Ascending(f => f.IndexVal1),
+                new CreateIndexOptions {Unique = false, Background = true}));
+
+            Collection.Indexes.CreateOneAsync(new CreateIndexModel<CinderTransactionLog>(
+                Builders<CinderTransactionLog>.IndexKeys.Ascending(f => f.IndexVal2),
+                new CreateIndexOptions {Unique = false, Background = true}));
+
+            Collection.Indexes.CreateOneAsync(new CreateIndexModel<CinderTransactionLog>(
+                Builders<CinderTransactionLog>.IndexKeys.Ascending(f => f.IndexVal3),
+                new CreateIndexOptions {Unique = false, Background = true}));
         }
     }
 }

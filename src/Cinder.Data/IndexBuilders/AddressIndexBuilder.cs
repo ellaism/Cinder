@@ -9,9 +9,17 @@ namespace Cinder.Data.IndexBuilders
 
         public override void EnsureIndexes()
         {
-            Index(f => f.Hash);
-            Index(f => f.Balance);
-            Index(f => f.Timestamp);
+            Collection.Indexes.CreateOneAsync(new CreateIndexModel<CinderAddress>(
+                Builders<CinderAddress>.IndexKeys.Ascending(f => f.Hash),
+                new CreateIndexOptions {Unique = false, Background = true}));
+
+            Collection.Indexes.CreateOneAsync(new CreateIndexModel<CinderAddress>(
+                Builders<CinderAddress>.IndexKeys.Ascending(f => f.Balance),
+                new CreateIndexOptions {Unique = false, Background = true}));
+
+            Collection.Indexes.CreateOneAsync(new CreateIndexModel<CinderAddress>(
+                Builders<CinderAddress>.IndexKeys.Ascending(f => f.Timestamp),
+                new CreateIndexOptions {Unique = false, Background = true}));
         }
     }
 }

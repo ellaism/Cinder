@@ -9,9 +9,18 @@ namespace Cinder.Data.IndexBuilders
 
         public override void EnsureIndexes()
         {
-            Compound(true, f => f.BlockNumber, f => f.Hash);
-            Index(f => f.Hash);
-            Index(f => f.Miner);
+            Collection.Indexes.CreateOneAsync(new CreateIndexModel<CinderBlock>(
+                Builders<CinderBlock>.IndexKeys.Combine(Builders<CinderBlock>.IndexKeys.Ascending(f => f.BlockNumber),
+                    Builders<CinderBlock>.IndexKeys.Ascending(f => f.Hash)),
+                new CreateIndexOptions {Unique = true, Background = true}));
+
+            Collection.Indexes.CreateOneAsync(new CreateIndexModel<CinderBlock>(
+                Builders<CinderBlock>.IndexKeys.Ascending(f => f.Hash),
+                new CreateIndexOptions {Unique = false, Background = true}));
+
+            Collection.Indexes.CreateOneAsync(new CreateIndexModel<CinderBlock>(
+                Builders<CinderBlock>.IndexKeys.Ascending(f => f.Miner),
+                new CreateIndexOptions {Unique = false, Background = true}));
         }
     }
 }

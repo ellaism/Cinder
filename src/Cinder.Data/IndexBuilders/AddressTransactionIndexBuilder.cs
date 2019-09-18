@@ -9,9 +9,26 @@ namespace Cinder.Data.IndexBuilders
 
         public override void EnsureIndexes()
         {
-            Compound(true, f => f.BlockNumber, f => f.Hash, f => f.Address);
-            Index(f => f.Hash);
-            Index(f => f.Address);
+            Collection.Indexes.CreateOneAsync(new CreateIndexModel<CinderAddressTransaction>(
+                Builders<CinderAddressTransaction>.IndexKeys.Combine(
+                    Builders<CinderAddressTransaction>.IndexKeys.Ascending(f => f.BlockNumber),
+                    Builders<CinderAddressTransaction>.IndexKeys.Ascending(f => f.Hash),
+                    Builders<CinderAddressTransaction>.IndexKeys.Ascending(f => f.Address)),
+                new CreateIndexOptions {Unique = true, Background = true}));
+
+            Collection.Indexes.CreateOneAsync(new CreateIndexModel<CinderAddressTransaction>(
+                Builders<CinderAddressTransaction>.IndexKeys.Combine(
+                    Builders<CinderAddressTransaction>.IndexKeys.Ascending(f => f.Address),
+                    Builders<CinderAddressTransaction>.IndexKeys.Descending(f => f.BlockNumber)),
+                new CreateIndexOptions {Unique = false, Background = true}));
+
+            Collection.Indexes.CreateOneAsync(new CreateIndexModel<CinderAddressTransaction>(
+                Builders<CinderAddressTransaction>.IndexKeys.Ascending(f => f.Hash),
+                new CreateIndexOptions {Unique = false, Background = true}));
+
+            Collection.Indexes.CreateOneAsync(new CreateIndexModel<CinderAddressTransaction>(
+                Builders<CinderAddressTransaction>.IndexKeys.Ascending(f => f.Address),
+                new CreateIndexOptions {Unique = false, Background = true}));
         }
     }
 }
