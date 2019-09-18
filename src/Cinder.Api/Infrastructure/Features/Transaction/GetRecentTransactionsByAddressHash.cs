@@ -3,7 +3,6 @@ using System.Linq;
 using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
-using Cinder.Core.Paging;
 using Cinder.Data.Repositories;
 using Cinder.Documents;
 using FluentValidation;
@@ -19,17 +18,14 @@ namespace Cinder.Api.Infrastructure.Features.Transaction
             public Validator()
             {
                 RuleFor(m => m.AddressHash).NotEmpty().Length(42);
-                RuleFor(m => m.Page).GreaterThanOrEqualTo(1).LessThanOrEqualTo(1000);
                 RuleFor(m => m.Size).GreaterThanOrEqualTo(1).LessThanOrEqualTo(100);
             }
         }
 
-        public class Query : IRequest<IPage<Model>>
+        public class Query : IRequest<IEnumerable<Model>>
         {
             public string AddressHash { get; set; }
-            public int? Page { get; set; }
             public int? Size { get; set; }
-            public SortOrder Sort { get; set; }
         }
 
         public class Model
@@ -53,7 +49,7 @@ namespace Cinder.Api.Infrastructure.Features.Transaction
             public string Error { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, IPage<Model>>
+        public class Handler : IRequestHandler<Query, IEnumerable<Model>>
         {
             private readonly IAddressTransactionRepository _addressTransactionRepository;
             private readonly ITransactionRepository _transactionRepository;
@@ -65,22 +61,22 @@ namespace Cinder.Api.Infrastructure.Features.Transaction
                 _transactionRepository = transactionRepository;
             }
 
-            public async Task<IPage<Model>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<IEnumerable<Model>> Handle(Query request, CancellationToken cancellationToken)
             {
                 IEnumerable<string> transactionHashes = await _addressTransactionRepository
-                    .GetTransactionHashesByAddressHash(request.AddressHash, request.Page, request.Size, request.Sort,
-                        cancellationToken)
+                    .GetTransactionHashesByAddressHash(request.AddressHash, request.Size, cancellationToken)
                     .ConfigureAwait(false);
 
                 IEnumerable<string> enumerable = transactionHashes as string[] ?? transactionHashes.ToArray();
                 if (!enumerable.Any())
                 {
-                    return new PagedEnumerable<Model>();
+                    return new List<Model>();
                 }
 
                 IEnumerable<CinderTransaction> transactions =
                     await _transactionRepository.GetTransactionsByHashes(enumerable, cancellationToken);
-                IEnumerable<Model> models = transactions.Select(transaction => new Model
+
+                return transactions.Select(transaction => new Model
                 {
                     BlockHash = transaction.BlockHash,
                     BlockNumber = transaction.BlockNumber,
@@ -100,8 +96,6 @@ namespace Cinder.Api.Infrastructure.Features.Transaction
                     CumulativeGasUsed = transaction.CumulativeGasUsed,
                     Error = transaction.Error
                 });
-
-                return new PagedEnumerable<Model>(models, enumerable.Count(), request.Page ?? 1, request.Size ?? 10);
             }
         }
     }

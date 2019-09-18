@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Cinder.Core.Paging;
 using Cinder.Documents;
 using MongoDB.Bson;
 using MongoDB.Driver;
@@ -48,13 +49,30 @@ namespace Cinder.Data.Repositories
             return records;
         }
 
-        public async Task<IEnumerable<string>> GetTransactionHashesByAddressHash(string addressHash, int? page = null,
+        public async Task<IEnumerable<string>> GetTransactionHashesByAddressHash(string addressHash, int? size = null,
+            CancellationToken cancellationToken = default)
+        {
+            size ??= 10;
+
+            List<string> transactions = await AddressHashBaseQuery(addressHash)
+                .Limit(size.Value)
+                .SortByDescending(transaction => transaction.BlockNumber)
+                .Project(document => document.Hash)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+
+            return transactions;
+        }
+
+        public async Task<IPage<string>> GetPagedTransactionHashesByAddressHash(string addressHash, int? page = null,
             int? size = null, SortOrder sort = SortOrder.Ascending, CancellationToken cancellationToken = default)
         {
             page ??= 1;
             size ??= 10;
 
             IFindFluent<CinderAddressTransaction, CinderAddressTransaction> query = AddressHashBaseQuery(addressHash);
+            // NOTE: Hard cap to 10k records to avoid performance issues, needs further investigation
+            long total = await query.Limit(10000).CountDocumentsAsync(cancellationToken).ConfigureAwait(false);
             query = query.Skip((page.Value - 1) * size.Value).Limit(size.Value);
 
             switch (sort)
@@ -70,14 +88,15 @@ namespace Cinder.Data.Repositories
             List<string> transactions =
                 await query.Project(document => document.Hash).ToListAsync(cancellationToken).ConfigureAwait(false);
 
-            return transactions;
+            return new PagedEnumerable<string>(transactions, (int) total, page.Value, size.Value);
         }
 
         public async Task<ulong> GetTransactionCountByAddressHash(string addressHash,
             CancellationToken cancellationToken = default)
         {
             IFindFluent<CinderAddressTransaction, CinderAddressTransaction> query = AddressHashBaseQuery(addressHash);
-            long total = await query.CountDocumentsAsync(cancellationToken).ConfigureAwait(false);
+            // NOTE: Hard cap to 10k records to avoid performance issues, needs further investigation
+            long total = await query.Limit(10000).CountDocumentsAsync(cancellationToken).ConfigureAwait(false);
 
             return (ulong) total;
         }

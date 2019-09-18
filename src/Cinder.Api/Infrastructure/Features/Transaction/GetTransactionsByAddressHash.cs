@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Threading;
 using System.Threading.Tasks;
 using Cinder.Core.Paging;
@@ -7,6 +8,7 @@ using Cinder.Data.Repositories;
 using Cinder.Documents;
 using FluentValidation;
 using MediatR;
+using Nethereum.Util;
 
 namespace Cinder.Api.Infrastructure.Features.Transaction
 {
@@ -27,7 +29,6 @@ namespace Cinder.Api.Infrastructure.Features.Transaction
             public string AddressHash { get; set; }
             public int? Page { get; set; }
             public int? Size { get; set; }
-            public bool? Limited { get; set; }
             public SortOrder Sort { get; set; }
         }
 
@@ -55,48 +56,47 @@ namespace Cinder.Api.Infrastructure.Features.Transaction
         public class Handler : IRequestHandler<Query, IPage<Model>>
         {
             private readonly IAddressTransactionRepository _addressTransactionRepository;
+            private readonly TransactionRepository _transactionRepository;
 
-            public Handler(IAddressTransactionRepository addressTransactionRepository)
+            public Handler(IAddressTransactionRepository addressTransactionRepository,
+                TransactionRepository transactionRepository)
             {
                 _addressTransactionRepository = addressTransactionRepository;
+                _transactionRepository = transactionRepository;
             }
 
             public async Task<IPage<Model>> Handle(Query request, CancellationToken cancellationToken)
             {
-                IPage<CinderAddressTransaction> page;
+                IPage<string> transactionHashes =
+                    await _addressTransactionRepository.GetPagedTransactionHashesByAddressHash(request.AddressHash, request.Page,
+                        request.Size, request.Sort, cancellationToken);
 
-                if (request.Limited.HasValue && request.Limited.Value)
-                {
-                    //page = await _addressTransactionRepository.GetTransactionHashesByAddressHash(request.AddressHash,
-                    //    request.Page, request.Size, request.Sort, cancellationToken);
-                    page = new PagedEnumerable<CinderAddressTransaction>(new List<CinderAddressTransaction>(), 0, 0, 0);
-                }
-                else
-                {
-                    page = new PagedEnumerable<CinderAddressTransaction>(new List<CinderAddressTransaction>(), 0, 0, 0);
-                }
+                IEnumerable<CinderTransaction> transactions =
+                    await _transactionRepository.GetTransactionsByHashes(transactionHashes.Items, cancellationToken);
 
-                IEnumerable<Model> models = page.Items.Select(transaction => new Model
+                IEnumerable<Model> models = transactions.Select(transaction => new Model
                 {
-                    //BlockHash = transaction.BlockHash,
-                    BlockNumber = transaction.BlockNumber, Hash = transaction.Hash
-                    //AddressFrom = transaction.AddressFrom,
-                    //Timestamp = ulong.Parse(transaction.TimeStamp),
-                    //TransactionIndex = ulong.Parse(transaction.TransactionIndex),
-                    //Value = UnitConversion.Convert.FromWei(BigInteger.Parse(transaction.Value)),
-                    //AddressTo = transaction.AddressTo,
-                    //Gas = transaction.Gas,
-                    //GasPrice = transaction.GasPrice,
-                    //Input = transaction.Input,
-                    //Nonce = transaction.Nonce,
-                    //Failed = transaction.Failed,
-                    //ReceiptHash = transaction.ReceiptHash,
-                    //GasUsed = transaction.GasUsed,
-                    //CumulativeGasUsed = transaction.CumulativeGasUsed,
-                    //Error = transaction.Error
+                    BlockHash = transaction.BlockHash,
+                    BlockNumber = transaction.BlockNumber,
+                    Hash = transaction.Hash,
+                    AddressFrom = transaction.AddressFrom,
+                    Timestamp = ulong.Parse(transaction.TimeStamp),
+                    TransactionIndex = ulong.Parse(transaction.TransactionIndex),
+                    Value = UnitConversion.Convert.FromWei(BigInteger.Parse(transaction.Value)),
+                    AddressTo = transaction.AddressTo,
+                    Gas = transaction.Gas,
+                    GasPrice = transaction.GasPrice,
+                    Input = transaction.Input,
+                    Nonce = transaction.Nonce,
+                    Failed = transaction.Failed,
+                    ReceiptHash = transaction.ReceiptHash,
+                    GasUsed = transaction.GasUsed,
+                    CumulativeGasUsed = transaction.CumulativeGasUsed,
+                    Error = transaction.Error
                 });
 
-                return new PagedEnumerable<Model>(models, page.Total, page.Page, page.Size);
+                return new PagedEnumerable<Model>(models, transactionHashes.Total, transactionHashes.Page,
+                    transactionHashes.Size);
             }
         }
     }
