@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Cinder.Data.Repositories;
 using Cinder.Documents;
 using MongoDB.Bson;
@@ -17,7 +18,13 @@ namespace Cinder.Data
         protected RepositoryFactoryBase(string connectionString, string dbTag)
         {
             DatabaseName = "cinder" + dbTag;
-            Client = new MongoClient(connectionString);
+            MongoUrl url = new MongoUrl(connectionString);
+            Client = new MongoClient(new MongoClientSettings
+            {
+                Server = new MongoServerAddress(url.Server.Host, url.Server.Port),
+                ReadEncoding = new UTF8Encoding(false, false)
+            });
+
 
             CreateMaps();
         }

@@ -55,6 +55,8 @@ namespace Cinder.Data.Repositories
             size ??= 10;
 
             IFindFluent<CinderAddressTransaction, CinderAddressTransaction> query = AddressHashBaseQuery(addressHash);
+            query = query.Skip((page.Value - 1) * size.Value).Limit(size.Value);
+
             switch (sort)
             {
                 case SortOrder.Ascending:
@@ -65,7 +67,6 @@ namespace Cinder.Data.Repositories
                     break;
             }
 
-            query = query.Skip((page.Value - 1) * size.Value).Limit(size.Value);
             List<string> transactions =
                 await query.Project(document => document.Hash).ToListAsync(cancellationToken).ConfigureAwait(false);
 
